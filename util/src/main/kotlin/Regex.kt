@@ -1,0 +1,1 @@
+val EMPTY_LINE = "\r?\n\r?\n".toRegex()
