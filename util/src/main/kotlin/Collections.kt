@@ -8,12 +8,10 @@ fun <T> Deque<T>.pop(): T = removeFirst()
 
 fun <T> Deque<T>.peek(): T = first()
 
-fun <T> dequeOf(): Deque<T> = ArrayDeque()
-
 fun <T> dequeOf(vararg elements: T): Deque<T> = if (elements.size == 0) ArrayDeque() else ArrayDeque(elements.asList())
 
 fun Iterable<Int>.product(): Int {
-    var product: Int = 1
+    var product = 1
     for (element in this) {
         product *= element
     }
@@ -21,7 +19,7 @@ fun Iterable<Int>.product(): Int {
 }
 
 fun Iterable<Long>.product(): Long {
-    var product: Long = 1L
+    var product = 1L
     for (element in this) {
         product *= element
     }
@@ -31,7 +29,7 @@ fun Iterable<Long>.product(): Long {
 @OptIn(ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
 inline fun <T> Iterable<T>.productOf(selector: (T) -> Int): Int {
-    var product: Int = 1
+    var product = 1
     for (element in this) {
         product *= selector(element)
     }
@@ -42,7 +40,7 @@ inline fun <T> Iterable<T>.productOf(selector: (T) -> Int): Int {
 @OverloadResolutionByLambdaReturnType
 @SuppressWarnings
 inline fun <T> Iterable<T>.productOf(selector: (T) -> Long): Long {
-    var product: Long = 1L
+    var product = 1L
     for (element in this) {
         product *= selector(element)
     }

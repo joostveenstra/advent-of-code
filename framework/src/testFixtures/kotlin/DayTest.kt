@@ -15,7 +15,7 @@ abstract class DayTest(private val day: Day<*>, init: TestSpecBuilder.() -> Unit
         notNullProperties.map { (name, value) ->
             DynamicTest.dynamicTest(name) {
                 val input = resourceAsText("/day${dayNum}/${name}.txt")
-                assertEquals(part(input), value)
+                assertEquals(value, part(input))
             }
         }
 
