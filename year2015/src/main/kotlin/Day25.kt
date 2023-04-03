@@ -1,5 +1,3 @@
-import java.math.BigInteger
-
 object Day25 : Day<Int> {
     private fun String.toPosition() = "\\d+".toRegex().findAll(this).map { it.value.toInt() }.toList().let { (y, x) -> Point(x, y) }
 
