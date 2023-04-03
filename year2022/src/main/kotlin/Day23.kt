@@ -1,7 +1,12 @@
 typealias Elf = Point
 
-object Day23: Day<Int> {
-    private val order = listOf(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST)
+object Day23 : Day<Int> {
+    private val order = listOf(
+        Direction.NORTH,
+        Direction.SOUTH,
+        Direction.WEST,
+        Direction.EAST
+    )
 
     data class State(val elves: Set<Elf>, val directions: List<Direction>, val stuck: Boolean = false)
 

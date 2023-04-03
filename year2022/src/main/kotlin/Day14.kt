@@ -5,11 +5,15 @@ typealias Cave = Set<Point>
 
 object Day14 : Day<Int> {
     private val source = Point(500, 0)
-    private val directions = listOf(Point(0, 1), Point(-1, 1), Point(1, 1))
+    private val directions = listOf(
+        Point(0, 1),
+        Point(-1, 1),
+        Point(1, 1)
+    )
 
     private fun String.toEmptyCave(): Cave = lines()
-        .flatMap { it.split(" -> ").map(Point::of).zipWithNext() }
-        .flatMap { (a, b) -> a lineTo b }
+        .flatMap { it.split(" -> ").map(Point::of).zipWithNext { a, b -> a lineTo b } }
+        .flatten()
         .toSet()
 
     private fun Cave.floor() = maxOf { it.y } + 1

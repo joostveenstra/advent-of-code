@@ -7,6 +7,10 @@ plugins {
 allprojects {
     group = "nl.joostveenstra"
     version = "1.0-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
+    }
 }
 
 subprojects {

@@ -14,7 +14,7 @@ object Day5 : Day<String> {
     }
 
     private fun parseProcedures(input: List<String>) = input.map { line ->
-        val (amount, from, to) = line.split("\\D+".toRegex()).drop(1).map { it.toInt() }
+        val (amount, from, to) = "\\d+".toRegex().findAll(line).map { it.value.toInt() }.toList()
         Procedure(amount, from - 1, to - 1)
     }
 

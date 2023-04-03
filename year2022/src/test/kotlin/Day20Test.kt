@@ -1,11 +1,11 @@
 class Day20Test : DayTest(Day20, {
     part1 {
         example = 3L
-        input = 4_426L
+        input = 4426L
     }
 
     part2 {
-        example = 1_623_178_306L
-        input = 8_119_137_886_612L
+        example = 1623178306L
+        input = 8119137886612L
     }
 })

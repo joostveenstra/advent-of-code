@@ -20,10 +20,8 @@ abstract class DayTest(private val day: Day<*>, init: TestSpecBuilder.() -> Unit
         }
 
     @TestFactory
-    @DisplayName("Part 1")
     fun part1() = test.part1?.createTests(day::part1) ?: emptyList()
 
     @TestFactory
-    @DisplayName("Part 2")
     fun part2() = test.part2?.createTests(day::part2) ?: emptyList()
 }

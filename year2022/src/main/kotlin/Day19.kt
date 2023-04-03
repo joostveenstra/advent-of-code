@@ -46,20 +46,18 @@ object Day19 : Day<Int> {
             fun State.isEnd() = time == 0
             fun State.canBeatBest() = resources.geode + (0 until time).sumOf { bots.geode + it } > best
 
-            fun State.nextStates(): List<State> = when {
-                isEnd() || !canBeatBest() -> emptyList()
-                else -> buildList {
-                    if (bots.obsidian > 0) add(buildBot(geodeBot, geodeCost))
-                    if (bots.obsidian < geodeCost.obsidian && bots.clay > 0) add(buildBot(obsidianBot, obsidianCost))
-                    if (bots.clay < obsidianCost.clay && bots.ore > 0) add(buildBot(clayBot, clayCost))
-                    if (bots.ore < maxOf(clayCost.ore, obsidianCost.ore, geodeCost.ore)) add(buildBot(oreBot, oreCost))
-                }
+            fun State.nextStates(): List<State> = buildList {
+                if (bots.obsidian > 0) add(buildBot(geodeBot, geodeCost))
+                if (bots.obsidian < geodeCost.obsidian && bots.clay > 0) add(buildBot(obsidianBot, obsidianCost))
+                if (bots.clay < obsidianCost.clay && bots.ore > 0) add(buildBot(clayBot, clayCost))
+                if (bots.ore < maxOf(clayCost.ore, obsidianCost.ore, geodeCost.ore)) add(buildBot(oreBot, oreCost))
             }
 
             while (stack.isNotEmpty()) {
-                val state = stack.pop()
-                best = maxOf(best, state.resources.geode)
-                state.nextStates().forEach { stack.push(it) }
+                with(stack.pop()) {
+                    best = maxOf(best, resources.geode)
+                    if (!isEnd() && canBeatBest()) nextStates().forEach { stack.push(it) }
+                }
             }
 
             return best

@@ -1,11 +1,11 @@
 class Day22Test : DayTest(Day22, {
     part1 {
-        example = 6_032
-        input = 165_094
+        example = 6032
+        input = 165094
     }
 
     part2 {
-        example = 5_031
-        input = 95_316
+        example = 5031
+        input = 95316
     }
 })

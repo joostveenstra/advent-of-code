@@ -2,7 +2,12 @@ import kotlin.math.absoluteValue
 import kotlin.math.sign
 
 object Day9 : Day<Int> {
-    private val directions = mapOf("R" to Direction.RIGHT, "D" to Direction.DOWN, "L" to Direction.LEFT, "U" to Direction.UP)
+    private val directions = mapOf(
+        "R" to Direction.RIGHT,
+        "D" to Direction.DOWN,
+        "L" to Direction.LEFT,
+        "U" to Direction.UP
+    )
 
     private fun String.toMoves() = lines().flatMap {
         it.split(' ').let { (direction, steps) ->
@@ -18,7 +23,7 @@ object Day9 : Day<Int> {
         val initial = List(size) { start } to listOf(start)
         val (_, visited) = this.fold(initial) { (rope, visited), move ->
             val nextHead = rope.first() + move
-            val nextRope = rope.drop(1).runningFold(nextHead) { head, tail ->
+            val nextRope = rope.drop(1).scan(nextHead) { head, tail ->
                 if (tail touches head) tail else tail moveTowards head
             }
             nextRope to visited + nextRope.last()

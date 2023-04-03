@@ -1,7 +1,7 @@
 class Day10Test : DayTest(Day10, {
     part1 {
-        example = 13_140
-        input = 14_340
+        example = 13140
+        input = 14340
     }
 
     part2 {

@@ -1,4 +1,4 @@
-object Day11: Day<Long> {
+object Day11 : Day<Long> {
     data class Monkey(
         val items: List<Long>,
         val operation: (Long) -> Long,
@@ -33,19 +33,18 @@ object Day11: Day<Long> {
 
     private fun List<Monkey>.business() = map { it.inspections }.sortedDescending().take(2).product()
 
-    private fun List<Monkey>.round(reduceItem: (Long) -> Long): List<Monkey> =
-        indices.fold(this) { monkeys, current ->
-            val (items, operation, test, ifTrue, ifFalse, inspections) = monkeys[current]
-            val (pass, fail) = items.map(operation).map(reduceItem).partition { it % test == 0L }
-            monkeys.mapIndexed { index, monkey ->
-                when (index) {
-                    current -> monkey.copy(items = emptyList(), inspections = inspections + items.size)
-                    ifTrue -> monkey.copy(items = monkey.items + pass)
-                    ifFalse -> monkey.copy(items = monkey.items + fail)
-                    else -> monkey
-                }
+    private fun List<Monkey>.round(reduceItem: (Long) -> Long): List<Monkey> = indices.fold(this) { monkeys, current ->
+        val (items, operation, test, ifTrue, ifFalse, inspections) = monkeys[current]
+        val (pass, fail) = items.map(operation).map(reduceItem).partition { it % test == 0L }
+        monkeys.mapIndexed { index, monkey ->
+            when (index) {
+                current -> monkey.copy(items = emptyList(), inspections = inspections + items.size)
+                ifTrue -> monkey.copy(items = monkey.items + pass)
+                ifFalse -> monkey.copy(items = monkey.items + fail)
+                else -> monkey
             }
         }
+    }
 
     private fun List<Monkey>.play(rounds: Int, reduceItem: (Long) -> Long): Long =
         generateSequence(this) { it.round(reduceItem) }.drop(rounds).first().business()
