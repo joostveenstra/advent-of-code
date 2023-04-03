@@ -24,4 +24,24 @@ class CollectionsTest {
         val chars = listOf('a', 'b', 'c', 'd').zipWithIndex()
         assertEquals(listOf('a' to 0, 'b' to 1, 'c' to 2, 'd' to 3), chars)
     }
+
+    @Test
+    fun permutations() {
+        val permutations = listOf(1, 2, 3).permutations().toList()
+        assertEquals(listOf(listOf(1, 2, 3), listOf(1, 3, 2), listOf(2, 1, 3), listOf(2, 3, 1), listOf(3, 1, 2), listOf(3, 2, 1)), permutations)
+    }
+
+    @Test
+    fun combinations() {
+        val combinations2 = listOf(1, 2, 3, 4).combinations(2).toList()
+        assertEquals(listOf(listOf(1, 2), listOf(1, 3), listOf(1, 4), listOf(2, 3), listOf(2, 4), listOf(3, 4)), combinations2)
+        val combinations3 = listOf(1, 2, 3, 4).combinations(3).toList()
+        assertEquals(listOf(listOf(1, 2, 3), listOf(1, 2, 4), listOf(1, 3, 4), listOf(2, 3, 4)), combinations3)
+    }
+
+    @Test
+    fun transpose() {
+        val transposed = listOf(listOf(1, 2, 3), listOf(4, 5, 6)).transpose()
+        assertEquals(listOf(listOf(1, 4), listOf(2, 5), listOf(3, 6)), transposed)
+    }
 }

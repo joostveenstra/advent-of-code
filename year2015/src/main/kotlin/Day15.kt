@@ -1,0 +1,17 @@
+object Day15 : Day<Int> {
+    private fun String.toRecipes(): Sequence<List<Int>> {
+        val ingredients = lines().map { line -> "-?\\d+".toRegex().findAll(line).map { it.value.toInt() }.toList() }
+        fun range(offset: Int) = 0..100 - offset
+        return sequence {
+            for (a in range(0)) for (b in range(a)) for (c in range(a + b)) for (d in range(a + b + c)) {
+                if ((a + b + c + d) == 100) {
+                    yield(listOf(a, b, c, d).zip(ingredients) { tsp, i -> i.map { it * tsp } }.transpose().map { maxOf(0, it.sum()) })
+                }
+            }
+        }
+    }
+
+    override fun part1(input: String) = input.toRecipes().maxOf { it.dropLast(1).product() }
+
+    override fun part2(input: String) = input.toRecipes().filter { it.last() == 500 }.maxOf { it.dropLast(1).product() }
+}

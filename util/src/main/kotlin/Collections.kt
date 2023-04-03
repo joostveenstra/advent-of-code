@@ -1,3 +1,5 @@
+import java.util.*
+import kotlin.collections.ArrayDeque
 import kotlin.experimental.ExperimentalTypeInference
 
 typealias Deque<T> = ArrayDeque<T>
@@ -8,7 +10,10 @@ fun <T> Deque<T>.pop(): T = removeFirst()
 
 fun <T> Deque<T>.peek(): T = first()
 
-fun <T> dequeOf(vararg elements: T): Deque<T> = if (elements.size == 0) ArrayDeque() else ArrayDeque(elements.asList())
+fun <T> dequeOf(vararg elements: T): Deque<T> = if (elements.isEmpty()) ArrayDeque() else ArrayDeque(elements.asList())
+
+inline fun <T> priorityQueueOf(vararg elements: T, crossinline compareBy: (T) -> Comparable<*>?): PriorityQueue<T> =
+    if (elements.isEmpty()) PriorityQueue<T>(compareBy(compareBy)) else PriorityQueue(compareBy(compareBy)).apply { addAll(elements.asList()) }
 
 fun Iterable<Int>.product(): Int {
     var product = 1
@@ -48,3 +53,29 @@ inline fun <T> Iterable<T>.productOf(selector: (T) -> Long): Long {
 }
 
 fun <T> List<T>.zipWithIndex(): List<Pair<T, Int>> = zip(indices)
+
+fun <T> List<T>.permutations(): Sequence<List<T>> =
+    if (isEmpty()) sequenceOf(emptyList()) else sequence {
+        forEach { next ->
+            minus(next).permutations().forEach {
+                yield(listOf(next) + it)
+            }
+        }
+    }
+
+fun <T> List<T>.combinations(k: Int, acc: List<T> = emptyList()): Sequence<List<T>> =
+    sequence {
+        if (k == 1)
+            forEach { yield(acc + it) }
+        else if (k == size)
+            yield(acc + this@combinations)
+        else if (k < size)
+            forEachIndexed { i, e -> yieldAll(subList(i + 1, size).combinations(k - 1, acc + e)) }
+    }
+
+fun <T> List<List<T>>.transpose(): List<List<T>> =
+    List(first().size) { j ->
+        List(size) { i ->
+            this[i][j]
+        }
+    }
