@@ -14,7 +14,7 @@ object Day12 : Day<Int> {
             ?: when (first()) {
                 '[' -> drop(1).toArray(JsonArray(emptyList()))
                 '{' -> drop(1).toObject(JsonObject(emptyList()))
-                else -> error("This should never happen")
+                else -> throw IllegalArgumentException("Invalid Json string: $this")
             }
 
     private fun String.toArray(jArray: JsonArray): Pair<Json, String> {

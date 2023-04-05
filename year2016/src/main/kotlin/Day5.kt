@@ -11,16 +11,11 @@ object Day5 : Day<String> {
     private fun String.generateHashes() =
         generateSequence(0) { it + 1 }.map { md5(this + it) }.filter { it[0].toInt() == 0 && it[1].toInt() == 0 && it[2].toInt() and 0xF0 == 0 }
 
-    override fun part1(input: String) = input.generateHashes()
-        .take(8)
-        .map { it[2].and(0x0F).toHexString() }
+    override fun part1(input: String) = input.generateHashes().take(8)
+        .map { (it[2] and 0x0F).toHexString() }
         .joinToString("")
 
-    override fun part2(input: String) = input.generateHashes()
-        .filter { it[2] < 8 }
-        .distinctBy { it[2] }
-        .take(8)
-        .sortedBy { it[2].toInt() }
+    override fun part2(input: String) = input.generateHashes().filter { it[2] < 8 }.distinctBy { it[2] }.take(8).sortedBy { it[2] }
         .map { ((it[3].toInt() shr 4).toByte() and 0x0F).toHexString() }
         .joinToString("")
 }

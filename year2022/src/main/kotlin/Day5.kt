@@ -1,7 +1,7 @@
 object Day5 : Day<String> {
     data class Procedure(val amount: Int, val from: Int, val to: Int)
 
-    private fun parseInput(input: String): Pair<List<Deque<Char>>, List<Procedure>> {
+    private fun parse(input: String): Pair<List<Deque<Char>>, List<Procedure>> {
         val (stacks, procedures) = input.split(EMPTY_LINE).map { it.lines() }
         return parseStacks(stacks) to parseProcedures(procedures)
     }
@@ -19,7 +19,7 @@ object Day5 : Day<String> {
     }
 
     private fun moveCrates(input: String, reversed: Boolean): String {
-        val (stacks, procedures) = parseInput(input)
+        val (stacks, procedures) = parse(input)
         procedures.forEach { (amount, from, to) ->
             val cratesToMove = (1..amount).map { stacks[from].pop() }
             stacks[to].addAll(0, if (reversed) cratesToMove.asReversed() else cratesToMove)

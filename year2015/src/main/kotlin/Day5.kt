@@ -3,12 +3,12 @@ object Day5 : Day<Int> {
         val vowels = "[aeiou].*[aeiou].*[aeiou]".toRegex()
         val pair = "(.)\\1".toRegex()
         val naughty = "ab|cd|pq|xy".toRegex()
-        return input.lines().count { vowels.containsMatchIn(it) && pair.containsMatchIn(it) && !naughty.containsMatchIn(it) }
+        return input.lines().count { vowels in it && pair in it && naughty !in it }
     }
 
     override fun part2(input: String): Int {
         val pairs = "(..).*\\1".toRegex()
         val split = "(.).\\1".toRegex()
-        return input.lines().count { pairs.containsMatchIn(it) && split.containsMatchIn(it) }
+        return input.lines().count { pairs in it && split in it }
     }
 }

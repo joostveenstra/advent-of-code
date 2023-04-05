@@ -3,13 +3,13 @@ object Day4 : Day<Int?> {
 
     private fun String.toRooms() = lines().map {
         """([\w\-]+)-(\d+)\[(\w{5})]""".toRegex().matchEntire(it)?.destructured
-            ?.let { (name, id, checksum) -> Room(name, id.toInt(), checksum) } ?: throw IllegalArgumentException("This should never happen")
+            ?.let { (name, id, checksum) -> Room(name, id.toInt(), checksum) } ?: throw IllegalArgumentException("$it is not a valid room")
     }
 
     private fun Room.isReal(): Boolean {
-        val occurrences = name.filterNot { it == '-' }.groupBy { it }.map { (k, v) -> -v.count() to k }
-        val sorted = occurrences.sortedWith(compareBy<Pair<Int, Char>> { it.first }.thenBy { it.second })
-        return checksum == sorted.take(5).map { it.second }.joinToString("")
+        val occurrences = name.filterNot { it == '-' }.groupBy { it }.toList()
+        val sorted = occurrences.sortedWith(compareByDescending<Pair<Char, List<Char>>> { it.second.size }.thenBy { it.first })
+        return checksum == sorted.take(5).map { it.first }.joinToString("")
     }
 
     private fun Room.decrypt() = copy (name = name.map { if (it == '-') ' ' else 'a' + (it - 'a' + id) % 26 }.joinToString(""))

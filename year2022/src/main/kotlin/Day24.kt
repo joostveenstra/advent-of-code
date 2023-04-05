@@ -3,7 +3,7 @@ import kotlin.reflect.KFunction3
 object Day24 : Day<Int> {
     private val start = Point(1, 0)
 
-    private fun parseInput(input: String): Pair<Point, KFunction3<Set<Point>, Point, Int, Int>> {
+    private fun parse(input: String): Pair<Point, KFunction3<Set<Point>, Point, Int, Int>> {
         val valley = input.lines()
         val width = valley.first().length - 2
         val height = valley.size - 2
@@ -29,12 +29,12 @@ object Day24 : Day<Int> {
     }
 
     override fun part1(input: String): Int {
-        val (goal, simulate) = parseInput(input)
+        val (goal, simulate) = parse(input)
         return simulate(setOf(start), goal, 0)
     }
 
     override fun part2(input: String): Int {
-        val (goal, simulate) = parseInput(input)
+        val (goal, simulate) = parse(input)
         val timeAtGoal = simulate(setOf(start), goal, 0)
         val timeBackAtStart = simulate(setOf(goal), start, timeAtGoal)
         return simulate(setOf(start), goal, timeBackAtStart)
