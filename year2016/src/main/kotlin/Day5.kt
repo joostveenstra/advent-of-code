@@ -1,0 +1,26 @@
+import java.security.MessageDigest
+import kotlin.experimental.and
+
+object Day5 : Day<String> {
+    private val md5 = MessageDigest.getInstance("MD5")
+
+    private fun md5(string: String) = md5.digest(string.toByteArray())
+
+    private fun Byte.toHexString(): String = toUByte().toString(radix = 16)
+
+    private fun String.generateHashes() =
+        generateSequence(0) { it + 1 }.map { md5(this + it) }.filter { it[0].toInt() == 0 && it[1].toInt() == 0 && it[2].toInt() and 0xF0 == 0 }
+
+    override fun part1(input: String) = input.generateHashes()
+        .take(8)
+        .map { it[2].and(0x0F).toHexString() }
+        .joinToString("")
+
+    override fun part2(input: String) = input.generateHashes()
+        .filter { it[2] < 8 }
+        .distinctBy { it[2] }
+        .take(8)
+        .sortedBy { it[2].toInt() }
+        .map { ((it[3].toInt() shr 4).toByte() and 0x0F).toHexString() }
+        .joinToString("")
+}
