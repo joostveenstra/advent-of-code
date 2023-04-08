@@ -6,6 +6,6 @@ class Day6Test : DayTest(Day6, {
 
     part2 {
         example = "advent"
-        input = ""
+        input = "uwpfaqrq"
     }
 })

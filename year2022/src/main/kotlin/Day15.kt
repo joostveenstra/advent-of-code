@@ -9,7 +9,7 @@ object Day15 : Day<Long> {
     }
 
     private fun String.toSensors() = lines().map { line ->
-        "-?\\d+".toRegex().findAll(line).map { it.value.toInt() }.toList().let { (xSensor, ySensor, xBeacon, yBeacon) ->
+        line.allInts().toList().let { (xSensor, ySensor, xBeacon, yBeacon) ->
             val sensor = Point(xSensor, ySensor)
             val beacon = Point(xBeacon, yBeacon)
             Sensor(sensor, beacon, sensor.manhattanDistanceTo(beacon))

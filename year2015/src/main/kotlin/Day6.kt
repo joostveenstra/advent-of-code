@@ -4,7 +4,7 @@ object Day6 : Day<Int> {
 
         lines().forEach { line ->
             val instruction = algorithm(line)
-            val (x1, y1, x2, y2) = "\\d+".toRegex().findAll(line).map { it.value.toInt() }.toList()
+            val (x1, y1, x2, y2) = line.allInts().toList()
             for (x in x1..x2) for (y in y1..y2) grid[y][x] = instruction(grid[y][x])
         }
 

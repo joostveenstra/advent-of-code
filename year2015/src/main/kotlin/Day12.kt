@@ -37,7 +37,7 @@ object Day12 : Day<Int> {
         is JsonObject -> if (JsonString("red") in values) 0 else values.sumOf { it.evaluate() }
     }
 
-    override fun part1(input: String) = "-?\\d+".toRegex().findAll(input).sumOf { it.value.toInt() }
+    override fun part1(input: String) = input.allInts().sum()
 
     override fun part2(input: String) = input.toJson().first.evaluate()
 }

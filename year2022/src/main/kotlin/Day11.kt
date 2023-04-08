@@ -9,8 +9,7 @@ object Day11 : Day<Long> {
     ) {
         companion object {
             fun of(input: List<String>): Monkey {
-                fun parseNumbers(input: String) = "\\d+".toRegex().findAll(input).map { it.value.toInt() }
-                val items = parseNumbers(input[1]).map { it.toLong() }.toList()
+                val items = input[1].allInts().map { it.toLong() }.toList()
                 val operation: (Long) -> Long = input[2].split(' ').takeLast(2).let { (operator, value) ->
                     when {
                         value == "old" -> { x -> x * x }
@@ -18,9 +17,9 @@ object Day11 : Day<Long> {
                         else -> { x -> x + value.toLong() }
                     }
                 }
-                val test = parseNumbers(input[3]).first()
-                val monkeyTrue = parseNumbers(input[4]).first()
-                val monkeyFalse = parseNumbers(input[5]).first()
+                val test = input[3].allInts().first()
+                val monkeyTrue = input[4].allInts().first()
+                val monkeyFalse = input[5].allInts().first()
 
                 return Monkey(items, operation, test, monkeyTrue, monkeyFalse)
             }

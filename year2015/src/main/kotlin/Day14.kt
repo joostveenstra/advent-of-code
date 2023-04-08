@@ -9,7 +9,7 @@ object Day14 : Day<Any> {
     }
 
     private fun String.toReindeer() = lines().map { line ->
-        "\\d+".toRegex().findAll(line).map { it.value.toInt() }.toList().let { (speed, fly, rest) -> Reindeer(speed, fly, rest) }
+        line.allInts().toList().let { (speed, fly, rest) -> Reindeer(speed, fly, rest) }
     }
 
     private fun String.toSeconds() = if (lines().size == 2) 1000 else 2503

@@ -1,5 +1,5 @@
 object Day25 : Day<Int> {
-    private fun String.toPosition() = "\\d+".toRegex().findAll(this).map { it.value.toInt() }.toList().let { (y, x) -> Point(x, y) }
+    private fun String.toPosition() = allInts().toList().let { (y, x) -> Point(x, y) }
 
     private fun Point.diagonalIndex(): Int {
         val n = x + y - 2

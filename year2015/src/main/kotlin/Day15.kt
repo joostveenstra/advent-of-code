@@ -1,6 +1,6 @@
 object Day15 : Day<Int> {
     private fun String.toRecipes(): Sequence<List<Int>> {
-        val ingredients = lines().map { line -> "-?\\d+".toRegex().findAll(line).map { it.value.toInt() }.toList() }
+        val ingredients = lines().map { it.allInts().toList() }
         fun range(offset: Int) = 0..100 - offset
         return sequence {
             for (a in range(0)) for (b in range(a)) for (c in range(a + b)) for (d in range(a + b + c)) {

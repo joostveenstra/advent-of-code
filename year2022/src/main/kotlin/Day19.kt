@@ -9,7 +9,7 @@ object Day19 : Day<Int> {
 
     data class Blueprint(val id: Int, val oreCost: Resources, val clayCost: Resources, val obsidianCost: Resources, val geodeCost: Resources) {
         companion object {
-            fun of(input: String) = "\\d+".toRegex().findAll(input).map { it.value.toInt() }.toList().let {
+            fun of(input: String) = input.allInts().toList().let {
                 val oreCost = Resources(ore = it[1])
                 val clayCost = Resources(ore = it[2])
                 val obsidianCost = Resources(ore = it[3], clay = it[4])
