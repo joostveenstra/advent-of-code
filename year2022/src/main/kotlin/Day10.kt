@@ -7,7 +7,7 @@ object Day10 : Day<Any> {
         (20..220 step 40).sumOf { cycle -> cycle * signalStrengths[cycle - 1] }
     }
 
-    override fun part2(input: String) = input.toSignalStrengths().dropLast(1).chunked(40)
-        .map { row -> row.mapIndexed { pixel, signal -> if ((pixel - signal).absoluteValue <= 1) '#' else '.' } }
-        .joinToString("\n") { it.joinToString("") }
+    override fun part2(input: String) = input.toSignalStrengths().dropLast(1).chunked(40).joinToString("\n") { row ->
+        row.mapIndexed { pixel, signal -> if ((pixel - signal).absoluteValue <= 1) '#' else '.' }.joinToString("")
+    }
 }

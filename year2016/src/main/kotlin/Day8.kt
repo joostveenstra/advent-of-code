@@ -6,7 +6,11 @@ object Day8 : Day<Any> {
 
     data class Screen(val width: Int, val height: Int)
 
-    private fun String.toScreen() = if (lines().size == 4) Screen(7, 3) else Screen(50, 6)
+    private fun parse(input: String) = with(input.lines()) {
+        val screen = if (size == 4) Screen(7, 3) else Screen(50, 6)
+        val operations = map { it.toOperation() }
+        screen to operations
+    }
 
     private fun String.toOperation(): Operation {
         val (a, b) = allInts().toList()
@@ -17,7 +21,7 @@ object Day8 : Day<Any> {
         }
     }
 
-    private fun Screen.draw(input: String): Set<Point> = input.lines().map { it.toOperation() }.fold(emptySet()) { points, op ->
+    private fun Screen.draw(operations: List<Operation>): Set<Point> = operations.fold(emptySet()) { points, op ->
         when (op) {
             is Rect -> points + (0 until op.width).flatMap { x -> (0 until op.height).map { y -> Point(x, y) } }
             is Row -> points.map { p -> if (op.row != p.y) p else Point((p.x + op.offset) % width, p.y) }.toSet()
@@ -26,17 +30,17 @@ object Day8 : Day<Any> {
     }
 
     override fun part1(input: String): Int {
-        val screen = input.toScreen()
-        return screen.draw(input).size
+        val (screen, operations) = parse(input)
+        return screen.draw(operations).size
     }
 
     override fun part2(input: String): String {
-        val screen = input.toScreen()
-        val points = screen.draw(input)
+        val (screen, operations) = parse(input)
+        val points = screen.draw(operations)
         return (0 until screen.height).joinToString("\n") { y ->
-            (0 until screen.width).map { x ->
-                if (Point(x, y) in points) '#' else '.'
-            }.joinToString("")
+            (0 until screen.width).joinToString("") { x ->
+                if (Point(x, y) in points) "#" else "."
+            }
         }
     }
 }

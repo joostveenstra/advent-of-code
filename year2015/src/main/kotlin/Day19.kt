@@ -24,10 +24,11 @@ object Day19 : Day<Int> {
             val nextCost = cost + 1
 
             current.nextMolecules(rules).forEach { next ->
-                if (next !in visited || nextCost < visited.getValue(next))
+                if (next !in visited || nextCost < visited.getValue(next)) {
                     visited[next] = nextCost
-                val priority = nextCost + next.length
-                queue.offer(next to priority)
+                    val priority = nextCost + next.length
+                    queue.offer(next to priority)
+                }
             }
         }
 

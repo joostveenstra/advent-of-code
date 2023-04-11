@@ -12,7 +12,7 @@ object Day4 : Day<Int?> {
         return checksum == sorted.take(5).map { it.first }.joinToString("")
     }
 
-    private fun Room.decrypt() = copy (name = name.map { if (it == '-') ' ' else 'a' + (it - 'a' + id) % 26 }.joinToString(""))
+    private fun Room.decrypt() = copy(name = name.map { if (it == '-') ' ' else 'a' + (it - 'a' + id) % 26 }.joinToString(""))
 
     override fun part1(input: String) = input.toRooms().filter { it.isReal() }.sumOf { it.id }
 
