@@ -5,12 +5,13 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-JAVA_OPTS=\
-"-Dhttp.proxyHost=proxy2.keylane.local "\
-"-Dhttp.proxyPort=3128 "\
-"-Dhttp.nonProxyHosts=*.keylane* "\
-"-Dhttps.proxyHost=proxy2.keylane.local "\
-"-Dhttps.proxyPort=3128"
+JAVA_OPTS="\
+-Dhttp.proxyHost=proxy2.keylane.local \
+-Dhttp.proxyPort=3128 \
+-Dhttp.nonProxyHosts=*.keylane* \
+-Dhttps.proxyHost=proxy2.keylane.local \
+-Dhttps.proxyPort=3128 \
+"
 
 CLASSPATH=\
 C:/git/advent-of-code/cli/build/classes/kotlin/main\;\
@@ -21,4 +22,4 @@ C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin
 C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.8.10/a61b182458550492c12aee66157d7b524a63a5ec/kotlin-stdlib-common-1.8.10.jar\;\
 C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar
 
-java $JAVA_OPTS -cp $CLASSPATH CliKt $@
+"$JAVA_HOME"/bin/java "$JAVA_OPTS" -cp $CLASSPATH CliKt "$@"
