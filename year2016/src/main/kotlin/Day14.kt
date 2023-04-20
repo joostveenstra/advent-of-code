@@ -1,5 +1,5 @@
 import java.security.MessageDigest
-import java.util.HexFormat
+import java.util.*
 
 object Day14 : Day<Int> {
     private val md5 = MessageDigest.getInstance("MD5")
