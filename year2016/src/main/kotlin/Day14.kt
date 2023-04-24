@@ -10,9 +10,9 @@ object Day14 : Day<Int> {
     private fun String.toMd5Stretched() = generateSequence(toMd5()) { it.toMd5() }.drop(2016).first()
 
     private fun isValid(window: List<IndexedValue<String>>) =
-        three.find(window.first().value)?.destructured?.let { (t) ->
+        window.first().value.find(three)?.let { (t) ->
             window.drop(1).any {
-                five.find(it.value)?.destructured?.let { (f) -> t == f } ?: false
+                it.value.find(five)?.let { (f) -> t == f } ?: false
             }
         } ?: false
 

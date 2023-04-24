@@ -65,12 +65,11 @@ fun <T> List<T>.permutations(): Sequence<List<T>> =
 
 fun <T> List<T>.combinations(k: Int, acc: List<T> = emptyList()): Sequence<List<T>> =
     sequence {
-        if (k == 1)
-            forEach { yield(acc + it) }
-        else if (k == size)
-            yield(acc + this@combinations)
-        else if (k < size)
-            forEachIndexed { i, e -> yieldAll(subList(i + 1, size).combinations(k - 1, acc + e)) }
+        when (k) {
+            1    -> forEach { yield(acc + it) }
+            size -> yield(acc + this@combinations)
+            else -> forEachIndexed { i, e -> yieldAll(subList(i + 1, size).combinations(k - 1, acc + e)) }
+        }
     }
 
 fun <T> List<List<T>>.transpose(): List<List<T>> =

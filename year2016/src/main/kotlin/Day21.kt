@@ -20,26 +20,26 @@ object Day21 : Day<String> {
 
     override fun part1(input: String) = input.lines().fold("abcdefgh") { password, op ->
         with(password) {
-            swapPositions.matchEntire(op)?.destructured?.let { (x, y) -> swapPositions(x.toInt(), y.toInt()) }
-                ?: swapLetters.matchEntire(op)?.destructured?.let { (a, b) -> swapLetters(a, b) }
-                ?: rotateLeft.matchEntire(op)?.destructured?.let { (steps) -> rotateLeft(steps.toInt()) }
-                ?: rotateRight.matchEntire(op)?.destructured?.let { (steps) -> rotateRight(steps.toInt()) }
-                ?: rotateByLetter.matchEntire(op)?.destructured?.let { (a) -> rotateRightByLetter(a) }
-                ?: reverse.matchEntire(op)?.destructured?.let { (x, y) -> reverse(x.toInt(), y.toInt()) }
-                ?: move.matchEntire(op)?.destructured?.let { (x, y) -> move(x.toInt(), y.toInt()) }
+            op.match(swapPositions)?.let { (x, y) -> swapPositions(x.toInt(), y.toInt()) }
+                ?: op.match(swapLetters)?.let { (a, b) -> swapLetters(a, b) }
+                ?: op.match(rotateLeft)?.let { (steps) -> rotateLeft(steps.toInt()) }
+                ?: op.match(rotateRight)?.let { (steps) -> rotateRight(steps.toInt()) }
+                ?: op.match(rotateByLetter)?.let { (a) -> rotateRightByLetter(a) }
+                ?: op.match(reverse)?.let { (x, y) -> reverse(x.toInt(), y.toInt()) }
+                ?: op.match(move)?.let { (x, y) -> move(x.toInt(), y.toInt()) }
                 ?: throw IllegalArgumentException("$op is not a valid operation")
         }
     }
 
     override fun part2(input: String) = input.lines().foldRight("fbgdceah") { op, password ->
         with(password) {
-            swapPositions.matchEntire(op)?.destructured?.let { (x, y) -> swapPositions(x.toInt(), y.toInt()) }
-                ?: swapLetters.matchEntire(op)?.destructured?.let { (a, b) -> swapLetters(a, b) }
-                ?: rotateLeft.matchEntire(op)?.destructured?.let { (steps) -> rotateRight(steps.toInt()) }
-                ?: rotateRight.matchEntire(op)?.destructured?.let { (steps) -> rotateLeft(steps.toInt()) }
-                ?: rotateByLetter.matchEntire(op)?.destructured?.let { (a) -> rotateLeftByLetter(a) }
-                ?: reverse.matchEntire(op)?.destructured?.let { (x, y) -> reverse(x.toInt(), y.toInt()) }
-                ?: move.matchEntire(op)?.destructured?.let { (x, y) -> move(y.toInt(), x.toInt()) }
+            op.match(swapPositions)?.let { (x, y) -> swapPositions(x.toInt(), y.toInt()) }
+                ?: op.match(swapLetters)?.let { (a, b) -> swapLetters(a, b) }
+                ?: op.match(rotateLeft)?.let { (steps) -> rotateRight(steps.toInt()) }
+                ?: op.match(rotateRight)?.let { (steps) -> rotateLeft(steps.toInt()) }
+                ?: op.match(rotateByLetter)?.let { (a) -> rotateLeftByLetter(a) }
+                ?: op.match(reverse)?.let { (x, y) -> reverse(x.toInt(), y.toInt()) }
+                ?: op.match(move)?.let { (x, y) -> move(y.toInt(), x.toInt()) }
                 ?: throw IllegalArgumentException("$op is not a valid operation")
         }
     }

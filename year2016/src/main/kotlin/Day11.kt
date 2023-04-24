@@ -23,8 +23,8 @@ object Day11 : Day<Int> {
 
     private fun String.toInitial(): State {
         val floors = lines().map { line ->
-            val chips = "microchip".toRegex().findAll(line).count()
-            val generators = "generator".toRegex().findAll(line).count()
+            val chips = line.findAll("microchip".toRegex()).count()
+            val generators = line.findAll("generator".toRegex()).count()
             Resources(chips, generators)
         }
         return State(0, floors)

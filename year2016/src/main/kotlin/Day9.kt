@@ -2,7 +2,7 @@ object Day9 : Day<Long> {
     private val regex = "\\((\\d+)x(\\d+)\\)(.*)".toRegex()
 
     private fun String.decompress(version: Int, size: Long = 0): Long =
-        if (isEmpty()) size else regex.matchEntire(this)?.destructured
+        if (isEmpty()) size else match(regex)
             ?.let { (amount, repeat, rest) ->
                 val count = if (version == 1) amount.toLong() else rest.take(amount.toInt()).decompress(version)
                 rest.drop(amount.toInt()).decompress(version, size + repeat.toLong() * count)

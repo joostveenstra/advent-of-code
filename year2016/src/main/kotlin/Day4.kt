@@ -1,9 +1,9 @@
 object Day4 : Day<Int?> {
     data class Room(val name: String, val id: Int, val checksum: String)
 
-    private fun String.toRooms() = lines().map {
-        """([\w\-]+)-(\d+)\[(\w{5})]""".toRegex().matchEntire(it)?.destructured
-            ?.let { (name, id, checksum) -> Room(name, id.toInt(), checksum) } ?: throw IllegalArgumentException("$it is not a valid room")
+    private fun String.toRooms() = lines().map { line ->
+        line.match("""([\w\-]+)-(\d+)\[(\w{5})]""".toRegex())
+            ?.let { (name, id, checksum) -> Room(name, id.toInt(), checksum) } ?: throw IllegalArgumentException("$line is not a valid room")
     }
 
     private fun Room.isReal(): Boolean {

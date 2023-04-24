@@ -3,12 +3,12 @@ object Day10 : Day<Int> {
 
     private fun String.toInitial(): State {
         val bots = lines().fold(emptyMap<String, Set<Int>>()) { bots, line ->
-            "value (\\d+) goes to (.+)".toRegex().matchEntire(line)?.destructured
+            line.match("value (\\d+) goes to (.+)".toRegex())
                 ?.let { (value, bot) -> bots + (bot to bots.getOrDefault(bot, emptySet()) + value.toInt()) }
                 ?: bots
         }
         val (lows, highs) = lines().fold(emptyMap<String, String>() to emptyMap<String, String>()) { (lows, highs), line ->
-            "(.+) gives low to (.+) and high to (.+)".toRegex().matchEntire(line)?.destructured
+            line.match("(.+) gives low to (.+) and high to (.+)".toRegex())
                 ?.let { (bot, low, high) -> lows + (bot to low) to highs + (bot to high) }
                 ?: (lows to highs)
         }
