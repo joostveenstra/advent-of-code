@@ -1,5 +1,3 @@
-typealias Program = List<Day23.Instruction>
-
 object Day23 : Day<Int> {
     sealed interface Instruction
     data class Hlf(val register: String) : Instruction
@@ -9,7 +7,7 @@ object Day23 : Day<Int> {
     data class Jie(val register: String, val offset: Int) : Instruction
     data class Jio(val register: String, val offset: Int) : Instruction
 
-    data class Cpu(val instructions: Program, val a: Int = 0, val b: Int = 0, val i: Int = 0, val running: Boolean = true) {
+    data class Cpu(val instructions: List<Instruction>, val a: Int = 0, val b: Int = 0, val i: Int = 0, val running: Boolean = true) {
         private fun read(register: String) = if (register == "a") a else b
         private fun write(register: String, op: (Int) -> Int) = next().run { if (register == "a") copy(a = op(a)) else copy(b = op(b)) }
         private fun next() = copy(i = i + 1)
@@ -41,7 +39,7 @@ object Day23 : Day<Int> {
         }
     }
 
-    private fun Program.run(a: Int) = generateSequence(Cpu(this, a)) { it.execute() }.dropWhile { it.running }.first().b
+    private fun List<Instruction>.run(a: Int) = generateSequence(Cpu(this, a)) { it.execute() }.dropWhile { it.running }.first().b
 
     override fun part1(input: String) = input.toProgram().run(0)
 
