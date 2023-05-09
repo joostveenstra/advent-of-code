@@ -17,7 +17,7 @@ object Day22 : Day<Int> {
 
     private fun String.fight(hard: Boolean): Int {
         val (hp, damage) = lines().map { line -> line.filter { it.isDigit() }.toInt() }
-        val initial = State(50, 500, 0, 0, hp, damage, emptyMap(), false)
+        val initial = State(50, 500, 0, 0, hp, damage, mapOf(), false)
         val stack = dequeOf(initial)
         var best = Int.MAX_VALUE
 

@@ -21,7 +21,7 @@ object Day8 : Day<Any> {
         }
     }
 
-    private fun Screen.draw(operations: List<Operation>): Set<Point> = operations.fold(emptySet()) { points, op ->
+    private fun Screen.draw(operations: List<Operation>): Set<Point> = operations.fold(setOf()) { points, op ->
         when (op) {
             is Rect -> points + (0 until op.width).flatMap { x -> (0 until op.height).map { y -> Point(x, y) } }
             is Row -> points.map { p -> if (op.row != p.y) p else Point((p.x + op.offset) % width, p.y) }.toSet()

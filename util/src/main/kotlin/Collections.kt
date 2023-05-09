@@ -55,7 +55,7 @@ inline fun <T> Iterable<T>.productOf(selector: (T) -> Long): Long {
 fun <T> List<T>.zipWithIndex(): List<Pair<T, Int>> = zip(indices)
 
 fun <T> List<T>.permutations(): Sequence<List<T>> =
-    if (isEmpty()) sequenceOf(emptyList()) else sequence {
+    if (isEmpty()) sequenceOf(listOf()) else sequence {
         forEach { next ->
             minus(next).permutations().forEach {
                 yield(listOf(next) + it)
@@ -63,7 +63,7 @@ fun <T> List<T>.permutations(): Sequence<List<T>> =
         }
     }
 
-fun <T> List<T>.combinations(k: Int, acc: List<T> = emptyList()): Sequence<List<T>> =
+fun <T> List<T>.combinations(k: Int, acc: List<T> = listOf()): Sequence<List<T>> =
     sequence {
         when (k) {
             1    -> forEach { yield(acc + it) }

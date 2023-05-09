@@ -37,7 +37,7 @@ object Day11 : Day<Long> {
         val (pass, fail) = items.map(operation).map(reduceItem).partition { it % test == 0L }
         monkeys.mapIndexed { index, monkey ->
             when (index) {
-                current -> monkey.copy(items = emptyList(), inspections = inspections + items.size)
+                current -> monkey.copy(items = listOf(), inspections = inspections + items.size)
                 ifTrue -> monkey.copy(items = monkey.items + pass)
                 ifFalse -> monkey.copy(items = monkey.items + fail)
                 else -> monkey

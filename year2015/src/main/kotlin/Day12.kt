@@ -12,8 +12,8 @@ object Day12 : Day<Int> {
         numbers.matchEntire(this)?.destructured?.let { (number, rest) -> JsonNumber(number.toInt()) to rest }
             ?: strings.matchEntire(this)?.destructured?.let { (string, rest) -> JsonString(string) to rest }
             ?: when (first()) {
-                '[' -> drop(1).toArray(JsonArray(emptyList()))
-                '{' -> drop(1).toObject(JsonObject(emptyList()))
+                '[' -> drop(1).toArray(JsonArray(listOf()))
+                '{' -> drop(1).toObject(JsonObject(listOf()))
                 else -> throw IllegalArgumentException("Invalid Json string: $this")
             }
 

@@ -6,7 +6,7 @@ object Day20 : Day<UInt> {
     private val UIntRange.size get() = last - first + 1u
 
     private infix fun UIntRange.subtract(other: UIntRange) = when {
-        first >= other.first && last <= other.last -> emptyList()
+        first >= other.first && last <= other.last -> listOf()
         first < other.first && last > other.last -> listOf(first..other.first - 1u, other.last + 1u..last)
         first < other.first && last >= other.first -> listOf(first..other.first - 1u)
         first <= other.last && last > other.last -> listOf(other.last + 1u..last)

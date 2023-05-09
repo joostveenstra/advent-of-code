@@ -32,7 +32,7 @@ object Day16 : Day<Int> {
 
     private fun determineSubSetsMaxPressure(input: String, initialTime: Int): Map<Set<String>, Int> {
         val (valves, paths, valvesToVisit) = input.toValves()
-        val initial = State(valvesToVisit, emptySet(), "AA", initialTime, 0)
+        val initial = State(valvesToVisit, setOf(), "AA", initialTime, 0)
         val stack = dequeOf(initial)
         val maxPressure = mutableMapOf<Set<String>, Int>().withDefault { 0 }
 

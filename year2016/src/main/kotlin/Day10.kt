@@ -4,7 +4,7 @@ object Day10 : Day<Int> {
     private fun String.toInitial(): State {
         val bots = lines().fold(emptyMap<String, Set<Int>>()) { bots, line ->
             line.match("value (\\d+) goes to (.+)".toRegex())
-                ?.let { (value, bot) -> bots + (bot to bots.getOrDefault(bot, emptySet()) + value.toInt()) }
+                ?.let { (value, bot) -> bots + (bot to bots.getOrDefault(bot, setOf()) + value.toInt()) }
                 ?: bots
         }
         val (lows, highs) = lines().fold(emptyMap<String, String>() to emptyMap<String, String>()) { (lows, highs), line ->
@@ -12,7 +12,7 @@ object Day10 : Day<Int> {
                 ?.let { (bot, low, high) -> lows + (bot to low) to highs + (bot to high) }
                 ?: (lows to highs)
         }
-        return State(bots, emptyMap(), lows, highs)
+        return State(bots, mapOf(), lows, highs)
     }
 
     private fun State.next() = todo.entries.find { (k, chips) -> k.startsWith("bot") && chips.size == 2 }
@@ -20,8 +20,8 @@ object Day10 : Day<Int> {
             val low = lows.getValue(bot)
             val high = highs.getValue(bot)
             val next = todo - bot +
-                    (low to todo.getOrDefault(low, emptySet()) + chips.min()) +
-                    (high to todo.getOrDefault(high, emptySet()) + chips.max())
+                    (low to todo.getOrDefault(low, setOf()) + chips.min()) +
+                    (high to todo.getOrDefault(high, setOf()) + chips.max())
             State(next, done + (bot to chips), lows, highs)
         }
 

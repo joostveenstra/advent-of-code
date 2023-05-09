@@ -1,5 +1,5 @@
 object Day6 : Day<Int> {
-    data class State(val banks: List<Int>, val seen: Map<Int, Int> = emptyMap(), val cycles: Int = 0)
+    data class State(val banks: List<Int>, val seen: Map<Int, Int> = mapOf(), val cycles: Int = 0)
 
     private fun State.next(): State {
         val max = banks.max()
