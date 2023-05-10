@@ -6,10 +6,10 @@ object Day8 : Day<Int> {
         return lines().map { it.split(' ') }.fold(initial) { state, instruction ->
             val (registers, max) = state
             val (register, operation, amount) = instruction
-            val (from, condition, value) = instruction.slice(4..instruction.lastIndex)
+            val (from, condition, value) = instruction.drop(4)
             val lhs = registers.getOrDefault(from, 0)
             val rhs = value.toInt()
-            val pass = when (condition) {
+            val execute = when (condition) {
                 ">" -> lhs > rhs
                 "<" -> lhs < rhs
                 ">=" -> lhs >= rhs
@@ -17,7 +17,7 @@ object Day8 : Day<Int> {
                 "==" -> lhs == rhs
                 else -> lhs != rhs
             }
-            if (pass) {
+            if (execute) {
                 val next = registers.getOrDefault(register, 0) + if (operation == "inc") amount.toInt() else -amount.toInt()
                 State(registers + (register to next), maxOf(max, next))
             } else {
