@@ -21,9 +21,9 @@ object Day14 : Day<Int> {
         val used = input.toBinary().withIndex().flatMap { (y, row) ->
             (0..127).mapNotNull { x -> if (row[x] == '1') Point(x, y) else null }
         }
-        val cliques = used.fold(setOf<Set<Point>>()) { groups, point ->
-            val (other, linked) = groups.partition { it.intersect(point.cardinalNeighbours.toSet()).isEmpty() }
-            other.toSet().plusElement(linked.flatten().toSet() + point)
+        val cliques = used.fold(listOf<List<Point>>()) { groups, point ->
+            val (other, linked) = groups.partition { group -> point.cardinalNeighbours.none { it in group } }
+            other + listOf(linked.flatten() + point)
         }
         return cliques.size
     }
