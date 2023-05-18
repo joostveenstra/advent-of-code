@@ -50,6 +50,8 @@ data class Point3D(val x: Int, val y: Int, val z: Int) {
             copy(z = z - 1),
         )
 
+    fun manhattanDistanceTo(other: Point3D): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue  + (z - other.z).absoluteValue
+
     companion object {
         fun of(input: String): Point3D = input.split(',').map(String::toInt).let { (x, y, z) -> Point3D(x, y, z) }
     }
