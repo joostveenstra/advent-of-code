@@ -41,7 +41,9 @@ class CollectionsTest {
 
     @Test
     fun transpose() {
-        val transposed = listOf(listOf(1, 2, 3), listOf(4, 5, 6)).transpose()
-        assertEquals(listOf(listOf(1, 4), listOf(2, 5), listOf(3, 6)), transposed)
+        val list = listOf(listOf(1, 2, 3), listOf(4, 5, 6))
+        val transposed = listOf(listOf(1, 4), listOf(2, 5), listOf(3, 6))
+        assertEquals(transposed, list.transpose())
+        assertEquals(list, transposed.transpose())
     }
 }
