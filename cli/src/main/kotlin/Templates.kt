@@ -1,15 +1,23 @@
 internal object Templates {
-    fun generateDay(day: Int) =
+    fun generateDay(year: Int, day: Int) =
         """
-            object Day${day} : Day<Any> {
+            package year${year}
+
+            import framework.Day
+
+            object Day${day} : Day<Int> {
                 override fun part1(input: String) = TODO()
 
                 override fun part2(input: String) = TODO()
             }
         """.trimIndent()
 
-    fun generateDayTest(day: Int) =
+    fun generateDayTest(year: Int, day: Int) =
         """
+            package year${year}
+
+            import framework.DayTest
+
             class Day${day}Test : DayTest(Day${day}, {
                 part1 {
                     example = 0
@@ -26,8 +34,7 @@ internal object Templates {
     fun generateBuildGradle() =
         """
             dependencies {
-                implementation(project(":framework"))
-                implementation(project(":util"))
+                implementation(project(":year"))
 
                 testImplementation(kotlin("test"))
                 testImplementation(testFixtures(project(":framework")))
