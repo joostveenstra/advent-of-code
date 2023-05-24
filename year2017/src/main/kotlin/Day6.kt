@@ -1,18 +1,20 @@
+import kotlinx.collections.immutable.*
+
 object Day6 : Day<Int> {
-    data class State(val banks: List<Int>, val seen: Map<Int, Int> = mapOf(), val cycles: Int = 0)
+    data class State(val banks: PersistentList<Int>, val seen: PersistentMap<Int, Int> = persistentHashMapOf(), val cycles: Int = 0)
 
     private fun State.next(): State {
         val max = banks.max()
         val start = banks.indexOf(max)
-        val next = (1..max).fold(banks.mapIndexed { i, b -> if (i == start) 0 else b }) { banks, offset ->
+        val next = (1..max).fold(banks.set(start, 0)) { banks, offset ->
             val index = (start + offset) % banks.size
-            banks.mapIndexed { i, b -> if (i == index) b + 1 else b }
+            banks.set(index, banks[index] + 1)
         }
         return State(next, seen + (banks.hashCode() to cycles), cycles + 1)
     }
 
     private fun String.findLoop(): State {
-        val initial = State(allInts().toList())
+        val initial = State(allInts().toPersistentList())
         return generateSequence(initial) { it.next() }.dropWhile { it.banks.hashCode() !in it.seen }.first()
     }
 

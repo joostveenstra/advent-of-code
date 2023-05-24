@@ -1,3 +1,5 @@
+
+
 object Day18 : Day<Int> {
     data class Grid(val length: Int, val points: Set<Point>)
 
@@ -11,14 +13,14 @@ object Day18 : Day<Int> {
         })
     }
 
-    private fun Grid.corners() = setOf(
+    private val Grid.corners get() = listOf(
         Point(0, 0),
         Point(length - 1, 0),
         Point(0, length - 1),
         Point(length - 1, length - 1)
     )
 
-    private fun Grid.cornersOn() = Grid(length, points + corners())
+    private fun Grid.cornersOn() = Grid(length, points + corners)
 
     private fun Grid.step(): Grid = Grid(length, buildSet {
         val range = 0 until length

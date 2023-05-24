@@ -1,3 +1,7 @@
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.persistentHashMapOf
+import kotlinx.collections.immutable.plus
+
 object Day25 : Day<Any> {
     sealed interface Instruction
     data class Cpy(val from: String, val to: String) : Instruction
@@ -11,7 +15,7 @@ object Day25 : Day<Any> {
     object Halted : State
     data class Output(val value: Int) : State
 
-    data class Cpu(val instructions: List<Instruction>, val registers: Map<String, Int>, val i: Int = 0, val state: State = Running) {
+    data class Cpu(val instructions: List<Instruction>, val registers: PersistentMap<String, Int>, val i: Int = 0, val state: State = Running) {
         private fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
         private fun write(key: String, value: Int) = next().copy(registers = registers + (key to value))
         private fun next() = copy(i = i + 1, state = Running)
@@ -45,7 +49,7 @@ object Day25 : Day<Any> {
     override fun part1(input: String): Int {
         val program = input.toProgram()
         return generateSequence(0) { it + 1 }.map { a ->
-            generateSequence(Cpu(program, mapOf("a" to a))) { it.execute() }
+            generateSequence(Cpu(program, persistentHashMapOf("a" to a))) { it.execute() }
                 .mapNotNull { if (it.state is Output) it.state.value else null }
                 .take(10)
                 .joinToString("")

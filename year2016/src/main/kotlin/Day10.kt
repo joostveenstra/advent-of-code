@@ -2,12 +2,12 @@ object Day10 : Day<Int> {
     data class State(val todo: Map<String, Set<Int>>, val done: Map<String, Set<Int>>, val lows: Map<String, String>, val highs: Map<String, String>)
 
     private fun String.toInitial(): State {
-        val bots = lines().fold(emptyMap<String, Set<Int>>()) { bots, line ->
+        val bots = lines().fold(mapOf<String, Set<Int>>()) { bots, line ->
             line.match("value (\\d+) goes to (.+)".toRegex())
                 ?.let { (value, bot) -> bots + (bot to bots.getOrDefault(bot, setOf()) + value.toInt()) }
                 ?: bots
         }
-        val (lows, highs) = lines().fold(emptyMap<String, String>() to emptyMap<String, String>()) { (lows, highs), line ->
+        val (lows, highs) = lines().fold(mapOf<String, String>() to mapOf<String, String>()) { (lows, highs), line ->
             line.match("(.+) gives low to (.+) and high to (.+)".toRegex())
                 ?.let { (bot, low, high) -> lows + (bot to low) to highs + (bot to high) }
                 ?: (lows to highs)

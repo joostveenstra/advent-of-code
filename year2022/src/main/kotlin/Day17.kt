@@ -1,3 +1,7 @@
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.plus
+import kotlinx.collections.immutable.toPersistentHashSet
+
 typealias Shape = List<Point>
 
 object Day17 : Day<Long> {
@@ -9,7 +13,7 @@ object Day17 : Day<Long> {
         listOf(Point(0, 0), Point(1, 0), Point(0, 1), Point(1, 1))
     )
 
-    data class State(val grid: Set<Point>, val jets: String, val shapeIndex: Int, val jetIndex: Int, val height: Int)
+    data class State(val grid: PersistentSet<Point>, val jets: String, val shapeIndex: Int, val jetIndex: Int, val height: Int)
 
     private fun Shape.move(other: Point) = map { it + other }
     private fun Shape.canMove(grid: Set<Point>) = all { it.x in (0..6) && it !in grid }
@@ -30,7 +34,7 @@ object Day17 : Day<Long> {
     }
 
     private fun simulate(jets: String): Sequence<Int> {
-        val grid = buildSet { (0..6).map { add(Point(it, 0)) } }
+        val grid = buildSet { (0..6).map { add(Point(it, 0)) } }.toPersistentHashSet()
         val initial = State(grid, jets, 0, 0, 0)
         return generateSequence(initial) { it.next() }.map { it.height }
     }

@@ -1,3 +1,7 @@
+
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
+
 object Day11 : Day<Int> {
     private val moves = listOf(
         Resources(2, 0),
@@ -19,7 +23,7 @@ object Day11 : Day<Int> {
         operator fun minus(other: Resources) = Resources(chips - other.chips, generators - other.generators)
     }
 
-    data class State(val floor: Int, val floors: List<Resources>)
+    data class State(val floor: Int, val floors: PersistentList<Resources>)
 
     private fun String.toInitial(): State {
         val floors = lines().map { line ->
@@ -27,7 +31,7 @@ object Day11 : Day<Int> {
             val generators = line.findAll("generator".toRegex()).count()
             Resources(chips, generators)
         }
-        return State(0, floors)
+        return State(0, floors.toPersistentList())
     }
 
     private fun State.isValid() = floors.all { it.chips >= 0 && it.generators >= 0 && (it.generators == 0 || it.chips <= it.generators) }
@@ -36,7 +40,7 @@ object Day11 : Day<Int> {
 
     private fun State.next() = buildList {
         for (next in adjacent.getValue(floor)) for (move in moves)
-            add(State(next, floors.mapIndexed { f, r -> if (f == floor) r - move else if (f == next) r + move else r }))
+            add(State(next, floors.set(floor, floors[floor] - move).set(next, floors[next] + move)))
     }
 
     private fun minimize(initial: State): Int {
@@ -61,7 +65,7 @@ object Day11 : Day<Int> {
 
     override fun part2(input: String): Int {
         val initial = input.toInitial()
-        val expanded = initial.copy(floors = initial.floors.mapIndexed { f, r -> if (f == 0) r + Resources(2, 2) else r })
+        val expanded = initial.copy(floors = initial.floors.set(0, initial.floors[0] + Resources(2, 2)))
         return minimize(expanded)
     }
 }

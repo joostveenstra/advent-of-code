@@ -1,5 +1,7 @@
+import kotlinx.collections.immutable.*
+
 object Day22 : Day<Int> {
-    private val spells = setOf(MagicMissile, Drain, Shield, Poison, Recharge)
+    private val spells = persistentListOf(MagicMissile, Drain, Shield, Poison, Recharge)
 
     sealed class Spell(val cost: Int, val duration: Int)
     object MagicMissile : Spell(53, 1)
@@ -11,13 +13,13 @@ object Day22 : Day<Int> {
     data class State(
         val you: Int, val mana: Int, val spent: Int, val armor: Int,
         val boss: Int, val damage: Int,
-        val active: Map<Spell, Int>,
+        val active: PersistentMap<Spell, Int>,
         val bossTurn: Boolean
     )
 
     private fun String.fight(hard: Boolean): Int {
         val (hp, damage) = lines().map { line -> line.filter { it.isDigit() }.toInt() }
-        val initial = State(50, 500, 0, 0, hp, damage, mapOf(), false)
+        val initial = State(50, 500, 0, 0, hp, damage, persistentHashMapOf(), false)
         val stack = dequeOf(initial)
         var best = Int.MAX_VALUE
 

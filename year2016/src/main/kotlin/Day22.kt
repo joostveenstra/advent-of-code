@@ -1,3 +1,7 @@
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.plus
+import kotlinx.collections.immutable.toPersistentHashMap
+
 object Day22 : Day<Int> {
     private val end = Point(0, 0)
 
@@ -8,7 +12,7 @@ object Day22 : Day<Int> {
         fun accept(other: Node) = Node(used + other.used, avail - other.used)
     }
 
-    data class State(val grid: Map<Point, Node>, val goal: Point, val empty: Point) {
+    data class State(val grid: PersistentMap<Point, Node>, val goal: Point, val empty: Point) {
         override fun hashCode() = (goal to empty).hashCode()
         override fun equals(other: Any?) = other is State && goal == other.goal && empty == other.empty
         fun isEnd() = goal == end
@@ -34,10 +38,10 @@ object Day22 : Day<Int> {
     private fun Map<Point, Node>.toInitial(): State {
         val goal = Point(keys.maxOf { it.x }, 0)
         val empty = entries.first { (_, v) -> v.used == 0 }.key
-        return State(this, goal, empty)
+        return State(toPersistentHashMap(), goal, empty)
     }
 
-    private fun Map<Point, Node>.swap(from: Point, to: Point): Map<Point, Node> {
+    private fun PersistentMap<Point, Node>.swap(from: Point, to: Point): PersistentMap<Point, Node> {
         val nodeFrom = getValue(from)
         val nodeTo = getValue(to)
         return this + (from to nodeFrom.empty()) + (to to nodeTo.accept(nodeFrom))

@@ -1,7 +1,9 @@
+import kotlinx.collections.immutable.*
+
 object Day16 : Day<Int> {
     data class Valve(val flow: Int, val neighbours: List<String>)
 
-    data class State(val todo: Set<String>, val visited: Set<String>, val from: String, val time: Int, val pressure: Int)
+    data class State(val todo: PersistentSet<String>, val visited: PersistentSet<String>, val from: String, val time: Int, val pressure: Int)
 
     private fun String.toValves(): Triple<Map<String, Valve>, Map<String, Map<String, Int>>, Set<String>> {
         val valves = lines().associate { line ->
@@ -32,7 +34,7 @@ object Day16 : Day<Int> {
 
     private fun determineSubSetsMaxPressure(input: String, initialTime: Int): Map<Set<String>, Int> {
         val (valves, paths, valvesToVisit) = input.toValves()
-        val initial = State(valvesToVisit, setOf(), "AA", initialTime, 0)
+        val initial = State(valvesToVisit.toPersistentSet(), persistentSetOf(), "AA", initialTime, 0)
         val stack = dequeOf(initial)
         val maxPressure = mutableMapOf<Set<String>, Int>().withDefault { 0 }
 

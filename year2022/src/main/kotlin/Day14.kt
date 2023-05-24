@@ -1,7 +1,10 @@
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.plus
+import kotlinx.collections.immutable.toPersistentHashSet
 import kotlin.math.max
 import kotlin.math.min
 
-typealias Cave = Set<Point>
+typealias Cave = PersistentSet<Point>
 
 object Day14 : Day<Int> {
     private val source = Point(500, 0)
@@ -14,7 +17,7 @@ object Day14 : Day<Int> {
     private fun String.toEmptyCave(): Cave = lines()
         .flatMap { it.split(" -> ").map(Point::of).zipWithNext { a, b -> a lineTo b } }
         .flatten()
-        .toSet()
+        .toPersistentHashSet()
 
     private fun Cave.floor() = maxOf { it.y } + 1
 

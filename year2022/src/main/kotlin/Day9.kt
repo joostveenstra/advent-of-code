@@ -1,3 +1,6 @@
+
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.plus
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
@@ -20,7 +23,7 @@ object Day9 : Day<Int> {
 
     private fun List<Direction>.simulate(size: Int): Int {
         val start = Point(0, 0)
-        val initial = List(size) { start } to listOf(start)
+        val initial = List(size) { start } to persistentListOf(start)
         val (_, visited) = this.fold(initial) { (rope, visited), move ->
             val nextHead = rope.first() + move
             val nextRope = rope.drop(1).scan(nextHead) { head, tail ->

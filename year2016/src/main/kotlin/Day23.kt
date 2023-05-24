@@ -1,3 +1,5 @@
+import kotlinx.collections.immutable.*
+
 object Day23 : Day<Int> {
     sealed interface Instruction
     data class Cpy(val from: String, val to: String) : Instruction
@@ -8,7 +10,7 @@ object Day23 : Day<Int> {
     data class Mul(val from: String, val to: String) : Instruction
     object Nop : Instruction
 
-    data class Cpu(val instructions: List<Instruction>, val registers: Map<String, Int>, val i: Int = 0, val running: Boolean = true) {
+    data class Cpu(val instructions: PersistentList<Instruction>, val registers: PersistentMap<String, Int>, val i: Int = 0, val running: Boolean = true) {
         private fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
         private fun write(key: String, value: Int) = next().copy(registers = registers + (key to value))
         private fun next() = copy(i = i + 1)
@@ -27,7 +29,7 @@ object Day23 : Day<Int> {
                         is Nop -> Nop
                     }
                 }
-                val newInstructions = instructions.mapIndexed { i, op -> if (i == index) newOp else op }
+                val newInstructions = instructions.set(index, newOp)
                 next().copy(instructions = newInstructions)
             }
         }
@@ -70,7 +72,7 @@ object Day23 : Day<Int> {
     }
 
     private fun List<Instruction>.run(a: Int) =
-        generateSequence(Cpu(this, mapOf("a" to a))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
+        generateSequence(Cpu(toPersistentList(), persistentHashMapOf("a" to a))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
 
     override fun part1(input: String) = input.toProgram().run(7)
 
