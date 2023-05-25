@@ -45,7 +45,7 @@ object Day23 : Day<Int> {
     private fun round(state: State): State {
         val (elves, directions) = state
         val proposals = elves.associateWith { it.propose(elves, directions) }
-        val occurrences = proposals.values.groupBy { it }.mapValues { (_, v) -> v.size }
+        val occurrences = proposals.values.groupingBy { it }.eachCount()
         val next = proposals.map { (elf, proposal) ->
             proposal?.let { if (occurrences[it] == 1) it else elf } ?: elf
         }.toSet()

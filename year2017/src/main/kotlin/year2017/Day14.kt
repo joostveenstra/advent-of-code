@@ -2,14 +2,13 @@ package year2017
 
 import framework.Day
 import util.Point
-import util.zipWithIndex
 
 object Day14 : Day<Int> {
     private fun String.knotHash(): List<Int> {
         val lengths = map { it.code } + listOf(17, 31, 73, 47, 23)
         val repeated = List(64) { lengths }.flatten()
         val initial = (0..255).toList() to 0
-        val (numbers, position) = repeated.zipWithIndex().fold(initial) { (numbers, position), (length, skip) ->
+        val (numbers, position) = repeated.withIndex().fold(initial) { (numbers, position), (skip, length) ->
             val next = numbers.take(length).reversed() + numbers.drop(length)
             val offset = (length + skip) and 0xFF
             next.drop(offset) + next.take(offset) to ((position - offset) and 0xFF)

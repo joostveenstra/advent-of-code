@@ -6,7 +6,7 @@ import util.transpose
 object Day6 : Day<String> {
     private fun String.toColumns() = lines().map { it.toList() }.transpose()
 
-    private fun List<Char>.frequency() = groupBy { it }.toList().sortedBy { it.second.size }.map { it.first }
+    private fun List<Char>.frequency() = groupingBy { it }.eachCount().entries.sortedBy { it.value }.map { it.key }
 
     override fun part1(input: String) = input.toColumns().map { it.frequency().last() }.joinToString("")
 

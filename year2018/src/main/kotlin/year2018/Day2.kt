@@ -5,7 +5,7 @@ import util.combinations
 
 object Day2 : Day<Any> {
     override fun part1(input: String) = input.lines().run {
-        val occurrences = map { line -> line.groupBy { it }.map { (_, v) -> v.size }.toSet() }
+        val occurrences = map { line -> line.groupingBy { it }.eachCount().values.toSet() }
         occurrences.count { 2 in it } * occurrences.count { 3 in it }
     }
 

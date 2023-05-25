@@ -15,7 +15,7 @@ object Day3 : Day<Int> {
     }
 
     override fun part1(input: String) = parse(input).let { (_, groups) ->
-        groups.count { (_, v) -> v > 1 }
+        groups.count { (_, count) -> count > 1 }
     }
 
     override fun part2(input: String) = parse(input).let { (claims, groups) ->

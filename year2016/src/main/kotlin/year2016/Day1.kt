@@ -19,5 +19,5 @@ object Day1 : Day<Int> {
 
     override fun part1(input: String) = input.toMoves().walk().last().manhattanDistanceTo(start)
 
-    override fun part2(input: String) = input.toMoves().walk().groupBy { it }.filterValues { it.size > 1 }.keys.first().manhattanDistanceTo(start)
+    override fun part2(input: String) = input.toMoves().walk().groupingBy { it }.eachCount().filterValues { it > 1 }.keys.first().manhattanDistanceTo(start)
 }

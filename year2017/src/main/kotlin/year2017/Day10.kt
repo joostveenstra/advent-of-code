@@ -2,7 +2,6 @@ package year2017
 
 import framework.Day
 import util.product
-import util.zipWithIndex
 import java.util.*
 
 object Day10 : Day<Any> {
@@ -10,7 +9,7 @@ object Day10 : Day<Any> {
 
     private fun List<Int>.knotHash(size: Int): List<Int> {
         val initial = (0 until size).toList() to 0
-        val (numbers, position) = zipWithIndex().fold(initial) { (numbers, position), (length, skip) ->
+        val (numbers, position) = withIndex().fold(initial) { (numbers, position), (skip, length) ->
             val next = numbers.take(length).reversed() + numbers.drop(length)
             val offset = (length + skip) % size
             next.drop(offset) + next.take(offset) to (position - offset).mod(size)
