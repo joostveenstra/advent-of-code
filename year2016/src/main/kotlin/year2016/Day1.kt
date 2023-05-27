@@ -17,7 +17,7 @@ object Day1 : Day<Int> {
         State(nextPositions, nextDirection)
     }.flatMap { it.positions }
 
-    override fun part1(input: String) = input.toMoves().walk().last().manhattanDistanceTo(start)
+    override fun part1(input: String) = input.toMoves().walk().last().manhattan(start)
 
-    override fun part2(input: String) = input.toMoves().walk().groupingBy { it }.eachCount().filterValues { it > 1 }.keys.first().manhattanDistanceTo(start)
+    override fun part2(input: String) = input.toMoves().walk().groupingBy { it }.eachCount().filterValues { it > 1 }.keys.first().manhattan(start)
 }

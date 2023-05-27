@@ -23,7 +23,7 @@ object Day3 : Day<Int> {
         }
     }
 
-    override fun part1(input: String) = input.toInt().toPosition().manhattanDistanceTo(start)
+    override fun part1(input: String) = input.toInt().toPosition().manhattan(start)
 
     override fun part2(input: String): Int {
         val target = input.toInt()

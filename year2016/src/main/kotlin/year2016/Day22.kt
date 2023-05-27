@@ -23,7 +23,7 @@ object Day22 : Day<Int> {
         override fun hashCode() = (goal to empty).hashCode()
         override fun equals(other: Any?) = other is State && goal == other.goal && empty == other.empty
         fun isEnd() = goal == end
-        fun heuristic() = 10 * goal.manhattanDistanceTo(end) + goal.manhattanDistanceTo(empty)
+        fun heuristic() = 10 * goal.manhattan(end) + goal.manhattan(empty)
         fun next(): List<State> {
             val (grid, goal, empty) = this
             val emptyNode = grid.getValue(empty)

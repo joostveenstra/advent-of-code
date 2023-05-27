@@ -33,8 +33,8 @@ class PointTest {
     }
 
     @Test
-    fun manhattanDistanceTo() {
-        assertEquals(6, point.manhattanDistanceTo(Point(4, 5)))
+    fun manhattan() {
+        assertEquals(6, point.manhattan(Point(4, 5)))
     }
 
     @Test

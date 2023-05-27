@@ -17,7 +17,7 @@ object Day20 : Day<Int> {
     }
 
     override fun part1(input: String) = generateSequence(input.toParticles()) { particles -> particles.map { it.next() } }
-        .drop(500).first().withIndex().minBy { it.value.position.manhattanDistanceTo(goal) }.index
+        .drop(500).first().withIndex().minBy { it.value.position.manhattan(goal) }.index
 
     override fun part2(input: String) = generateSequence(input.toParticles()) { particles ->
         particles.map { it.next() }.groupBy { it.position }.values.filter { it.size == 1 }.flatten()

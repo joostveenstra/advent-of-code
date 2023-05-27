@@ -17,7 +17,7 @@ data class Point(val x: Int, val y: Int) {
     val neighbours: List<Point>
         get() = cardinalNeighbours + diagonalNeighbours
 
-    fun manhattanDistanceTo(other: Point): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
+    fun manhattan(other: Point): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
 
     fun turnLeft(): Point = Point(y, -x)
     fun turnRight(): Point = Point(-y, x)
@@ -35,7 +35,7 @@ data class Point(val x: Int, val y: Int) {
         val cardinal = listOf(RIGHT, DOWN, LEFT, UP)
         val diagonal = listOf(Point(1, 1), Point(-1, 1), Point(-1, -1), Point(1, -1))
 
-        fun of(input: String): Point = input.split(',').map(String::toInt).let { (x, y) -> Point(x, y) }
+        fun of(input: String): Point = input.split(",\\s*".toRegex()).map(String::toInt).let { (x, y) -> Point(x, y) }
     }
 }
 
@@ -52,9 +52,9 @@ data class Point3D(val x: Int, val y: Int, val z: Int) {
             copy(z = z - 1),
         )
 
-    fun manhattanDistanceTo(other: Point3D): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue  + (z - other.z).absoluteValue
+    fun manhattan(other: Point3D): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue  + (z - other.z).absoluteValue
 
     companion object {
-        fun of(input: String): Point3D = input.split(',').map(String::toInt).let { (x, y, z) -> Point3D(x, y, z) }
+        fun of(input: String): Point3D = input.split(",\\s*".toRegex()).map(String::toInt).let { (x, y, z) -> Point3D(x, y, z) }
     }
 }

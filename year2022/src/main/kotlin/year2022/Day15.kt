@@ -18,7 +18,7 @@ object Day15 : Day<Long> {
         line.allInts().toList().let { (xSensor, ySensor, xBeacon, yBeacon) ->
             val sensor = Point(xSensor, ySensor)
             val beacon = Point(xBeacon, yBeacon)
-            Sensor(sensor, beacon, sensor.manhattanDistanceTo(beacon))
+            Sensor(sensor, beacon, sensor.manhattan(beacon))
         }
     }
 
