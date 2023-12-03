@@ -21,21 +21,6 @@ object Day3 : Day<Int> {
         symbols to parts
     }
 
-    private fun String.toSymbols() = buildMap {
-        lines().forEachIndexed { y, row ->
-            row.forEachIndexed { x, char ->
-                if (char != '.' && !char.isDigit()) put(Point(x, y), char)
-            }
-        }
-    }
-
-    private fun String.toParts() = buildMap {
-        lines().forEachIndexed { y, row ->
-            val parts = "\\d+".toRegex().findAll(row).map { Point(it.range.first, y) to it.value.toInt() }
-            putAll(parts)
-        }
-    }
-
     private fun Point.adjacent(length: Int): Set<Point> = (x..<x + length).flatMap { x -> Point(x, y).neighbours }.toSet()
 
     override fun part1(input: String): Int {
