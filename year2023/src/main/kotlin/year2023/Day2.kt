@@ -6,7 +6,7 @@ object Day2 : Day<Int> {
     private val max = mapOf("red" to 12, "green" to 13, "blue" to 14)
 
     override fun part1(input: String) = input.lines()
-        .map { line ->
+        .sumOf { line ->
             val (game, remaining) = line.split(": ")
             val id = game.split(" ").last().toInt()
             val sets = remaining.split("; ")
@@ -17,10 +17,8 @@ object Day2 : Day<Int> {
                     amount.toInt() <= max.getValue(color)
                 }
             }
-            id to isPossible
+            if (isPossible) id else 0
         }
-        .filter { it.second }
-        .sumOf { it.first }
 
     override fun part2(input: String) = input.lines()
         .sumOf { line ->
@@ -34,6 +32,6 @@ object Day2 : Day<Int> {
                     count[color] = maxOf(count.getOrDefault(color, 0), amount.toInt())
                 }
             }
-            count.values.reduce { a, b -> a * b }
+            count.values.reduce(Int::times)
         }
 }
