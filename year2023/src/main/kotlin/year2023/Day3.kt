@@ -37,9 +37,8 @@ object Day3 : Day<Int> {
         return symbols
             .filterValues { it == '*' }
             .keys
-            .sumOf { gear ->
-                val adjacentToGear = adjacent.filterKeys { gear in it }
-                if (adjacentToGear.size == 2) adjacentToGear.values.reduce(Int::times) else 0
-            }
+            .map { gear -> adjacent.filterKeys { gear in it }.values }
+            .filter { it.size == 2 }
+            .sumOf { it.reduce(Int::times) }
     }
 }
