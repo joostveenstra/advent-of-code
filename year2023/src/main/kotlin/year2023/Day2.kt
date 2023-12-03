@@ -3,35 +3,36 @@ package year2023
 import framework.Day
 
 object Day2 : Day<Int> {
-    private val max = mapOf("red" to 12, "green" to 13, "blue" to 14)
+    private val max = CubeSet(12, 13, 14)
 
-    override fun part1(input: String) = input.lines()
-        .sumOf { line ->
-            val (game, remaining) = line.split(": ")
-            val id = game.split(" ").last().toInt()
-            val sets = remaining.split("; ")
-            val isPossible = sets.all { set ->
-                val cubes = set.split(", ")
-                cubes.all { cube ->
-                    val (amount, color) = cube.split(" ")
-                    amount.toInt() <= max.getValue(color)
-                }
-            }
-            if (isPossible) id else 0
-        }
+    data class CubeSet(val red: Int, val green: Int, val blue: Int) {
+        fun isValid() = red <= max.red && green <= max.green && blue <= max.blue
+        fun power() = red * green * blue
+    }
 
-    override fun part2(input: String) = input.lines()
-        .sumOf { line ->
-            val (_, remaining) = line.split(": ")
-            val sets = remaining.split("; ")
-            val count = mutableMapOf<String, Int>()
-            sets.forEach { set ->
-                val cubes = set.split(", ")
-                cubes.forEach { cube ->
-                    val (amount, color) = cube.split(" ")
-                    count[color] = maxOf(count.getOrDefault(color, 0), amount.toInt())
-                }
+    data class Game(val id: Int, val sets: List<CubeSet>) {
+        fun isPossible() = sets.all { it.isValid() }
+        fun minimalCubeSet() = CubeSet(sets.maxOf { it.red }, sets.maxOf { it.green }, sets.maxOf { it.blue })
+    }
+
+    private fun String.toCubeSets(): List<CubeSet> = split("; ").map { set ->
+        val cubes = set.split(", ")
+            .associate { cube ->
+                val (amount, color) = cube.split(" ")
+                color to amount.toInt()
             }
-            count.values.reduce(Int::times)
-        }
+            .withDefault { 0 }
+        CubeSet(cubes.getValue("red"), cubes.getValue("green"), cubes.getValue("blue"))
+    }
+
+    private fun String.toGames() = lines().map { line ->
+        val (game, remaining) = line.split(": ")
+        val id = game.split(" ").last().toInt()
+        val sets = remaining.toCubeSets()
+        Game(id, sets)
+    }
+
+    override fun part1(input: String) = input.toGames().filter { it.isPossible() }.sumOf { it.id }
+
+    override fun part2(input: String) = input.toGames().sumOf { it.minimalCubeSet().power() }
 }
