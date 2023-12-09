@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayNameGenerator
 import java.lang.reflect.Method
 import java.util.*
 
-class FullyQualified: DisplayNameGenerator.Standard() {
+internal class FullyQualified: DisplayNameGenerator.Standard() {
     override fun generateDisplayNameForClass(testClass: Class<*>): String {
         return testClass.name
     }
