@@ -4,8 +4,9 @@ import framework.Day
 import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashSet
-import util.Direction
+import util.LEFT
 import util.Point
+import util.RIGHT
 
 typealias Shape = List<Point>
 
@@ -25,9 +26,9 @@ object Day17 : Day<Long> {
 
     private tailrec fun Shape.fall(grid: Set<Point>, jets: String, jetIndex: Int): Pair<List<Point>, Int> {
         val jet = jets[jetIndex % jets.length]
-        val shifted = if (jet == '>') move(Direction.RIGHT) else move(Direction.LEFT)
+        val shifted = if (jet == '>') move(RIGHT) else move(LEFT)
         val next = if (shifted.canMove(grid)) shifted else this
-        val down = next.move(Direction(0, -1))
+        val down = next.move(Point(0, -1))
         return if (down.canMove(grid)) down.fall(grid, jets, jetIndex + 1) else (next to jetIndex + 1)
     }
 

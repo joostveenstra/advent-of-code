@@ -1,15 +1,14 @@
 package year2016
 
 import framework.Day
-import util.Direction
-import util.Point
+import util.*
 
 object Day2 : Day<String> {
     private val directions = mapOf(
-        'R' to Direction.RIGHT,
-        'D' to Direction.DOWN,
-        'L' to Direction.LEFT,
-        'U' to Direction.UP,
+        'R' to RIGHT,
+        'D' to DOWN,
+        'L' to LEFT,
+        'U' to UP,
     )
 
     private fun String.toKeypad() = buildMap {

@@ -1,8 +1,8 @@
 package year2017
 
 import framework.Day
-import util.Direction
 import util.Point
+import util.UP
 
 object Day22 : Day<Int> {
     sealed interface Node
@@ -11,8 +11,8 @@ object Day22 : Day<Int> {
     object Infected : Node
     object Flagged: Node
 
-    data class State(val grid: MutableMap<Point, Node>, val position: Point, val direction: Direction, val infected: Int) {
-        fun next(node: Node, direction: Direction) =
+    data class State(val grid: MutableMap<Point, Node>, val position: Point, val direction: Point, val infected: Int) {
+        fun next(node: Node, direction: Point) =
             State(grid.also { it[position] = node }, position + direction, direction, infected + if (node is Infected) 1 else 0)
     }
 
@@ -26,7 +26,7 @@ object Day22 : Day<Int> {
             }
         }
         val start = Point(lines.size / 2, lines.size / 2)
-        return State(grid.toMutableMap(), start, Direction.UP, 0)
+        return State(grid.toMutableMap(), start, UP, 0)
     }
 
     override fun part1(input: String): Int {

@@ -1,20 +1,14 @@
 package year2022
 
 import framework.Day
-import util.Direction
-import util.Point
+import util.*
 
 typealias Elf = Point
 
 object Day23 : Day<Int> {
-    private val order = listOf(
-        Direction.NORTH,
-        Direction.SOUTH,
-        Direction.WEST,
-        Direction.EAST
-    )
+    private val order = listOf(NORTH, SOUTH, WEST, EAST)
 
-    data class State(val elves: Set<Elf>, val directions: List<Direction>, val stuck: Boolean = false)
+    data class State(val elves: Set<Elf>, val directions: List<Point>, val stuck: Boolean = false)
 
     private fun String.toElves() = buildSet {
         lines().forEachIndexed { y, row ->
@@ -24,7 +18,7 @@ object Day23 : Day<Int> {
         }
     }
 
-    private fun Elf.propose(elves: Set<Elf>, directions: List<Direction>): Elf? {
+    private fun Elf.propose(elves: Set<Elf>, directions: List<Point>): Elf? {
         val neighboursExist = neighbours.map { it in elves }
         val (e, s, w, n) = neighboursExist
         val (se, sw, nw, ne) = neighboursExist.subList(4, neighboursExist.size)

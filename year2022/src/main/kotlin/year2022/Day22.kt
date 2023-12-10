@@ -1,13 +1,11 @@
 package year2022
 
 import framework.Day
-import util.Direction
-import util.Point
-import util.dequeOf
+import util.*
 import kotlin.math.sqrt
 
 object Day22 : Day<Int> {
-    data class State(val position: Point, val direction: Direction)
+    data class State(val position: Point, val direction: Point)
 
     data class Vector(val x: Int, val y: Int, val z: Int) {
         operator fun times(k: Int) = Vector(x * k, y * k, z * k)
@@ -42,7 +40,7 @@ object Day22 : Day<Int> {
         val minY = cols.mapValues { (_, col) -> col.minOf { it.y } }
         val maxY = cols.mapValues { (_, col) -> col.maxOf { it.y } }
 
-        val initial = State(Point(minX.getValue(0), 0), Direction.RIGHT)
+        val initial = State(Point(minX.getValue(0), 0), RIGHT)
 
         val (position, direction) = moves.fold(initial) { (position, direction), move ->
             when (move) {
@@ -55,9 +53,9 @@ object Day22 : Day<Int> {
                         false -> position
                         else -> {
                             val wrapped = when (direction) {
-                                Direction.RIGHT -> position.copy(x = minX.getValue(position.y))
-                                Direction.LEFT -> position.copy(x = maxX.getValue(position.y))
-                                Direction.DOWN -> position.copy(y = minY.getValue(position.x))
+                                RIGHT -> position.copy(x = minX.getValue(position.y))
+                                LEFT -> position.copy(x = maxX.getValue(position.y))
+                                DOWN -> position.copy(y = minY.getValue(position.x))
                                 else -> position.copy(y = maxY.getValue(position.x))
                             }
                             if (tiles.getValue(wrapped)) wrapped else position
@@ -68,7 +66,7 @@ object Day22 : Day<Int> {
             }
         }
 
-        return position.score() + Direction.cardinal.indexOf(direction)
+        return position.score() + cardinal.indexOf(direction)
     }
 
     override fun part2(input: String): Int {

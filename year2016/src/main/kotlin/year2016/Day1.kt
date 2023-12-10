@@ -1,11 +1,12 @@
 package year2016
 
 import framework.Day
+import util.NORTH
 import util.Point
 
 object Day1 : Day<Int> {
     private val start = Point(0, 0)
-    private val initial = State(listOf(start), Point.NORTH)
+    private val initial = State(listOf(start), NORTH)
 
     data class State (val positions: List<Point>, val direction: Point)
 

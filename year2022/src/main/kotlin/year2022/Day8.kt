@@ -1,8 +1,8 @@
 package year2022
 
 import framework.Day
-import util.Direction
 import util.Point
+import util.cardinal
 import util.productOf
 
 object Day8 : Day<Int> {
@@ -26,13 +26,13 @@ object Day8 : Day<Int> {
 
     override fun part1(input: String) = input.toGrid().let { grid ->
         grid.count { (tree, height) ->
-            Direction.cardinal.any { direction -> tree.canLookOutside(grid, direction, height) }
+            cardinal.any { direction -> tree.canLookOutside(grid, direction, height) }
         }
     }
 
     override fun part2(input: String) = input.toGrid().let { grid ->
         grid.maxOf { (tree, height) ->
-            Direction.cardinal.productOf { direction -> tree.viewingDistance(grid, direction, height) }
+            cardinal.productOf { direction -> tree.viewingDistance(grid, direction, height) }
         }
     }
 }

@@ -1,12 +1,11 @@
 package year2017
 
 import framework.Day
-import util.Direction
-import util.Point
+import util.*
 
 object Day19 : Day<Any> {
-    private val horizontal = listOf(Direction.LEFT, Direction.RIGHT)
-    private val vertical = listOf(Direction.UP, Direction.DOWN)
+    private val horizontal = listOf(LEFT, RIGHT)
+    private val vertical = listOf(UP, DOWN)
 
     private fun String.walk() = lines().let { grid ->
         tailrec fun next(position: Point, direction: Point, path: List<Char>, steps: Int): Pair<String, Int> {
@@ -28,7 +27,7 @@ object Day19 : Day<Any> {
         }
 
         val start = Point(grid.first().indexOf('|'), -1)
-        next(start, Direction.DOWN, listOf(), 0)
+        next(start, DOWN, listOf(), 0)
     }
 
     override fun part1(input: String) = input.walk().first

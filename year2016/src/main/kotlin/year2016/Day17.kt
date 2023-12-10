@@ -10,10 +10,10 @@ object Day17 : Day<Any> {
     private val goal = Point(3, 3)
 
     private val directions = listOf(
-        'U' to Direction.UP,
-        'D' to Direction.DOWN,
-        'L' to Direction.LEFT,
-        'R' to Direction.RIGHT
+        'U' to UP,
+        'D' to DOWN,
+        'L' to LEFT,
+        'R' to RIGHT
     )
 
     private val md5 = MessageDigest.getInstance("MD5")

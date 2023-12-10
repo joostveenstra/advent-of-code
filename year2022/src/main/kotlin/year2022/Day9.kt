@@ -2,17 +2,16 @@ package year2022
 import framework.Day
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.plus
-import util.Direction
-import util.Point
+import util.*
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
 object Day9 : Day<Int> {
     private val directions = mapOf(
-        "R" to Direction.RIGHT,
-        "D" to Direction.DOWN,
-        "L" to Direction.LEFT,
-        "U" to Direction.UP
+        "R" to RIGHT,
+        "D" to DOWN,
+        "L" to LEFT,
+        "U" to UP
     )
 
     private fun String.toMoves() = lines().flatMap {
@@ -24,7 +23,7 @@ object Day9 : Day<Int> {
     private infix fun Point.touches(other: Point) = (x - other.x).absoluteValue <= 1 && (y - other.y).absoluteValue <= 1
     private infix fun Point.moveTowards(other: Point) = Point(x + (other.x - x).sign, y + (other.y - y).sign)
 
-    private fun List<Direction>.simulate(size: Int): Int {
+    private fun List<Point>.simulate(size: Int): Int {
         val start = Point(0, 0)
         val initial = List(size) { start } to persistentListOf(start)
         val (_, visited) = this.fold(initial) { (rope, visited), move ->
