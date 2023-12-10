@@ -23,7 +23,7 @@ object Day8 : Day<Long> {
             val node = nodes.getValue(current)
             val next = when (move) {
                 'L' -> node.left
-                else ->node.right
+                else -> node.right
             }
             next to steps + 1
         }.dropWhile { (current) -> !isEnd(current) }.first().let { (_, steps) -> steps }.toLong()
@@ -38,7 +38,7 @@ object Day8 : Day<Long> {
         val (moves, nodes) = parse(input)
         val startNodes = nodes.keys.filter { it.endsWith('A') }
         return startNodes
-            .map { start -> stepsToEscape(moves, nodes, start) { it.endsWith('Z')} }
+            .map { start -> stepsToEscape(moves, nodes, start) { it.endsWith('Z') } }
             .reduce(::lcm)
     }
 }
