@@ -3,29 +3,12 @@ package year2023
 import framework.Day
 
 object Day7 : Day<Int> {
-    enum class Type {
-        HIGH_CARD,
-        ONE_PAIR,
-        TWO_PAIR,
-        THREE_OF_A_KIND,
-        FULL_HOUSE,
-        FOUR_OF_A_KIND,
-        FIVE_OF_A_KIND
-    }
+    enum class Type { HIGH_CARD, ONE_PAIR, TWO_PAIR, THREE_OF_A_KIND, FULL_HOUSE, FOUR_OF_A_KIND, FIVE_OF_A_KIND }
 
     data class Hand(val cards: List<Int>, val type: Type, val bid: Int) : Comparable<Hand> {
-        override fun compareTo(other: Hand) = comparator.compare(this, other)
-
-        companion object {
-            private val comparator = compareBy(
-                Hand::type,
-                { it.cards[0] },
-                { it.cards[1] },
-                { it.cards[2] },
-                { it.cards[3] },
-                { it.cards[4] }
-            )
-        }
+        override fun compareTo(other: Hand) = compareValuesBy(this, other,
+            Hand::type, { it.cards[0] }, { it.cards[1] }, { it.cards[2] }, { it.cards[3] }, { it.cards[4] }
+        )
     }
 
     private fun String.toHands(jokers: Boolean) = lines().map { line ->
