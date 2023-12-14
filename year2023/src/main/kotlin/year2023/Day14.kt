@@ -70,7 +70,11 @@ object Day14 : Day<Int> {
 
     private fun Array<CharArray>.cycle() = directions.fold(this) { grid, direction -> grid.tilt(direction) }
 
-    private fun Array<CharArray>.rocks() = flatMapIndexed { y, row -> row.asIterable().mapIndexedNotNull { x, c -> if (c == 'O') Point(x, y) else null } }
+    private fun Array<CharArray>.rocks() = flatMapIndexed { y, row ->
+        row.asIterable().mapIndexedNotNull { x, c ->
+            if (c == 'O') Point(x, y) else null
+        }
+    }
 
     private fun List<Point>.load(height: Int) = sumOf { (height - it.y) }
 
