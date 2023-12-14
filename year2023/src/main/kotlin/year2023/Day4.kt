@@ -9,7 +9,7 @@ object Day4 : Day<Int> {
         yours.count { it in winning }
     }
 
-    override fun part1(input: String) = input.toCards().sumOf { wins -> if (wins > 0) 1.shl(wins - 1) else 0 }
+    override fun part1(input: String) = input.toCards().sumOf { wins -> if (wins > 0) 1 shl wins - 1 else 0 }
 
     override fun part2(input: String): Int {
         val cards = input.toCards()
