@@ -23,7 +23,8 @@ object Day18 : Day<Long> {
     private fun determinant(a: Point, b: Point) = a.x.toLong() * b.y - a.y.toLong() * b.x
 
     private fun List<Pair<Point, Int>>.dig(): Long {
-        val (_, area, perimeter) = fold(Triple(Point(0, 0), 0L, 0L)) { (position, area, perimeter), (direction, steps) ->
+        val initial = Triple(Point(0, 0), 0L, 0L)
+        val (_, area, perimeter) = fold(initial) { (position, area, perimeter), (direction, steps) ->
             val nextPosition = position + direction * steps
             val nextArea = area + determinant(position, nextPosition)
             Triple(nextPosition, nextArea, perimeter + steps)
