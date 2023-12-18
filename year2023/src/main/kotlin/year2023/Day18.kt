@@ -14,7 +14,7 @@ object Day18 : Day<Long> {
             '2' -> LEFT
             else -> UP
         }
-        val steps = c.substring(2..c.length - 3).toInt(16)
+        val steps = c.substring(2..<c.length - 2).toInt(16)
         val second = direction to steps
 
         first to second
