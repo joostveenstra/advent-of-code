@@ -2,6 +2,7 @@ package year2022
 import framework.Day
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.plus
+import util.ORIGIN
 import util.Point
 import kotlin.math.absoluteValue
 import kotlin.math.sign
@@ -17,7 +18,7 @@ object Day9 : Day<Int> {
     private infix fun Point.moveTowards(other: Point) = Point(x + (other.x - x).sign, y + (other.y - y).sign)
 
     private fun List<Point>.simulate(size: Int): Int {
-        val start = Point(0, 0)
+        val start = ORIGIN
         val initial = List(size) { start } to persistentListOf(start)
         val (_, visited) = this.fold(initial) { (rope, visited), move ->
             val nextHead = rope.first() + move

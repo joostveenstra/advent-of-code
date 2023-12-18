@@ -10,7 +10,7 @@ import util.combinations
 import util.priorityQueueOf
 
 object Day22 : Day<Int> {
-    private val end = Point(0, 0)
+    private val end = ORIGIN
 
     data class Node(val used: Int, val avail: Int) {
         fun isEmpty() = used == 0

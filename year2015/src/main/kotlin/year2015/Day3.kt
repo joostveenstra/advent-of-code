@@ -4,7 +4,7 @@ import framework.Day
 import util.Point
 
 object Day3 : Day<Int> {
-    private fun Iterable<Char>.deliver() = map(Point::of).scan(Point(0, 0)) { position, move -> position + move }
+    private fun Iterable<Char>.deliver() = map(Point::of).scan(ORIGIN) { position, move -> position + move }
 
     override fun part1(input: String) = input.asIterable().deliver().distinct().size
 

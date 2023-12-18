@@ -9,7 +9,7 @@ import java.security.MessageDigest
 import java.util.*
 
 object Day17 : Day<Any> {
-    private val start = Point(0, 0)
+    private val start = ORIGIN
     private val goal = Point(3, 3)
 
     private val directions = listOf('U', 'D', 'L', 'R').map { it to Point.of(it) }

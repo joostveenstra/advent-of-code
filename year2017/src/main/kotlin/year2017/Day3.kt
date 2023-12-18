@@ -4,10 +4,11 @@ import framework.Day
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentHashMapOf
 import kotlinx.collections.immutable.plus
+import util.ORIGIN
 import util.Point
 
 object Day3 : Day<Int> {
-    private val start = Point(0, 0)
+    private val start = ORIGIN
 
     private fun Int.toPosition(): Point {
         val n = generateSequence(1) { it + 2 }.dropWhile { it * it < this }.first()
