@@ -2,6 +2,7 @@ package util
 
 import kotlin.math.absoluteValue
 
+val ORIGIN = Point(0, 0)
 val RIGHT = Point(1, 0)
 val DOWN = Point(0, 1)
 val LEFT = Point(-1, 0)
@@ -26,6 +27,9 @@ data class Point(val x: Int, val y: Int) {
 
     val neighbours: List<Point>
         get() = cardinalNeighbours + diagonalNeighbours
+
+    val opposite: Point
+        get() = Point(-x, -y)
 
     fun manhattan(other: Point): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
 
