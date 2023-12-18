@@ -1,6 +1,7 @@
 package year2015
 
 import framework.Day
+import util.ORIGIN
 import util.Point
 
 object Day3 : Day<Int> {

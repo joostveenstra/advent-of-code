@@ -4,10 +4,7 @@ import framework.Day
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashMap
-import util.Point
-import util.allInts
-import util.combinations
-import util.priorityQueueOf
+import util.*
 
 object Day22 : Day<Int> {
     private val end = ORIGIN

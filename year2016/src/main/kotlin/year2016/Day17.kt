@@ -1,10 +1,7 @@
 package year2016
 
 import framework.Day
-import util.Point
-import util.dequeOf
-import util.pop
-import util.push
+import util.*
 import java.security.MessageDigest
 import java.util.*
 
