@@ -1,7 +1,10 @@
 package year2016
 
 import framework.Day
-import util.*
+import util.Point
+import util.dequeOf
+import util.pop
+import util.push
 import java.security.MessageDigest
 import java.util.*
 
@@ -9,12 +12,7 @@ object Day17 : Day<Any> {
     private val start = Point(0, 0)
     private val goal = Point(3, 3)
 
-    private val directions = listOf(
-        'U' to UP,
-        'D' to DOWN,
-        'L' to LEFT,
-        'R' to RIGHT
-    )
+    private val directions = listOf('U', 'D', 'L', 'R').map { it to Point.of(it) }
 
     private val md5 = MessageDigest.getInstance("MD5")
 

@@ -34,6 +34,13 @@ data class Point(val x: Int, val y: Int) {
 
     companion object {
         fun of(input: String): Point = input.split(",\\s*".toRegex()).map(String::toInt).let { (x, y) -> Point(x, y) }
+        fun of(input: Char): Point = when (input) {
+            '^', 'U' -> UP
+            'v', 'D' -> DOWN
+            '<', 'L' -> LEFT
+            '>', 'R' -> RIGHT
+            else -> throw IllegalArgumentException("$input is not a valid direction")
+        }
     }
 }
 
@@ -50,7 +57,7 @@ data class Point3D(val x: Int, val y: Int, val z: Int) {
             copy(z = z - 1),
         )
 
-    fun manhattan(other: Point3D): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue  + (z - other.z).absoluteValue
+    fun manhattan(other: Point3D): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue + (z - other.z).absoluteValue
 
     companion object {
         fun of(input: String): Point3D = input.split(",\\s*".toRegex()).map(String::toInt).let { (x, y, z) -> Point3D(x, y, z) }

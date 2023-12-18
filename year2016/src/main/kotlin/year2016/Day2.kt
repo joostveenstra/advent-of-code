@@ -1,16 +1,9 @@
 package year2016
 
 import framework.Day
-import util.*
+import util.Point
 
 object Day2 : Day<String> {
-    private val directions = mapOf(
-        'R' to RIGHT,
-        'D' to DOWN,
-        'L' to LEFT,
-        'U' to UP,
-    )
-
     private fun String.toKeypad() = buildMap {
         lines().forEachIndexed { y, line ->
             line.filterIndexed { i, _ -> i % 2 == 0 }.forEachIndexed { x, char ->
@@ -21,7 +14,7 @@ object Day2 : Day<String> {
 
     private fun String.walk(start: Point, keypad: Map<Point, Char>) = lines().scan(start) { button, line ->
         line.fold(button) { position, move ->
-            val candidate = position + directions.getValue(move)
+            val candidate = position + Point.of(move)
             if (candidate in keypad) candidate else position
         }
     }.drop(1).map { keypad[it] }.joinToString("")

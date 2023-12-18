@@ -2,21 +2,14 @@ package year2022
 import framework.Day
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.plus
-import util.*
+import util.Point
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
 object Day9 : Day<Int> {
-    private val directions = mapOf(
-        "R" to RIGHT,
-        "D" to DOWN,
-        "L" to LEFT,
-        "U" to UP
-    )
-
     private fun String.toMoves() = lines().flatMap {
         it.split(' ').let { (direction, steps) ->
-            List(steps.toInt()) { directions.getValue(direction) }
+            List(steps.toInt()) { Point.of(direction.first()) }
         }
     }
 

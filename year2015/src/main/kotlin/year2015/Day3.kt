@@ -1,17 +1,10 @@
 package year2015
 
 import framework.Day
-import util.*
+import util.Point
 
 object Day3 : Day<Int> {
-    private val directions = mapOf(
-        '^' to NORTH,
-        'v' to SOUTH,
-        '>' to EAST,
-        '<' to WEST
-    )
-
-    private fun Iterable<Char>.deliver() = map { directions.getValue(it) }.scan(Point(0, 0)) { position, move -> position + move }
+    private fun Iterable<Char>.deliver() = map(Point::of).scan(Point(0, 0)) { position, move -> position + move }
 
     override fun part1(input: String) = input.asIterable().deliver().distinct().size
 
