@@ -20,8 +20,7 @@ object Day23 : Day<Int> {
 
     private fun Elf.propose(elves: Set<Elf>, directions: List<Point>): Elf? {
         val neighboursExist = neighbours.map { it in elves }
-        val (e, s, w, n) = neighboursExist
-        val (se, sw, nw, ne) = neighboursExist.subList(4, neighboursExist.size)
+        val (e, s, w, n, se, sw, nw, ne) = neighboursExist
         val (north, south, west) = order
 
         return if (neighboursExist.any { it })
