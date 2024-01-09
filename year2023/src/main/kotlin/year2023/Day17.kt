@@ -1,13 +1,23 @@
 package year2023
 
 import framework.Day
-import util.ORIGIN
-import util.Point
-import util.cardinal
-import util.priorityQueueOf
+import util.*
+import year2023.Day17.Orientation.HORIZONTAL
+import year2023.Day17.Orientation.VERTICAL
 
 object Day17 : Day<Int> {
-    data class Crucible(val position: Point, val direction: Point)
+    enum class Orientation {
+        HORIZONTAL, VERTICAL;
+
+        fun turn() = when (this) {
+            HORIZONTAL -> listOf(UP, DOWN)
+            VERTICAL -> listOf(LEFT, RIGHT)
+        }
+
+        fun orthogonal() = if (this == HORIZONTAL) VERTICAL else HORIZONTAL
+    }
+
+    data class Crucible(val position: Point, val orientation: Orientation)
 
     private fun String.toBlocks() = buildMap {
         lines().forEachIndexed { y, row ->
@@ -16,29 +26,34 @@ object Day17 : Day<Int> {
     }
 
     private fun Map<Point, Int>.minimize(least: Int, most: Int): Int {
-        val start = Crucible(ORIGIN, ORIGIN)
+        val initial = listOf(Crucible(ORIGIN, HORIZONTAL), Crucible(ORIGIN, VERTICAL)).map { it to 0 }
         val end = Point(keys.maxOf { it.x }, keys.maxOf { it.y })
-        val queue = priorityQueueOf(start to 0) { it.second }
-        val visited = mutableMapOf(start to 0)
+        val queue = priorityQueueOf<Pair<Crucible, Int>> { it.second }.apply { addAll(initial) }
+        val visited = mutableMapOf<Crucible, Int>().apply { putAll(initial) }
+
+        tailrec fun Crucible.move(step: Int, direction: Point, heat: Int) {
+            if (step <= most) {
+                val nextPosition = position + direction * step
+                if (nextPosition in this@minimize) {
+                    val nextHeat = heat + getValue(nextPosition)
+                    if (step >= least) {
+                        val next = Crucible(nextPosition, orientation.orthogonal())
+                        if (next !in visited || nextHeat < visited.getValue(next)) {
+                            visited[next] = nextHeat
+                            val priority = nextHeat + next.position.manhattan(end)
+                            queue.offer(next to priority)
+                        }
+                    }
+                    move(step + 1, direction, nextHeat)
+                }
+            }
+        }
 
         while (queue.isNotEmpty()) {
             val (crucible) = queue.poll()
             if (crucible.position == end) return visited.getValue(crucible)
-            crucible.direction.let { cardinal - it - it.opposite }.forEach { direction ->
-                var heat = visited.getValue(crucible)
-                for (step in 1..most) {
-                    val position = crucible.position + direction * step
-                    if (position in this) {
-                        heat += getValue(position)
-                        if (step >= least) {
-                            val next = Crucible(position, direction)
-                            if (next !in visited || heat < visited.getValue(next)) {
-                                visited[next] = heat
-                                queue.offer(next to heat)
-                            }
-                        }
-                    }
-                }
+            crucible.orientation.turn().forEach { direction ->
+                crucible.move(1, direction, visited.getValue(crucible))
             }
         }
 
