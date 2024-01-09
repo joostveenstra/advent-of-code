@@ -80,3 +80,9 @@ fun <T> List<List<T>>.transpose(): List<List<T>> =
             this[i][j]
         }
     }
+
+inline operator fun <T> List<T>.component6(): T = get(5)
+inline operator fun <T> List<T>.component7(): T = get(6)
+inline operator fun <T> List<T>.component8(): T = get(7)
+inline operator fun <T> List<T>.component9(): T = get(8)
+inline operator fun <T> List<T>.component10(): T = get(9)

@@ -15,7 +15,7 @@ object Day13 : Day<Int> {
     private fun List<Char>.toBinary() = fold(0) { b, c -> (b shl 1) or if (c == '#') 1 else 0 }
 
     private fun List<Int>.findReflection(smudges: Int): Int? = (1..<size).find { i ->
-        smudges == (drop(i) zip reversed().drop(size - i)).sumOf { (a, b) -> (a xor b).countOneBits() }
+        smudges == drop(i).zip(reversed().drop(size - i)).sumOf { (a, b) -> (a xor b).countOneBits() }
     }
 
     private fun List<Pair<List<Int>, List<Int>>>.summarize(smudges: Int) = sumOf { (rows, columns) ->

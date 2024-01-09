@@ -1,6 +1,7 @@
 package year2017
 
 import framework.Day
+import util.*
 
 object Day8 : Day<Int> {
     data class State(val registers: Map<String, Int>, val max: Int)
@@ -9,8 +10,7 @@ object Day8 : Day<Int> {
         val initial = State(mapOf(), 0)
         return lines().map { it.split(' ') }.fold(initial) { state, instruction ->
             val (registers, max) = state
-            val (register, operation, amount) = instruction
-            val (from, condition, value) = instruction.drop(4)
+            val (register, operation, amount, _, from, condition, value) = instruction
             val lhs = registers.getOrDefault(from, 0)
             val rhs = value.toInt()
             val execute = when (condition) {

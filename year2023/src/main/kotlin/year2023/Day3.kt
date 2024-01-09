@@ -14,7 +14,7 @@ object Day3 : Day<Int> {
         }
         val parts = buildMap {
             forEachIndexed { y, row ->
-                val parts = "\\d+".toRegex().findAll(row).map { Point(it.range.first, y) to it.value.toInt() }
+                val parts = "\\d+".toRegex().findAll(row).map { Point(it.range.first, y) to it.value }
                 putAll(parts)
             }
         }
@@ -26,19 +26,19 @@ object Day3 : Day<Int> {
     override fun part1(input: String): Int {
         val (symbols, parts) = parse(input)
         return parts
-            .filter { (start, value) -> start.adjacent(value.toString().length).any { it in symbols } }
+            .filter { (start, value) -> start.adjacent(value.length).any { it in symbols } }
             .values
-            .sum()
+            .sumOf { it.toInt() }
     }
 
     override fun part2(input: String): Int {
         val (symbols, parts) = parse(input)
-        val adjacent = parts.mapKeys { (k, v) -> k.adjacent(v.toString().length) }
+        val adjacent = parts.mapKeys { (k, v) -> k.adjacent(v.length) }
         return symbols
             .filterValues { it == '*' }
             .keys
             .map { gear -> adjacent.filterKeys { gear in it }.values }
             .filter { it.size == 2 }
-            .sumOf { it.reduce(Int::times) }
+            .sumOf { it.map(String::toInt).reduce(Int::times) }
     }
 }

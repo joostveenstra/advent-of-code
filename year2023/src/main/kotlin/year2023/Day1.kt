@@ -4,7 +4,7 @@ import framework.Day
 import util.zipWithIndex
 
 object Day1 : Day<Int> {
-    private val map = listOf("", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine").zipWithIndex().toMap()
+    private val digits = listOf("", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine").zipWithIndex().toMap()
     private val regex = """(?=(one|two|three|four|five|six|seven|eight|nine|\d))""".toRegex()
 
     private fun List<Int>.calibrate() = 10 * first() + last()
@@ -16,7 +16,7 @@ object Day1 : Day<Int> {
 
     override fun part2(input: String) = input.lines().sumOf { line ->
         val tokens = regex.findAll(line).flatMap { it.destructured.toList() }.toList()
-        val numbers = tokens.map { map[it] ?: it.toInt() }
+        val numbers = tokens.map { digits[it] ?: it.toInt() }
         numbers.calibrate()
     }
 }
