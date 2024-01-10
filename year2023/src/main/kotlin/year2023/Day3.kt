@@ -39,6 +39,6 @@ object Day3 : Day<Int> {
             .keys
             .map { gear -> adjacent.filterKeys { gear in it }.values }
             .filter { it.size == 2 }
-            .sumOf { it.map(String::toInt).reduce(Int::times) }
+            .sumOf { it.first().toInt() * it.last().toInt() }
     }
 }
