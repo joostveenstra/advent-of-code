@@ -1,14 +1,8 @@
 package util
 
-fun lcm(a: Long, b: Long): Long {
-    val larger = if (a > b) a else b
-    val maxLcm = a * b
-    var lcm = larger
-    while (lcm <= maxLcm) {
-        if (lcm % a == 0L && lcm % b == 0L) {
-            return lcm
-        }
-        lcm += larger
-    }
-    return maxLcm
-}
+tailrec fun Long.gcd(other: Long): Long =
+    if (other == 0L) this
+    else other.gcd(this % other)
+
+fun Long.lcm(other: Long): Long =
+    (this * other) / this.gcd(other)

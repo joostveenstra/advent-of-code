@@ -39,6 +39,6 @@ object Day8 : Day<Long> {
         val startNodes = nodes.keys.filter { it.endsWith('A') }
         return startNodes
             .map { start -> stepsToEscape(moves, nodes, start) }
-            .reduce(::lcm)
+            .reduce(Long::lcm)
     }
 }
