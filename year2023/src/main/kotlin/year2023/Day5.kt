@@ -1,8 +1,6 @@
 package year2023
 
 import framework.Day
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.plus
 import util.EMPTY_LINE
 import util.allLongs
 
@@ -11,7 +9,7 @@ object Day5 : Day<Long> {
         fun map(n: Long): Long = maps.find { (_, start, end) -> n in start..<end }?.let { (dest, start) -> n - start + dest } ?: n
 
         fun map(range: Pair<Long, Long>): List<Pair<Long, Long>> {
-            val (remaining, ranges) = maps.fold(range to persistentListOf<Pair<Long, Long>>()) { (range, ranges), (dest, s2, e2) ->
+            val (remaining, ranges) = maps.fold(range to listOf<Pair<Long, Long>>()) { (range, ranges), (dest, s2, e2) ->
                 val (s1, e1) = range
                 val x1 = maxOf(s1, s2)
                 val x2 = minOf(e1, e2)
