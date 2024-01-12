@@ -9,15 +9,9 @@ import kotlin.math.absoluteValue
  * and https://en.wikipedia.org/wiki/Pick%27s_theorem to calculate the amount of points inside that area
  */
 object Day10 : Day<Int> {
-    private fun String.toTiles() = buildMap {
-        lines().forEachIndexed { y, row ->
-            row.forEachIndexed { x, char -> put(Point(x, y), char) }
-        }
-    }
-
     private fun determinant(a: Point, b: Point) = a.x * b.y - a.y * b.x
 
-    private fun Map<Point, Char>.walk(): Pair<Int, Int> {
+    private fun Grid<Char>.walk(): Pair<Int, Int> {
         tailrec fun step(position: Point, direction: Point, area: Int, steps: Int): Pair<Int, Int> {
             val nextPosition = position + direction
             val determinant = determinant(position, nextPosition)
@@ -32,12 +26,12 @@ object Day10 : Day<Int> {
             return step(nextPosition, nextDirection, area + determinant, steps + 1)
         }
 
-        val start = entries.first { it.value == 'S' }.key
-        val direction = if (get(start + NORTH) in listOf('|', '7', 'F')) NORTH else SOUTH
+        val start = find('S')
+        val direction = if (safeGet(start + NORTH) in listOf('|', '7', 'F')) NORTH else SOUTH
         return step(start, direction, 0, 1)
     }
 
-    override fun part1(input: String) = input.toTiles().walk().let { (steps) -> steps / 2 }
+    override fun part1(input: String) = input.toCharGrid().walk().let { (steps) -> steps / 2 }
 
-    override fun part2(input: String) = input.toTiles().walk().let { (steps, area) -> area - steps / 2 + 1 }
+    override fun part2(input: String) = input.toCharGrid().walk().let { (steps, area) -> area - steps / 2 + 1 }
 }

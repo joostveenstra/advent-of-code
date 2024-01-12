@@ -3,19 +3,22 @@ package year2023
 import framework.Day
 import util.Point
 import util.combinations
+import util.toCharGrid
 
 object Day11 : Day<Long> {
     private fun String.toGalaxies(factor: Int): List<Point> {
-        val grid = lines()
-        val maxX = grid.first().length
-        val maxY = grid.size
-        val emptyRows = (0..<maxY).filter { y -> grid[y].none { it == '#' } }.toSet()
-        val emptyCols = (0..<maxX).filter { x -> grid.map { row -> row[x] }.none { it == '#' } }.toSet()
-        val xs = (0..<maxX - 1).scan(0) { prefix, x -> prefix + if (x in emptyCols) factor else 1 }
-        val ys = (0..<maxY - 1).scan(0) { prefix, y -> prefix + if (y in emptyRows) factor else 1 }
+        val grid = toCharGrid()
+
+        fun expand(size: Int, empty: Set<Int>) = (0..<size - 1).scan(0) { prefix, i -> prefix + if (i in empty) factor else 1 }
+
+        val emptyXs = grid.ys.filter { y -> grid.getRow(y).none { it == '#' } }.toSet()
+        val emptyYs = grid.xs.filter { x -> grid.getColumn(x).none { it == '#' } }.toSet()
+        val xs = expand(grid.width, emptyYs)
+        val ys = expand(grid.height, emptyXs)
+
         return buildList {
-            ys.zip(0..<maxY).forEach { (y, row) ->
-                xs.zip(grid[row].asIterable()).forEach { (x, char) ->
+            ys.zip(grid.rows).forEach { (y, row) ->
+                xs.zip(row).forEach { (x, char) ->
                     if (char == '#') add(Point(x, y))
                 }
             }
