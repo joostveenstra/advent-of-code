@@ -53,10 +53,10 @@ object Day20 : Day<Long> {
                 val nextCycles = next.filter { !it.pulse && it.destination in parents }.fold(cycles) { acc, (_, destination) ->
                     acc + (destination to (acc[destination]?.let { pressed - it } ?: pressed))
                 }
-                next.propagate(low + next.count { it.pulse.not() }, high + next.count { it.pulse }, nextCycles)
+                next.propagate(low + next.count { !it.pulse }, high + next.count { it.pulse }, nextCycles)
             }
 
-        val initial = State("button", "broadcaster", false)
+        val initial = State("", "broadcaster", false)
         return listOf(initial).propagate(1, 0, cycles)
     }
 
