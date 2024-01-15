@@ -6,13 +6,13 @@ import util.product
 import util.transpose
 
 object Day15 : Day<Int> {
-    private fun String.toRecipes(): Sequence<List<Int>> {
+    private fun String.toRecipes(): List<List<Int>> {
         val ingredients = lines().map { it.allInts().toList() }
         fun range(offset: Int) = 0..100 - offset
-        return sequence {
+        return buildList {
             for (a in range(0)) for (b in range(a)) for (c in range(a + b)) for (d in range(a + b + c)) {
                 if ((a + b + c + d) == 100) {
-                    yield(listOf(a, b, c, d).zip(ingredients) { tsp, i -> i.map { it * tsp } }.transpose().map { maxOf(0, it.sum()) })
+                    add(listOf(a, b, c, d).zip(ingredients) { tsp, i -> i.map { it * tsp } }.transpose().map { maxOf(0, it.sum()) })
                 }
             }
         }

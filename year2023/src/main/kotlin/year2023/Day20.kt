@@ -18,7 +18,7 @@ object Day20 : Day<Long> {
     }
 
     class Conjunction(override val name: String, override val outputs: List<String>, val memory: MutableMap<String, Boolean>) : Module {
-        override fun receive(source: String, pulse: Boolean): List<State> = apply { memory[source] = pulse }.send(!memory.all { it.value })
+        override fun receive(source: String, pulse: Boolean) = apply { memory[source] = pulse }.send(!memory.all { it.value })
     }
 
     data class State(val source: String, val destination: String, val pulse: Boolean)
@@ -34,8 +34,9 @@ object Day20 : Day<Long> {
             }
         }
     }.also { modules ->
-        modules.filterIsInstance<Conjunction>().forEach { conjunction ->
-            modules.filter { conjunction.name in it.outputs }.forEach { conjunction.memory[it.name] = false }
+        val conjunctions = modules.filterIsInstance<Conjunction>().associateBy { it.name }
+        modules.forEach { module ->
+            module.outputs.forEach { output -> conjunctions[output]?.memory?.set(module.name, false) }
         }
     }.associateBy { it.name }
 

@@ -14,7 +14,7 @@ object Day10 : Day<Int> {
         }
     }
 
-    private fun String.generate(turns: Int) = generateSequence(this, Day10::next).drop(turns).first().length
+    private fun String.generate(turns: Int) = generateSequence(this, ::next).drop(turns).first().length
 
     override fun part1(input: String) = input.generate(40)
 

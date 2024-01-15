@@ -2,12 +2,11 @@ package year2022
 
 import framework.Day
 import util.Point
-import kotlin.reflect.KFunction3
 
 object Day24 : Day<Int> {
     private val start = Point(1, 0)
 
-    private fun parse(input: String): Pair<Point, KFunction3<Set<Point>, Point, Int, Int>> {
+    private fun parse(input: String): Pair<Point, (Set<Point>, Point, Int) -> Int> {
         val valley = input.lines()
         val width = valley.first().length - 2
         val height = valley.size - 2

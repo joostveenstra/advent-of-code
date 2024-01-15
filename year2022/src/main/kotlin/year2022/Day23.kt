@@ -59,7 +59,7 @@ object Day23 : Day<Int> {
         val minY = end.minOf { it.y }
         val maxY = end.maxOf { it.y }
 
-        val points = sequence { for (x in minX..maxX) for (y in minY..maxY) yield(Point(x, y)) }
+        val points = buildList { for (x in minX..maxX) for (y in minY..maxY) add(Point(x, y)) }
         return points.count { it !in end }
     }
 

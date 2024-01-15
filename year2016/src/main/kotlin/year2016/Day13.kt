@@ -6,7 +6,7 @@ import util.dequeOf
 
 object Day13 : Day<Int> {
     private val start = Point(1, 1)
-    private const val steps = 50
+    private const val STEPS = 50
 
     private fun String.toGoal() = if (toInt() == 10) Point(7, 4) else Point(31, 39)
 
@@ -44,7 +44,7 @@ object Day13 : Day<Int> {
         while (queue.isNotEmpty()) {
             val point = queue.removeFirst()
             val cost = visited.getValue(point) + 1
-            if (cost <= steps) {
+            if (cost <= STEPS) {
                 point.validNeighbours(favorite).forEach { next ->
                     if (next !in visited || cost < visited.getValue(next)) {
                         visited[next] = cost

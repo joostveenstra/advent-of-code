@@ -69,7 +69,7 @@ object Day19 : Day<Int> {
         }
     }
 
-    private fun String.toBlueprints() = lines().map(Blueprint.Companion::of)
+    private fun String.toBlueprints() = lines().map(Blueprint::of)
 
     override fun part1(input: String) = input.toBlueprints().sumOf { it.id * it.determineMaxGeodesCracked(24) }
 

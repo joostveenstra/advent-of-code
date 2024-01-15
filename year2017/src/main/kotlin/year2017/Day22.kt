@@ -6,10 +6,10 @@ import util.UP
 
 object Day22 : Day<Int> {
     sealed interface Node
-    object Clean : Node
-    object Weakened: Node
-    object Infected : Node
-    object Flagged: Node
+    data object Clean : Node
+    data object Weakened: Node
+    data object Infected : Node
+    data object Flagged: Node
 
     data class State(val grid: MutableMap<Point, Node>, val position: Point, val direction: Point, val infected: Int) {
         fun next(node: Node, direction: Point) =
