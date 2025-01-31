@@ -3,7 +3,7 @@ package year2017
 import framework.Day
 import util.*
 
-object Day8 : Day<Int> {
+object Day8 : Day {
     data class State(val registers: Map<String, Int>, val max: Int)
 
     private fun String.execute(): State {

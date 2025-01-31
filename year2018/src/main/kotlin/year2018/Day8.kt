@@ -2,7 +2,7 @@ package year2018
 
 import framework.Day
 
-object Day8 : Day<Int> {
+object Day8 : Day {
     data class Node(val children: List<Node>, val metadata: List<Int>)
 
     private fun String.toNumbers() = split(' ').map { it.toInt() }.iterator()

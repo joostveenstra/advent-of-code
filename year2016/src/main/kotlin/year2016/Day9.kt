@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import util.match
 
-object Day9 : Day<Long> {
+object Day9 : Day {
     private val regex = "\\((\\d+)x(\\d+)\\)(.*)".toRegex()
 
     private fun String.decompress(version: Int, size: Long = 0): Long =

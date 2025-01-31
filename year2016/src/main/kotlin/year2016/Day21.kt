@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import util.match
 
-object Day21 : Day<String> {
+object Day21 : Day {
     private val swapPositions = "swap position (\\d+) with position (\\d+)".toRegex()
     private val swapLetters = "swap letter (\\w) with letter (\\w)".toRegex()
     private val rotateLeft = "rotate left (\\d+) steps?".toRegex()

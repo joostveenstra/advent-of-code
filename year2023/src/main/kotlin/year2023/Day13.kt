@@ -4,7 +4,7 @@ import framework.Day
 import util.EMPTY_LINE
 import util.transpose
 
-object Day13 : Day<Int> {
+object Day13 : Day {
     private fun String.toPatterns() = split(EMPTY_LINE).map { pattern ->
         val lines = pattern.lines()
         val rows = lines.map { it.toList().toBinary() }

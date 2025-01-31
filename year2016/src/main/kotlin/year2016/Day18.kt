@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import java.math.BigInteger
 
-object Day18 : Day<Int> {
+object Day18 : Day {
     private fun String.toNumberOfRows() = if (length == 10) 10 else 40
 
     private fun String.countSafeRows(rows: Int): Int {

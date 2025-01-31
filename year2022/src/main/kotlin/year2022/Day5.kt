@@ -3,7 +3,7 @@ package year2022
 import framework.Day
 import util.*
 
-object Day5 : Day<String> {
+object Day5 : Day {
     data class Procedure(val amount: Int, val from: Int, val to: Int)
 
     private fun parse(input: String): Pair<List<Deque<Char>>, List<Procedure>> {
@@ -14,7 +14,7 @@ object Day5 : Day<String> {
     private fun parseStacks(input: List<String>): List<Deque<Char>> {
         val crateLines = input.dropLast(1)
         return (1..crateLines.last().length step 4).map { index ->
-            crateLines.mapNotNull { it.getOrNull(index) }.filterNot { it == ' ' }.let(::Deque)
+            crateLines.mapNotNull { it.getOrNull(index) }.filterNot { it == ' ' }.toDeque()
         }
     }
 

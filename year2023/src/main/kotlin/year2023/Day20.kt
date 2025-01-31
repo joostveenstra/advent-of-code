@@ -3,7 +3,7 @@ package year2023
 import framework.Day
 import util.lcm
 
-object Day20 : Day<Long> {
+object Day20 : Day {
     sealed interface Module {
         val name: String
         val outputs: List<String>

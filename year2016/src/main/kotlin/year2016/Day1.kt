@@ -1,15 +1,13 @@
 package year2016
 
 import framework.Day
-import util.NORTH
-import util.ORIGIN
-import util.Point
+import util.*
 
-object Day1 : Day<Int> {
+object Day1 : Day {
     private val start = ORIGIN
     private val initial = State(listOf(start), NORTH)
 
-    data class State (val positions: List<Point>, val direction: Point)
+    data class State (val positions: List<Point>, val direction: Direction)
 
     private fun String.toMoves() = split(", ").map { it.first() to it.drop(1).toInt() }
 

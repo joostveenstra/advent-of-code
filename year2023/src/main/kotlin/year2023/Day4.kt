@@ -3,7 +3,7 @@ package year2023
 import framework.Day
 import util.allInts
 
-object Day4 : Day<Int> {
+object Day4 : Day {
     private fun String.toCards() = lines().map { line ->
         val (winning, yours) = line.split(':').last().split('|').map { it.allInts().toSet() }
         yours.count { it in winning }

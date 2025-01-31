@@ -5,12 +5,14 @@ import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashSet
 import util.Point
+import util.plus
+import util.toPoint
 import kotlin.math.max
 import kotlin.math.min
 
 typealias Cave = PersistentSet<Point>
 
-object Day14 : Day<Int> {
+object Day14 : Day {
     private val source = Point(500, 0)
     private val directions = listOf(
         Point(0, 1),
@@ -19,7 +21,7 @@ object Day14 : Day<Int> {
     )
 
     private fun String.toEmptyCave(): Cave = lines()
-        .flatMap { it.split(" -> ").map(Point::of).zipWithNext { a, b -> a lineTo b } }
+        .flatMap { line -> line.split(" -> ").map { it.toPoint() }.zipWithNext { a, b -> a lineTo b } }
         .flatten()
         .toPersistentHashSet()
 

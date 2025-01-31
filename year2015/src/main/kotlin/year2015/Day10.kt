@@ -1,8 +1,9 @@
 package year2015
 
 import framework.Day
+import util.nth
 
-object Day10 : Day<Int> {
+object Day10 : Day {
     private fun next(it: String) = buildString {
         (it + 'x').fold(0 to it.first()) { (count, current), next ->
             if (current == next) {
@@ -14,7 +15,7 @@ object Day10 : Day<Int> {
         }
     }
 
-    private fun String.generate(turns: Int) = generateSequence(this, ::next).drop(turns).first().length
+    private fun String.generate(turns: Int) = generateSequence(this, ::next).nth(turns).length
 
     override fun part1(input: String) = input.generate(40)
 

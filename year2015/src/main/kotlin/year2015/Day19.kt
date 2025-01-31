@@ -2,11 +2,12 @@ package year2015
 
 import framework.Day
 import util.EMPTY_LINE
+import util.drain
 import util.priorityQueueOf
 
 typealias Rules = List<Pair<String, List<String>>>
 
-object Day19 : Day<Int> {
+object Day19 : Day {
     private fun String.toMedicine() = split(EMPTY_LINE).last()
 
     private fun String.toRules(reversed: Boolean): Rules = split(EMPTY_LINE).first().lines()
@@ -14,17 +15,16 @@ object Day19 : Day<Int> {
         .groupBy { it.first }
         .map { (k, v) -> k to v.map { it.second } }
 
-    private fun String.nextMolecules(rules: Rules): List<String> = rules.flatMap { (key, values) ->
+    private fun String.nextMolecules(rules: Rules): Set<String> = rules.flatMap { (key, values) ->
         key.toRegex().findAll(this).flatMap { match -> values.map { this.replaceRange(match.range, it) } }
-    }.distinct()
+    }.toSet()
 
     private fun aStar(rules: Rules, start: String): Int {
         val goal = "e"
         val queue = priorityQueueOf(start to 0) { it.second }
         val visited = mutableMapOf(start to 0)
 
-        while (queue.isNotEmpty()) {
-            val (current, _) = queue.poll()
+        queue.drain { (current) ->
             val cost = visited.getValue(current)
             if (current == goal) return cost
             val nextCost = cost + 1
@@ -33,7 +33,7 @@ object Day19 : Day<Int> {
                 if (next !in visited || nextCost < visited.getValue(next)) {
                     visited[next] = nextCost
                     val priority = nextCost + next.length
-                    queue.offer(next to priority)
+                    queue += next to priority
                 }
             }
         }

@@ -7,7 +7,7 @@ import kotlin.reflect.full.memberProperties
 import kotlin.test.assertEquals
 
 @DisplayNameGeneration(FullyQualified::class)
-abstract class DayTest(private val day: Day<*>, init: TestSpecBuilder.() -> Unit) {
+abstract class DayTest(private val day: Day, init: TestSpecBuilder.() -> Unit) {
     private val test = test(init)
     private val dayNum = day.javaClass.name.substringAfter("Day").toInt()
 
@@ -18,7 +18,7 @@ abstract class DayTest(private val day: Day<*>, init: TestSpecBuilder.() -> Unit
         notNullProperties.map { (name, value) ->
             DynamicTest.dynamicTest(name) {
                 val input = resourceAsText("/day${dayNum}/${name}.txt")
-                assertEquals(value, part(input))
+                assertEquals(value.toString(), part(input).toString())
             }
         }
 

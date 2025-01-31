@@ -3,18 +3,17 @@ package year2015
 import framework.Day
 import kotlinx.collections.immutable.*
 import util.dequeOf
-import util.pop
-import util.push
+import util.drain
 
-object Day22 : Day<Int> {
+object Day22 : Day {
     private val spells = persistentListOf(MagicMissile, Drain, Shield, Poison, Recharge)
 
     sealed class Spell(val cost: Int, val duration: Int)
-    object MagicMissile : Spell(53, 1)
-    object Drain : Spell(73, 1)
-    object Shield : Spell(113, 6)
-    object Poison : Spell(173, 6)
-    object Recharge : Spell(229, 5)
+    data object MagicMissile : Spell(53, 1)
+    data object Drain : Spell(73, 1)
+    data object Shield : Spell(113, 6)
+    data object Poison : Spell(173, 6)
+    data object Recharge : Spell(229, 5)
 
     data class State(
         val you: Int, val mana: Int, val spent: Int, val armor: Int,
@@ -26,7 +25,7 @@ object Day22 : Day<Int> {
     private fun String.fight(hard: Boolean): Int {
         val (hp, damage) = lines().map { line -> line.filter { it.isDigit() }.toInt() }
         val initial = State(50, 500, 0, 0, hp, damage, persistentHashMapOf(), false)
-        val stack = dequeOf(initial)
+        val queue = dequeOf(initial)
         var best = Int.MAX_VALUE
 
         fun State.effect(spell: Spell) = when (spell) {
@@ -55,17 +54,14 @@ object Day22 : Day<Int> {
             if (bossTurn) listOf(bossAttacks())
             else (spells - active.keys).filter { it.cost < mana }.map { youCast(it) }
 
-        while (stack.isNotEmpty()) {
-            stack.pop()
-                .let { if (hard) it.hard() else it }
+        queue.drain {
+            (if (hard) it.hard() else it)
                 .applyEffects()
                 .run {
                     when {
                         bossWins() || !canBeatBest() -> Unit
                         youWin() -> best = minOf(best, spent)
-                        else -> nextStates().forEach {
-                            stack.push(it)
-                        }
+                        else -> nextStates().forEach(queue::add)
                     }
                 }
         }

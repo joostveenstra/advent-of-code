@@ -6,8 +6,10 @@ import kotlinx.collections.immutable.persistentHashMapOf
 import kotlinx.collections.immutable.plus
 import util.ORIGIN
 import util.Point
+import util.allNeighbours
+import util.manhattan
 
-object Day3 : Day<Int> {
+object Day3 : Day {
     private val start = ORIGIN
 
     private fun Int.toPosition(): Point {
@@ -30,7 +32,7 @@ object Day3 : Day<Int> {
         val target = input.toInt()
         tailrec fun find(n: Int, memory: PersistentMap<Point, Int>): Int {
             val point = n.toPosition()
-            val sum = point.neighbours.sumOf { memory.getOrDefault(it, 0) }
+            val sum = point.allNeighbours.sumOf { memory.getOrDefault(it, 0) }
             return if (sum > target) sum else find(n + 1, memory + (point to sum))
         }
         return find(2, persistentHashMapOf(start to 1))

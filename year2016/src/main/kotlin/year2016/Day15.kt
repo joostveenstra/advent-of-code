@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import util.allInts
 
-object Day15 : Day<Int> {
+object Day15 : Day {
     data class Disc(val id: Int, val size: Int, val offset: Int)
 
     private fun Disc.pass(time: Int) = (time + id + offset) % size == 0

@@ -3,7 +3,7 @@ package year2018
 import framework.Day
 import util.match
 
-object Day7 : Day<Any> {
+object Day7 : Day {
     private fun String.toInstructions() = lines().run {
         val regex = "Step (\\w) must be finished before step (\\w) can begin.".toRegex()
         fold(mapOf<String, List<String>>()) { steps, line ->

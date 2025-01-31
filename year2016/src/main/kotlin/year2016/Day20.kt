@@ -2,7 +2,7 @@ package year2016
 
 import framework.Day
 
-object Day20 : Day<UInt> {
+object Day20 : Day {
     private fun String.toRanges() = lines().map {
         it.split('-').let { (first, last) -> first.toUInt()..last.toUInt() }
     }

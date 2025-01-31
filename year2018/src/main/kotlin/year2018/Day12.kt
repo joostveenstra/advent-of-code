@@ -1,8 +1,9 @@
 package year2018
 
 import framework.Day
+import util.nth
 
-object Day12 : Day<Any> {
+object Day12 : Day {
     private fun String.toPlantsRules() = lines().run {
         val plants = first().asSequence().drop(15).withIndex().filter { it.value == '#' }.map { it.index }.toSet()
         val rules = drop(2).filter { it.last() == '#' }.map { it.take(5) }.toSet()
@@ -18,7 +19,7 @@ object Day12 : Day<Any> {
 
     override fun part1(input: String): Int {
         val (plants, rules) = input.toPlantsRules()
-        return generateSequence(plants) { it.step(rules) }.drop(20).first().sum()
+        return generateSequence(plants) { it.step(rules) }.nth(20).sum()
     }
 
     override fun part2(input: String): Long {

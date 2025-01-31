@@ -2,7 +2,7 @@ package year2017
 
 import framework.Day
 
-object Day17 : Day<Int> {
+object Day17 : Day {
     override fun part1(input: String): Int {
         val steps = input.toInt()
         val buffer = mutableListOf(0)

@@ -2,7 +2,7 @@ package year2022
 
 import framework.Day
 
-object Day25 : Day<String> {
+object Day25 : Day {
     private fun String.fromSnafu(): Long =
         fold(0L) { total, char ->
             (5 * total) + when (char) {

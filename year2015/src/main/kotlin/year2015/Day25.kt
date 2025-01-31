@@ -4,7 +4,7 @@ import framework.Day
 import util.Point
 import util.allInts
 
-object Day25 : Day<Int> {
+object Day25 : Day {
     private fun String.toPosition() = allInts().toList().let { (y, x) -> Point(x, y) }
 
     private fun Point.diagonalIndex(): Int {

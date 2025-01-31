@@ -3,7 +3,7 @@ package year2022
 import framework.Day
 import util.*
 
-object Day19 : Day<Int> {
+object Day19 : Day {
     data class Resources(val ore: Int = 0, val clay: Int = 0, val obsidian: Int = 0, val geode: Int = 0) {
         operator fun plus(other: Resources) = Resources(ore + other.ore, clay + other.clay, obsidian + other.obsidian, geode + other.geode)
         operator fun minus(other: Resources) = Resources(ore - other.ore, clay - other.clay, obsidian - other.obsidian, geode - other.geode)
@@ -58,8 +58,8 @@ object Day19 : Day<Int> {
                 if (bots.ore < maxOf(clayCost.ore, obsidianCost.ore, geodeCost.ore)) yield(buildBot(oreBot, oreCost))
             }
 
-            while (stack.isNotEmpty()) {
-                with(stack.pop()) {
+            stack.drain { state ->
+                with(state) {
                     best = maxOf(best, resources.geode)
                     if (!isEnd() && canBeatBest()) nextStates().forEach { stack.push(it) }
                 }

@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day1 : Day<Int> {
+object Day1 : Day {
     private fun Char.direction() = if (this == '(') 1 else -1
 
     override fun part1(input: String) = input.fold(0) { floor, char -> floor + char.direction() }

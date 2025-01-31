@@ -2,8 +2,9 @@ package year2022
 
 import framework.Day
 import util.Point
+import util.cardinalNeighbours
 
-object Day24 : Day<Int> {
+object Day24 : Day {
     private val start = Point(1, 0)
 
     private fun parse(input: String): Pair<Point, (Set<Point>, Point, Int) -> Int> {

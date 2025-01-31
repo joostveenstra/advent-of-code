@@ -1,9 +1,10 @@
 package year2022
 
 import framework.Day
+import util.allDistinct
 
-object Day6: Day<Int> {
-    private fun String.findMarker(size: Int) = asSequence().windowed(size).indexOfFirst { it.distinct().size == size } + size
+object Day6: Day {
+    private fun String.findMarker(size: Int) = asSequence().windowed(size).indexOfFirst { it.allDistinct() } + size
 
     override fun part1(input: String) = input.findMarker(4)
 

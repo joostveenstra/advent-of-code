@@ -4,14 +4,14 @@ import framework.Day
 import util.findAll
 import util.lcm
 
-object Day8 : Day<Long> {
+object Day8 : Day {
     data class Node(val left: String, val right: String)
 
     private fun parse(input: String): Pair<String, Map<String, Node>> = with(input.lines()) {
         val moves = first()
         val nodes = drop(2).associate { line ->
-            line.findAll("\\w+".toRegex()).map { it.value }.toList().let { (node, left, right) ->
-                node to Node(left, right)
+            line.findAll("\\w+".toRegex()).map { it.value }.toList().let { (key, left, right) ->
+                key to Node(left, right)
             }
         }
         moves to nodes

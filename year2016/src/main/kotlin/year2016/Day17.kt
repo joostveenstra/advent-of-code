@@ -5,11 +5,11 @@ import util.*
 import java.security.MessageDigest
 import java.util.*
 
-object Day17 : Day<Any> {
+object Day17 : Day {
     private val start = ORIGIN
     private val goal = Point(3, 3)
 
-    private val directions = listOf('U', 'D', 'L', 'R').map { it to Point.of(it) }
+    private val directions = "UDLR".map { it to it.toDirection() }
 
     private val md5 = MessageDigest.getInstance("MD5")
 
@@ -21,8 +21,7 @@ object Day17 : Day<Any> {
         val stack = dequeOf(start to "")
         val paths = mutableListOf<String>()
 
-        while (stack.isNotEmpty()) {
-            val (chamber, path) = stack.pop()
+        stack.drain { (chamber, path) ->
             if (chamber == goal) paths += path
             else directions.asSequence()
                 .zip((passcode + path).toMd5().asSequence())

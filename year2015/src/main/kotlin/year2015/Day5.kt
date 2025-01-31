@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day5 : Day<Int> {
+object Day5 : Day {
     override fun part1(input: String): Int {
         val vowels = "[aeiou].*[aeiou].*[aeiou]".toRegex()
         val pair = "(.)\\1".toRegex()

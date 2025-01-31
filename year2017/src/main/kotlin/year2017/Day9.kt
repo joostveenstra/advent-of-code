@@ -2,7 +2,7 @@ package year2017
 
 import framework.Day
 
-object Day9 : Day<Int> {
+object Day9 : Day {
     data class State(val depth: Int = 1, val score: Int = 0, val ignore: Boolean = false, val garbage: Boolean = false, val characters: Int = 0) {
         fun next(c: Char) = when {
             ignore -> copy(ignore = false)

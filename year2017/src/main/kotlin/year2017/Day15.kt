@@ -3,7 +3,7 @@ package year2017
 import framework.Day
 import util.allInts
 
-object Day15 : Day<Int> {
+object Day15 : Day {
     private fun String.toGenerators() = allInts().map { it.toLong() }.toList().let { (a, b) ->
         generator(a, 16807) to generator(b, 48271)
     }

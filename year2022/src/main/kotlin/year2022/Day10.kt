@@ -3,7 +3,7 @@ package year2022
 import framework.Day
 import kotlin.math.absoluteValue
 
-object Day10 : Day<Any> {
+object Day10 : Day {
     private fun String.toSignalStrengths() = split("\\s+".toRegex()).map { it.toIntOrNull() ?: 0 }.scan(1, Int::plus)
 
     override fun part1(input: String) = input.toSignalStrengths().let { signalStrengths ->

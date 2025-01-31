@@ -5,7 +5,7 @@ import kotlin.math.floor
 import kotlin.math.log
 import kotlin.math.pow
 
-object Day19 : Day<Int> {
+object Day19 : Day {
     override fun part1(input: String): Int {
         val elves = input.toInt()
         return ((elves - elves.takeHighestOneBit()) shl 1) + 1

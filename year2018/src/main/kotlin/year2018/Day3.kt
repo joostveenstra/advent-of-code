@@ -4,7 +4,7 @@ import framework.Day
 import util.Point
 import util.allInts
 
-object Day3 : Day<Int> {
+object Day3 : Day {
     private fun parse(input: String) = input.lineSequence().run {
         val claims = map { line ->
             val (_, left, top, width, height) = line.allInts().toList()

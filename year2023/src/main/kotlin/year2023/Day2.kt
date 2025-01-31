@@ -2,7 +2,7 @@ package year2023
 
 import framework.Day
 
-object Day2 : Day<Int> {
+object Day2 : Day {
     data class Game(val red: Int, val green: Int, val blue: Int) {
         fun isPossible() = red <= 12 && green <= 13 && blue <= 14
         fun power() = red * green * blue

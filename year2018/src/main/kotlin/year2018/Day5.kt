@@ -2,7 +2,7 @@ package year2018
 
 import framework.Day
 
-object Day5 : Day<Int> {
+object Day5 : Day {
     private infix fun Char.reactsWith(other: Char) = this.lowercaseChar() == other.lowercaseChar() && (this != other)
 
     private fun String.react(): Int {

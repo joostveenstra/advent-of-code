@@ -1,9 +1,9 @@
 package year2015
 
 import framework.Day
-import util.combinations
+import util.pairs
 
-object Day21 : Day<Int> {
+object Day21 : Day {
     private val none = Item(0, 0, 0)
     private val weapons = listOf(
         Item(8, 4, 0),
@@ -29,7 +29,7 @@ object Day21 : Day<Int> {
         Item(20, 0, 1),
         Item(40, 0, 2),
         Item(80, 0, 3)
-    ).combinations(2).map { (a, b) -> a + b }
+    ).pairs().map { (a, b) -> a + b }
 
     private val equipment = buildList { for (weapon in weapons) for (armor in armors) for (pairOfRings in rings) add(weapon + armor + pairOfRings) }
 

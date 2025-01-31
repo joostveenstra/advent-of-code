@@ -3,7 +3,7 @@ package year2022
 import framework.Day
 import util.productOf
 
-object Day13 : Day<Int> {
+object Day13 : Day {
     data class Packet(val value: String) : Comparable<Packet> {
         override fun compareTo(other: Packet): Int {
             val left = this.value

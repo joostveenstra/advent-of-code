@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version "2.1.10"
 }
 
 allprojects {
@@ -16,8 +14,8 @@ allprojects {
 subprojects {
     apply(plugin = "kotlin")
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+    kotlin {
+        jvmToolchain(17)
     }
 
     tasks.test {

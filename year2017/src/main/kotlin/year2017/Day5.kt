@@ -2,7 +2,7 @@ package year2017
 
 import framework.Day
 
-object Day5 : Day<Int> {
+object Day5 : Day {
     private fun String.toInstructions() = lines().map { it.toInt() }.toMutableList()
 
     private tailrec fun MutableList<Int>.execute(index: Int, steps: Int, jump: (Int) -> Int): Int =

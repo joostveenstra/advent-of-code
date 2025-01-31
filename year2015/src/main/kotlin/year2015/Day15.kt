@@ -5,7 +5,7 @@ import util.allInts
 import util.product
 import util.transpose
 
-object Day15 : Day<Int> {
+object Day15 : Day {
     private fun String.toRecipes(): List<List<Int>> {
         val ingredients = lines().map { it.allInts().toList() }
         fun range(offset: Int) = 0..100 - offset

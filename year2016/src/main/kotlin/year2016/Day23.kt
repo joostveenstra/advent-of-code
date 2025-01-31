@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import kotlinx.collections.immutable.*
 
-object Day23 : Day<Int> {
+object Day23 : Day {
     sealed interface Instruction
     data class Cpy(val from: String, val to: String) : Instruction
     data class Inc(val to: String) : Instruction

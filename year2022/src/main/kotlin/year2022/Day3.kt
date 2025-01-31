@@ -2,7 +2,7 @@ package year2022
 
 import framework.Day
 
-object Day3 : Day<Int> {
+object Day3 : Day {
     private fun Char.priority() = if (isUpperCase()) this - 'A' + 27 else this - 'a' + 1
 
     private fun List<String>.commonItem() = map { it.toSet() }.reduce { a, b -> a intersect b }.first()

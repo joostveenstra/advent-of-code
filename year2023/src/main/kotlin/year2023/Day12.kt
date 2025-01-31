@@ -2,7 +2,7 @@ package year2023
 
 import framework.Day
 
-object Day12 : Day<Long> {
+object Day12 : Day {
     private fun String.toRows(multiplier: Int) = lines().map { line ->
         line.split(' ').let { (left, right) ->
             val springs = List(multiplier) { left }.joinToString("?")

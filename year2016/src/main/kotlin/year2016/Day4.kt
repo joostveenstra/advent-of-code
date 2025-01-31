@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import util.match
 
-object Day4 : Day<Int?> {
+object Day4 : Day {
     data class Room(val name: String, val id: Int, val checksum: String)
 
     private fun String.toRooms() = lines().map { line ->

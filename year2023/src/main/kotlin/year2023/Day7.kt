@@ -2,7 +2,7 @@ package year2023
 
 import framework.Day
 
-object Day7 : Day<Int> {
+object Day7 : Day {
     enum class Type { HIGH_CARD, ONE_PAIR, TWO_PAIR, THREE_OF_A_KIND, FULL_HOUSE, FOUR_OF_A_KIND, FIVE_OF_A_KIND }
 
     data class Hand(val cards: List<Int>, val type: Type, val bid: Int) : Comparable<Hand> {

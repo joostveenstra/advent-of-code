@@ -3,7 +3,7 @@ package year2023
 import framework.Day
 import util.allInts
 
-object Day9 : Day<Int> {
+object Day9 : Day {
     private fun String.toReport() = lines().map { it.allInts().toList() }
 
     private fun List<Int>.extrapolate() = generateSequence(this) { it.zipWithNext { a, b -> b - a } }

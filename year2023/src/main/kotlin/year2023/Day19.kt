@@ -3,7 +3,7 @@ package year2023
 import framework.Day
 import util.EMPTY_LINE
 
-object Day19 : Day<Long> {
+object Day19 : Day {
     sealed interface Rule {
         val next: String
     }

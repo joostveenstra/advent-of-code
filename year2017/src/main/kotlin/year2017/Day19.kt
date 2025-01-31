@@ -3,19 +3,15 @@ package year2017
 import framework.Day
 import util.*
 
-object Day19 : Day<Any> {
-    private val horizontal = listOf(LEFT, RIGHT)
-    private val vertical = listOf(UP, DOWN)
-
-    private fun String.walk() = lines().let { grid ->
-        tailrec fun next(position: Point, direction: Point, path: List<Char>, steps: Int): Pair<String, Int> {
-            fun grid(p: Point) = grid[p.y][p.x]
+object Day19 : Day {
+    private fun String.walk() = with(toCharGrid()) {
+        tailrec fun next(position: Point, direction: Direction, path: List<Char>, steps: Int): Pair<String, Int> {
             val nextPosition = position + direction
-            return when (val value = grid(nextPosition)) {
+            return when (val value = get(nextPosition)) {
                 ' ' -> path.joinToString("") to steps
                 '+' -> {
-                    val (first, second) = if (direction in horizontal) vertical else horizontal
-                    val nextDirection = if (grid(nextPosition + first) != ' ') first else second
+                    val (first, second) = if (direction.isHorizontal) vertical else horizontal
+                    val nextDirection = if (get(nextPosition + first) != ' ') first else second
                     next(nextPosition, nextDirection, path, steps + 1)
                 }
 
@@ -26,7 +22,7 @@ object Day19 : Day<Any> {
             }
         }
 
-        val start = Point(grid.first().indexOf('|'), -1)
+        val start = Point(indexOf('|'), -1)
         next(start, DOWN, listOf(), 0)
     }
 

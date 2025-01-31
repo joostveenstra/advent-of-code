@@ -4,7 +4,7 @@ import framework.Day
 import util.Point
 import util.allInts
 
-object Day8 : Day<Any> {
+object Day8 : Day {
     sealed interface Operation
     data class Rect(val width: Int, val height: Int) : Operation
     data class Row(val row: Int, val offset: Int) : Operation

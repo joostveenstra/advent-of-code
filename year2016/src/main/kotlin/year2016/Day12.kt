@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentHashMapOf
 import kotlinx.collections.immutable.plus
 
-object Day12 : Day<Int> {
+object Day12 : Day {
     sealed interface Instruction
     data class Cpy(val from: String, val to: String) : Instruction
     data class Inc(val to: String) : Instruction

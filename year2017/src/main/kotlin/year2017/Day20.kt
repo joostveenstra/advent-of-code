@@ -1,10 +1,9 @@
 package year2017
 
 import framework.Day
-import util.Point3D
-import util.allInts
+import util.*
 
-object Day20 : Day<Int> {
+object Day20 : Day {
     private val goal = Point3D(0, 0, 0)
 
     data class Particle(val position: Point3D, val velocity: Point3D, val acceleration: Point3D) {
@@ -17,9 +16,9 @@ object Day20 : Day<Int> {
     }
 
     override fun part1(input: String) = generateSequence(input.toParticles()) { particles -> particles.map { it.next() } }
-        .drop(500).first().withIndex().minBy { it.value.position.manhattan(goal) }.index
+        .nth(500).withIndex().minBy { it.value.position.manhattan(goal) }.index
 
     override fun part2(input: String) = generateSequence(input.toParticles()) { particles ->
         particles.map { it.next() }.groupBy { it.position }.values.filter { it.size == 1 }.flatten()
-    }.drop(500).first().size
+    }.nth(500).size
 }

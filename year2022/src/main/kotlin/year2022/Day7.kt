@@ -6,7 +6,7 @@ import util.peek
 import util.pop
 import util.push
 
-object Day7 : Day<Int> {
+object Day7 : Day {
     class Directory(val subDirs: MutableList<Directory> = mutableListOf(), var fileSizes: Int = 0) {
         val size: Int
             get() = fileSizes + subDirs.sumOf { it.size }

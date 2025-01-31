@@ -3,10 +3,10 @@ package year2022
 import framework.Day
 import kotlinx.collections.immutable.*
 import util.dequeOf
-import util.pop
+import util.drain
 import util.push
 
-object Day16 : Day<Int> {
+object Day16 : Day {
     data class Valve(val flow: Int, val neighbours: List<String>)
 
     data class State(val todo: PersistentSet<String>, val visited: PersistentSet<String>, val from: String, val time: Int, val pressure: Int)
@@ -27,10 +27,9 @@ object Day16 : Day<Int> {
         val queue = dequeOf(root)
         val visited = mutableMapOf(root to 1)
 
-        while (queue.isNotEmpty()) {
-            val valve = queue.removeFirst()
+        queue.drain { valve ->
             getValue(valve).neighbours.filterNot { it in visited }.forEach { next ->
-                queue.addLast(next)
+                queue += next
                 visited[next] = visited.getValue(valve) + 1
             }
         }
@@ -44,8 +43,7 @@ object Day16 : Day<Int> {
         val stack = dequeOf(initial)
         val maxPressure = mutableMapOf<Set<String>, Int>().withDefault { 0 }
 
-        while (stack.isNotEmpty()) {
-            val (todo, visited, from, time, pressure) = stack.pop()
+        stack.drain { (todo, visited, from, time, pressure) ->
             maxPressure[visited] = maxOf(maxPressure.getValue(visited), pressure)
             for (next in todo) {
                 val remaining = time - paths.getValue(from).getValue(next)
@@ -63,11 +61,11 @@ object Day16 : Day<Int> {
 
     override fun part2(input: String): Int {
         val subSetsMax = determineSubSetsMaxPressure(input, 26)
-        val disjoint = sequence {
+        val disjoint = buildList {
             for ((you, youPressure) in subSetsMax)
                 for ((elephant, elephantPressure) in subSetsMax)
                     if ((you intersect elephant).isEmpty())
-                        yield(youPressure + elephantPressure)
+                        add(youPressure + elephantPressure)
         }
         return disjoint.max()
     }

@@ -4,7 +4,7 @@ import framework.Day
 import kotlinx.collections.immutable.*
 import util.allInts
 
-object Day6 : Day<Int> {
+object Day6 : Day {
     data class State(val banks: PersistentList<Int>, val seen: PersistentMap<Int, Int> = persistentHashMapOf(), val cycles: Int = 0)
 
     private fun State.next(): State {

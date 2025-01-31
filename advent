@@ -5,19 +5,19 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-JAVA_OPTS=\
-"-Dhttp.proxyHost=proxy2.keylane.local "\
-"-Dhttp.proxyPort=3128 "\
-"-Dhttp.nonProxyHosts=*.keylane* "\
-"-Dhttps.proxyHost=proxy2.keylane.local "\
-"-Dhttps.proxyPort=3128"
+#JAVA_OPTS=\
+#"-Dhttp.proxyHost=proxy2.keylane.local "\
+#"-Dhttp.proxyPort=3128 "\
+#"-Dhttp.nonProxyHosts=*.keylane* "\
+#"-Dhttps.proxyHost=proxy2.keylane.local "\
+#"-Dhttps.proxyPort=3128"
 
 CLASSPATH=\
 C:/git/advent-of-code/cli/build/classes/kotlin/main\;\
-C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.9.21/17ee3e873d439566c7d8354403b5f3d9744c4c9c/kotlin-stdlib-1.9.21.jar\;\
+C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.0.20/7388d355f7cceb002cd387ccb7ab3850e4e0a07f/kotlin-stdlib-2.0.20.jar\;\
 C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/com.github.ajalt.clikt/clikt-jvm/3.5.2/c2260b9cd50ee1a2c68936b72235b19e001cf8c1/clikt-jvm-3.5.2.jar\;\
 C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar\;\
 C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.8.10/7c002ac41f547a82e81dfebd2a20577a738dbf3f/kotlin-stdlib-jdk8-1.8.10.jar\;\
 C:/Users/jveenstr/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.8.10/cb726a23c808a850a43e7d6b9d1ba91b02fe9f05/kotlin-stdlib-jdk7-1.8.10.jar
 
-$JAVA_HOME/bin/java $JAVA_OPTS -cp $CLASSPATH CliKt "$@"
+"$JAVA_HOME"/bin/java $JAVA_OPTS -cp $CLASSPATH CliKt "$@"

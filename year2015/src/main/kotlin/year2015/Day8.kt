@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day8 : Day<Int> {
+object Day8 : Day {
     override fun part1(input: String) = input.lines().sumOf { line ->
         line.length - line.drop(1).dropLast(1)
             .replace("\\\\", "a")

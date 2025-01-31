@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashMap
 import util.*
 
-object Day22 : Day<Int> {
+object Day22 : Day {
     private val end = ORIGIN
 
     data class Node(val used: Int, val avail: Int) {
@@ -56,15 +56,14 @@ object Day22 : Day<Int> {
         val queue = priorityQueueOf(initial to 0) { it.second }
         val cost = mutableMapOf(initial to 0)
 
-        while (queue.isNotEmpty()) {
-            val (state, _) = queue.poll()
+        queue.drain { (state) ->
             if (state.isEnd()) return cost.getValue(state)
             val nextCost = cost.getValue(state) + 1
             state.next().forEach { next ->
                 if (next !in cost || nextCost < cost.getValue(next)) {
                     cost[next] = nextCost
                     val priority = nextCost + next.heuristic()
-                    queue.offer(next to priority)
+                    queue += next to priority
                 }
             }
         }
@@ -72,7 +71,7 @@ object Day22 : Day<Int> {
         error("This should never happen")
     }
 
-    override fun part1(input: String) = input.toGrid().values.toList().combinations(2).count { (a, b) -> !a.isEmpty() && b accepts a || !b.isEmpty() && a accepts b }
+    override fun part1(input: String) = input.toGrid().values.toList().pairs().count { (a, b) -> !a.isEmpty() && b accepts a || !b.isEmpty() && a accepts b }
 
     override fun part2(input: String) = input.toGrid().minimizeSteps()
 }

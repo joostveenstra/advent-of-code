@@ -8,11 +8,11 @@ import kotlin.math.absoluteValue
  * Uses https://en.wikipedia.org/wiki/Shoelace_formula to calculate the area enclosed by the loop
  * and https://en.wikipedia.org/wiki/Pick%27s_theorem to calculate the amount of points inside that area
  */
-object Day10 : Day<Int> {
+object Day10 : Day {
     private fun determinant(a: Point, b: Point) = a.x * b.y - a.y * b.x
 
-    private fun Grid<Char>.walk(): Pair<Int, Int> {
-        tailrec fun step(position: Point, direction: Point, area: Int, steps: Int): Pair<Int, Int> {
+    private fun CharGrid.walk(): Pair<Int, Int> {
+        tailrec fun step(position: Point, direction: Direction, area: Int, steps: Int): Pair<Int, Int> {
             val nextPosition = position + direction
             val determinant = determinant(position, nextPosition)
             val nextDirection = when (get(nextPosition)) {
@@ -26,8 +26,8 @@ object Day10 : Day<Int> {
             return step(nextPosition, nextDirection, area + determinant, steps + 1)
         }
 
-        val start = find('S')
-        val direction = if (safeGet(start + NORTH) in listOf('|', '7', 'F')) NORTH else SOUTH
+        val start = findPoint('S')
+        val direction = if (getOrNull(start + NORTH) in listOf('|', '7', 'F')) NORTH else SOUTH
         return step(start, direction, 0, 1)
     }
 

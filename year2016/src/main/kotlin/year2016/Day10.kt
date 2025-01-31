@@ -4,7 +4,7 @@ import framework.Day
 import util.match
 import util.product
 
-object Day10 : Day<Int> {
+object Day10 : Day {
     data class State(val todo: Map<String, Set<Int>>, val done: Map<String, Set<Int>>, val lows: Map<String, String>, val highs: Map<String, String>)
 
     private fun String.toInitial(): State {

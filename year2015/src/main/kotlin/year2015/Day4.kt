@@ -3,7 +3,7 @@ package year2015
 import framework.Day
 import java.security.MessageDigest
 
-object Day4 : Day<Int> {
+object Day4 : Day {
     private val md5 = MessageDigest.getInstance("MD5")
 
     private fun String.toMd5() = md5.digest(toByteArray())

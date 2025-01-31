@@ -3,7 +3,7 @@ package year2017
 import framework.Day
 import kotlin.math.absoluteValue
 
-object Day11 : Day<Int> {
+object Day11 : Day {
     data class Hex(val q: Int, val r: Int) {
         private val s: Int get() = -q - r
         fun distance() = maxOf(q.absoluteValue, r.absoluteValue, s.absoluteValue)

@@ -3,7 +3,7 @@ package year2015
 import framework.Day
 import util.allInts
 
-object Day14 : Day<Any> {
+object Day14 : Day {
     data class Reindeer(val speed: Int, val fly: Int, val rest: Int) {
         fun distance(time: Int): Int {
             val total = fly + rest

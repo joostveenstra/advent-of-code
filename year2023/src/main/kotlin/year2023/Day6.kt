@@ -4,7 +4,7 @@ import framework.Day
 import util.allLongs
 import util.productOf
 
-object Day6 : Day<Long> {
+object Day6 : Day {
     private fun race(time: Long, record: Long): Long {
         fun LongProgression.findRecord() = first { hold -> hold * (time - hold) > record }
         val start = (1..time).findRecord()

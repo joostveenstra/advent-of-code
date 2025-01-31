@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class PointTest {
-    private val point = Point.of("1,2")
+    private val point = "1,2".toPoint()
 
     @Test
     fun plus() {
@@ -28,7 +28,7 @@ class PointTest {
                 Point(2, 2), Point(1, 3), Point(0, 2), Point(1, 1),
                 Point(2, 3), Point(0, 3), Point(0, 1), Point(2, 1)
             ),
-            point.neighbours
+            point.allNeighbours
         )
     }
 
@@ -39,11 +39,11 @@ class PointTest {
 
     @Test
     fun turnLeft() {
-        assertEquals(Point(1, 0), Point(0, 1).turnLeft())
+        assertEquals(RIGHT, DOWN.turnLeft())
     }
 
     @Test
     fun turnRight() {
-        assertEquals(Point(-1, 0), Point(0, 1).turnRight())
+        assertEquals(LEFT, DOWN.turnRight())
     }
 }

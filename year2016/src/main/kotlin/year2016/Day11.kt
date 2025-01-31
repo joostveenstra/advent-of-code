@@ -3,9 +3,10 @@ import framework.Day
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import util.dequeOf
+import util.drain
 import util.findAll
 
-object Day11 : Day<Int> {
+object Day11 : Day {
     private val moves = listOf(
         Resources(2, 0),
         Resources(1, 0),
@@ -50,13 +51,12 @@ object Day11 : Day<Int> {
         val queue = dequeOf(initial)
         val visited = mutableMapOf(initial to 0)
 
-        while (queue.isNotEmpty()) {
-            val current = queue.removeFirst()
+        queue.drain { current ->
             val cost = visited.getValue(current) + 1
             current.next().filter { it.isValid() }.forEach { next ->
                 if (next !in visited || cost < visited.getValue(next)) {
                     visited[next] = cost
-                    queue.addLast(next)
+                    queue += next
                 }
             }
         }

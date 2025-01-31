@@ -3,7 +3,7 @@ package year2018
 import framework.Day
 import util.allInts
 
-object Day4 : Day<Int> {
+object Day4 : Day {
     private fun String.toGuards(): Map<Int, Map<Int, Int>> {
         val (guards) = lines().sorted().fold(Triple(mapOf<Int, List<Int>>(), -1, -1)) { (guards, id, start), next ->
             val data = next.allInts().toList()

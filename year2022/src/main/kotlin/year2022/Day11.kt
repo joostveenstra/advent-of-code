@@ -4,12 +4,9 @@ import framework.Day
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentList
-import util.EMPTY_LINE
-import util.allInts
-import util.product
-import util.productOf
+import util.*
 
-object Day11 : Day<Long> {
+object Day11 : Day {
     data class Monkey(
         val items: PersistentList<Long>,
         val operation: (Long) -> Long,
@@ -55,7 +52,7 @@ object Day11 : Day<Long> {
     }
 
     private fun PersistentList<Monkey>.play(rounds: Int, reduceItem: (Long) -> Long): Long =
-        generateSequence(this) { it.round(reduceItem) }.drop(rounds).first().business()
+        generateSequence(this) { it.round(reduceItem) }.nth(rounds).business()
 
     override fun part1(input: String) = input.toMonkeys().play(20) { it / 3 }
 

@@ -3,7 +3,7 @@ package year2015
 import framework.Day
 import util.allInts
 
-object Day12 : Day<Int> {
+object Day12 : Day {
     private val numbers = "(-?\\d+)(.*)".toRegex()
     private val strings = "\"(\\w+)\"(.*)".toRegex()
 

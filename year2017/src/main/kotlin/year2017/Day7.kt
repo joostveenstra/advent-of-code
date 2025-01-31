@@ -2,7 +2,7 @@ package year2017
 
 import framework.Day
 
-object Day7 : Day<Any> {
+object Day7 : Day {
     data class Program(val name: String, val weight: Int, val total: Int, val unbalanced: Boolean, val children: List<Program>)
 
     private fun String.toTower(): Program {

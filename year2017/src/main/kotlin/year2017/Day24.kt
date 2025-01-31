@@ -2,7 +2,7 @@ package year2017
 
 import framework.Day
 
-object Day24 : Day<Int> {
+object Day24 : Day {
     data class Component(val a: Int, val b: Int, val strength: Int) {
         fun matches(n: Int) = n == a || n == b
         fun opposite(n: Int) = if (n == a) b else a

@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import util.transpose
 
-object Day6 : Day<String> {
+object Day6 : Day {
     private fun String.toColumns() = lines().map { it.toList() }.transpose()
 
     private fun List<Char>.frequency() = groupingBy { it }.eachCount().entries.sortedBy { it.value }.map { it.key }

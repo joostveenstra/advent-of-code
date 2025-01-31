@@ -3,7 +3,7 @@ package year2017
 import framework.Day
 import util.match
 
-object Day16 : Day<String> {
+object Day16 : Day {
     private val spin = "s(\\d+)".toRegex()
     private val exchange = "x(\\d+)/(\\d+)".toRegex()
     private val partner = "p(\\w)/(\\w)".toRegex()

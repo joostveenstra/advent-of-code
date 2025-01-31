@@ -2,7 +2,7 @@ package year2022
 
 import framework.Day
 
-object Day21 : Day<Long?> {
+object Day21 : Day {
     sealed interface Monkey {
         companion object {
             fun of(input: String) =

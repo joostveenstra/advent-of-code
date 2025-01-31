@@ -1,67 +1,169 @@
 package util
 
-class Grid<T>(
-    val width: Int,
-    val height: Int,
-    private val elements: MutableList<T>
-) {
-    val xs: IntRange get() = (0..<width)
-    val ys: IntRange get() = (0..<height)
-    val rows: List<List<T>> get() = ys.map(::getRow)
-    val columns: List<List<T>> get() = xs.map(::getColumn)
+fun Pair<Int, Int>.toPoint() = Point(first, second)
+fun Point.toIndex(width: Int) = x + y * width
+fun toPointIndex(x: Int, y: Int, width: Int) = x + y * width
+fun pointFromIndex(index: Int, width: Int) = Point(index % width, index / width)
 
-    val progressions by lazy {
-        mapOf(
-            NORTH to ys.flatMap { y -> xs.map { x -> Point(x, y) } },
-            WEST to xs.flatMap { x -> ys.map { y -> Point(x, y) } },
-            SOUTH to ys.reversed().flatMap { y -> xs.map { x -> Point(x, y) } },
-            EAST to xs.reversed().flatMap { x -> ys.map { y -> Point(x, y) } }
-        )
+interface Plane {
+    val width: Int
+    val height: Int
+
+    fun column(index: Int): List<Point> {
+        require(index in xRange) { "column out of bounds: $index in width $width" }
+        return yRange.map { Point(index, it) }
     }
 
-    operator fun get(p: Point): T = elements[p.y * width + p.x]
+    fun row(index: Int): List<Point> {
+        require(index in yRange) { "row out of bounds: $index in height $height" }
+        return xRange.map { Point(it, index) }
+    }
 
+    fun Point.toIndex() = x + y * width
+    fun toPointIndex(x: Int, y: Int) = x + y * width
+    fun pointFromIndex(index: Int) = Point(index % width, index / width)
+}
+
+val Plane.minX get() = 0
+val Plane.minY get() = 0
+val Plane.maxX get() = width - 1
+val Plane.maxY get() = height - 1
+val Plane.xRange: IntRange get() = (0..<width)
+val Plane.yRange: IntRange get() = (0..<height)
+
+val Plane.rows get() = yRange.map { y -> xRange.map { x -> Point(x, y) } }
+val Plane.columns get() = xRange.map { x -> yRange.map { y -> Point(x, y) } }
+val Plane.points get() = xRange.flatMap { x -> yRange.map { y -> Point(x, y) } }
+val Plane.pointsSequence get() = xRange.asSequence().flatMap { x -> yRange.map { y -> Point(x, y) } }
+val Plane.pointsFlipped get() = yRange.flatMap { y -> xRange.map { x -> Point(x, y) } }
+val Plane.pointsFlippedSequence get() = yRange.asSequence().flatMap { y -> xRange.map { x -> Point(x, y) } }
+
+operator fun Plane.contains(p: Point) = p.x >= 0 && p.x < width && p.y >= 0 && p.y < height
+
+interface GridLike<T> : Plane, Iterable<T> {
+    val elements: List<T>
+
+    fun Point.cardinalElements(): List<T> = cardinalNeighbours.mapNotNull { getOrNull(it) }
+    fun Point.cardinalIndexed(): List<Pair<Point, T>> = cardinalNeighbours.mapNotNull { p -> getOrNull(p)?.let { p to it } }
+    fun Point.diagonalElements(): List<T> = diagonalNeighbours.mapNotNull { getOrNull(it) }
+    fun Point.diagonalIndexed(): List<Pair<Point, T>> = diagonalNeighbours.mapNotNull { p -> getOrNull(p)?.let { p to it } }
+    fun Point.allAdjacentElements(): List<T> = allNeighbours.mapNotNull { getOrNull(it) }
+    fun Point.allAdjacentIndexed(): List<Pair<Point, T>> = allNeighbours.mapNotNull { p -> getOrNull(p)?.let { p to it } }
+}
+
+val <T> GridLike<T>.entries get() = points.map { it to get(it) }
+
+fun <T> GridLike<T>.rowValues(y: Int) = (y * width).let { offset -> elements.slice(offset..<offset + width) }
+fun <T> GridLike<T>.columnValues(x: Int) = yRange.map { y -> elements[toPointIndex(x, y)] }
+
+val <T> GridLike<T>.rowsValues get() = yRange.map { rowValues(it) }
+val <T> GridLike<T>.columnsValues get() = xRange.map { columnValues(it) }
+
+operator fun <T> GridLike<T>.get(p: Point): T = getOrNull(p) ?: throw NoSuchElementException("Key $p is missing in the grid.")
+fun <T> GridLike<T>.getOrNull(p: Point): T? = if (p in this) elements[p.toIndex()] else null
+
+fun <T> GridLike<T>.findPoint(value: T): Point = elements.indexOf(value).let { index ->
+    if (index >= 0) pointFromIndex(index)
+    else throw NoSuchElementException("Element not found in grid.")
+}
+
+fun <T> GridLike<T>.findPoints(value: T): List<Point> = findPointsBy { it == value }
+
+inline fun <T> GridLike<T>.findPointsBy(predicate: (T) -> Boolean) = elements.indices.filter { predicate(elements[it]) }.map { pointFromIndex(it) }
+
+typealias BooleanGrid = GridLike<Boolean>
+typealias MutableBooleanGrid = MutableGrid<Boolean>
+typealias IntGrid = GridLike<Int>
+typealias MutableIntGrid = MutableGrid<Int>
+typealias CharGrid = GridLike<Char>
+typealias MutableCharGrid = MutableGrid<Char>
+
+data class Grid<T>(
+    override val width: Int,
+    override val height: Int,
+    override val elements: List<T>
+) : List<T> by elements, GridLike<T>
+
+data class MutableGrid<T>(
+    override val width: Int,
+    override val height: Int,
+    override val elements: MutableList<T>
+) : MutableList<T> by elements, GridLike<T> {
     operator fun set(p: Point, value: T) {
-        elements[p.y * width + p.x] = value
-    }
-
-    operator fun contains(p: Point): Boolean = p.x >= 0 && p.x < width && p.y >= 0 && p.y < height
-
-    fun safeGet(p: Point): T? = if (p in this) get(p) else null
-
-    fun getRow(y: Int): List<T> = (y * width).let { offset -> elements.slice(offset..<offset + width) }
-
-    fun getColumn(x: Int): List<T> = ys.map { y -> elements[y * width + x] }
-
-    private fun translate(index: Int): Point {
-        val x = index % width
-        val y = index / width
-        return Point(x, y)
-    }
-
-    fun find(value: T): Point = elements.indexOf(value).let { index ->
-        if (index >= 0) translate(index)
-        else throw NoSuchElementException("Item not found in grid.")
-    }
-
-    fun findAll(value: T): List<Point> = elements.indices.filter { elements[it] == value }.map(::translate)
-
-    fun swap(a: Point, b: Point) {
-        val tmp = this[a]
-        this[a] = this[b]
-        this[b] = tmp
-    }
-
-    companion object {
-        fun <T> of(input: String, transform: (Char) -> T): Grid<T> {
-            val raw = input.lines()
-            val width = raw[0].length
-            val height = raw.size
-            val elements = raw.flatMap { it.map(transform) }.toMutableList()
-            return Grid(width, height, elements)
-        }
+        this[p.toIndex()] = value
     }
 }
 
-fun String.toCharGrid() = Grid.of(this) { it }
-fun String.toIntGrid() = Grid.of(this) { it.digitToInt() }
+inline fun <T> List<String>.toGrid(transform: (Char) -> T) = Grid(
+    width = first().length,
+    height = size,
+    elements = flatMap { it.map(transform) }
+)
+
+inline fun <T> List<String>.toMutableGrid(transform: (Char) -> T) = toGrid(transform).toMutableGrid()
+
+fun <T> GridLike<T>.toGrid() = Grid(width, height, elements.toList())
+fun <T> GridLike<T>.toMutableGrid() = MutableGrid(width, height, elements.toMutableList())
+
+fun <T, R> GridLike<T>.asGrid(init: (Point) -> R) = grid(width, height, init)
+fun <T, R> GridLike<T>.asMutableGrid(init: (Point) -> R) = mutableGrid(width, height, init)
+fun <T> GridLike<T>.asIntGrid() = intGrid(width, height)
+fun <T> GridLike<T>.asMutableIntGrid() = mutableIntGrid(width, height)
+fun <T> GridLike<T>.asBooleanGrid() = booleanGrid(width, height)
+fun <T> GridLike<T>.asMutableBooleanGrid() = mutableBooleanGrid(width, height)
+
+fun String.toCharGrid(): CharGrid = lines().toCharGrid()
+fun String.toDigitGrid(): IntGrid = lines().toDigitGrid()
+fun List<String>.toCharGrid(): CharGrid = toGrid { it }
+fun List<String>.toDigitGrid(): IntGrid = toGrid { it.digitToInt() }
+
+fun intGrid(width: Int, height: Int): IntGrid = Grid(width, height, IntArray(width * height).toList())
+fun mutableIntGrid(width: Int, height: Int) = MutableGrid(width, height, IntArray(width * height).toMutableList())
+fun booleanGrid(width: Int, height: Int): BooleanGrid = Grid(width, height, BooleanArray(width * height).toList())
+fun mutableBooleanGrid(width: Int, height: Int) = MutableGrid(width, height, BooleanArray(width * height).toMutableList())
+
+inline fun <T> buildGrid(
+    width: Int,
+    height: Int,
+    default: (Point) -> T,
+    block: MutableGrid<T>.() -> Unit
+): Grid<T> {
+    val tempGrid = mutableGrid(width, height, default)
+    tempGrid.block()
+    return tempGrid.toGrid()
+}
+
+inline fun <T> buildGridDefault(width: Int, height: Int, default: T, block: MutableGrid<T>.() -> Unit) =
+    buildGrid(width, height, { default }, block)
+
+inline fun buildBooleanGrid(
+    width: Int,
+    height: Int,
+    default: Boolean = false,
+    block: MutableBooleanGrid.() -> Unit
+) = buildGrid(width, height, { default }, block)
+
+inline fun buildIntGrid(
+    width: Int,
+    height: Int,
+    default: Int = 0,
+    block: MutableIntGrid.() -> Unit
+) = buildGrid(width, height, { default }, block)
+
+inline fun <T> grid(width: Int, height: Int, init: (Point) -> T) =
+    Grid(width, height, (0..<width * height).map { init(pointFromIndex(it, width)) })
+
+inline fun <T> mutableGrid(width: Int, height: Int, init: (Point) -> T) =
+    MutableGrid(width, height, (0..<width * height).map { init(pointFromIndex(it, width)) }.toMutableList())
+
+fun MutableBooleanGrid.toggle(point: Point) {
+    this[point] = !this[point]
+}
+
+fun MutableBooleanGrid.enable(point: Point) {
+    this[point] = true
+}
+
+fun MutableBooleanGrid.disable(point: Point) {
+    this[point] = false
+}

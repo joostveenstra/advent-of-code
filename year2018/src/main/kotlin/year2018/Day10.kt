@@ -3,7 +3,7 @@ package year2018
 import framework.Day
 import util.allInts
 
-object Day10 : Day<Any> {
+object Day10 : Day {
     data class PointOfLight(val x: Int, val y: Int, val dx: Int, val dy: Int) {
         fun next() = copy(x = x + dx, y = y + dy)
     }
@@ -24,7 +24,7 @@ object Day10 : Day<Any> {
             top = points.minOf { it.y }
             bottom = points.maxOf { it.y }
             area = (right - left).toLong() * (bottom - top)
-            time++
+            time += 1
         }
 
         val message = (top..bottom).joinToString("\n") { y ->

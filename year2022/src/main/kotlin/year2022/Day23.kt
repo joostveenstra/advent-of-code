@@ -5,11 +5,12 @@ import util.*
 
 typealias Elf = Point
 
-object Day23 : Day<Int> {
+object Day23 : Day {
     private val order = listOf(NORTH, SOUTH, WEST, EAST)
 
-    data class State(val elves: Set<Elf>, val directions: List<Point>, val stuck: Boolean = false)
+    data class State(val elves: Set<Elf>, val directions: List<Direction>, val stuck: Boolean = false)
 
+    // TODO: Convert to grid??
     private fun String.toElves() = buildSet {
         lines().forEachIndexed { y, row ->
             row.forEachIndexed { x, col ->
@@ -18,8 +19,8 @@ object Day23 : Day<Int> {
         }
     }
 
-    private fun Elf.propose(elves: Set<Elf>, directions: List<Point>): Elf? {
-        val neighboursExist = neighbours.map { it in elves }
+    private fun Elf.propose(elves: Set<Elf>, directions: List<Direction>): Elf? {
+        val neighboursExist = allNeighbours.map { it in elves }
         val (e, s, w, n, se, sw, nw, ne) = neighboursExist
         val (north, south, west) = order
 
@@ -52,7 +53,7 @@ object Day23 : Day<Int> {
     }
 
     override fun part1(input: String): Int {
-        val end = input.toElves().process().drop(10).first().elves
+        val end = input.toElves().process().nth(10).elves
 
         val minX = end.minOf { it.x }
         val maxX = end.maxOf { it.x }

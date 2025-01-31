@@ -1,8 +1,9 @@
 package year2017
 
 import framework.Day
+import util.nth
 
-object Day25 : Day<Int> {
+object Day25 : Day {
     data class Rule(val write: Boolean, val move: Int, val next: String)
     data class TuringMachine(val tape: MutableSet<Int>, val cursor: Int, val state: String)
 
@@ -39,7 +40,7 @@ object Day25 : Day<Int> {
     override fun part1(input: String): Int {
         val (start, total, rules) = parse(input)
         val initial = TuringMachine(mutableSetOf(), 0, start)
-        return generateSequence(initial) { it.step(rules) }.drop(total).first().tape.size
+        return generateSequence(initial) { it.step(rules) }.nth(total).tape.size
     }
 
     override fun part2(input: String) = 0

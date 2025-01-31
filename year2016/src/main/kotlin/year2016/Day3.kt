@@ -3,7 +3,7 @@ package year2016
 import framework.Day
 import util.transpose
 
-object Day3 : Day<Int> {
+object Day3 : Day {
     private fun String.toTriples() = lines().map { line -> line.trim().split(" +".toRegex()).map { it.toInt() } }
 
     private fun List<Int>.isValidTriangle() = let { (a, b, c) -> a + b > c && b + c > a && c + a > b }

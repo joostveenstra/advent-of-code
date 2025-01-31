@@ -3,7 +3,7 @@ package year2018
 import framework.Day
 import util.allInts
 
-object Day9 : Day<Long> {
+object Day9 : Day {
     data class Node(val value: Int, var previous: Node?, var next: Node?)
 
     private fun String.play(multiplier: Int): Long {

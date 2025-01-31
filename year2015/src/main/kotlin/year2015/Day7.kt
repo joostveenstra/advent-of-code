@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day7 : Day<UShort> {
+object Day7 : Day {
     sealed interface Gate
     data class Wire(val op: String) : Gate
     data class Not(val op: String) : Gate

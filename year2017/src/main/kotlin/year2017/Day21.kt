@@ -1,11 +1,12 @@
 package year2017
 
 import framework.Day
+import util.nth
 import util.transpose
 
 typealias Pattern = List<List<Char>>
 
-object Day21 : Day<Int> {
+object Day21 : Day {
     private val start = """
         .#.
         ..#
@@ -31,7 +32,7 @@ object Day21 : Day<Int> {
                 .flatMap { it.transpose().map { pattern -> rules.getValue(pattern) }.transpose() }
                 .map { it.flatten() }
         }
-        return generateSequence(start) { it.step() }.drop(iterations).first().sumOf { row -> row.count { it == '#' } }
+        return generateSequence(start) { it.step() }.nth(iterations).sumOf { row -> row.count { it == '#' } }
     }
 
     override fun part1(input: String) = fractal(input, 5)

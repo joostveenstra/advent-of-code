@@ -2,7 +2,7 @@ package year2017
 
 import framework.Day
 
-object Day18 : Day<Any> {
+object Day18 : Day {
     sealed interface Instruction
     data class Snd(val from: String) : Instruction
     data class Set(val to: String, val from: String) : Instruction

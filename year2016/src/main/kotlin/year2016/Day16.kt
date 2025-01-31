@@ -2,7 +2,7 @@ package year2016
 
 import framework.Day
 
-object Day16 : Day<String> {
+object Day16 : Day {
     private fun String.toGoal() = if (this == "10000") 20 else 272
 
     private fun String.checksum() = chunkedSequence(length.takeLowestOneBit()).joinToString("") { chunk ->

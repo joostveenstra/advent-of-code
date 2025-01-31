@@ -1,31 +1,24 @@
 package year2023
 
 import framework.Day
-import util.Point
-import util.combinations
-import util.toCharGrid
+import util.*
 
-object Day11 : Day<Long> {
+object Day11 : Day {
     private fun String.toGalaxies(factor: Int): List<Point> {
-        val grid = toCharGrid()
+        val grid = lines().toGrid { it == '#' }
+        val galaxies = grid.findPoints(true)
 
-        fun expand(size: Int, empty: Set<Int>) = (0..<size - 1).scan(0) { prefix, i -> prefix + if (i in empty) factor else 1 }
+        val emptyXs = grid.xRange.filter { x -> grid.columnValues(x).none { it } }.toSet()
+        val emptyYs = grid.yRange.filter { y -> grid.rowValues(y).none { it } }.toSet()
 
-        val emptyXs = grid.ys.filter { y -> grid.getRow(y).none { it == '#' } }.toSet()
-        val emptyYs = grid.xs.filter { x -> grid.getColumn(x).none { it == '#' } }.toSet()
-        val xs = expand(grid.width, emptyYs)
-        val ys = expand(grid.height, emptyXs)
-
-        return buildList {
-            ys.zip(grid.rows).forEach { (y, row) ->
-                xs.zip(row).forEach { (x, char) ->
-                    if (char == '#') add(Point(x, y))
-                }
-            }
+        return galaxies.map { p ->
+            val x = emptyXs.count { it < p.x } * (factor - 1) + p.x
+            val y = emptyYs.count { it < p.y } * (factor - 1) + p.y
+            Point(x, y)
         }
     }
 
-    private fun List<Point>.sumOfDistances() = combinations(2).sumOf { (a, b) -> a.manhattan(b).toLong() }
+    private fun List<Point>.sumOfDistances() = pairs().sumOf { (a, b) -> a.manhattan(b).toLong() }
 
     override fun part1(input: String) = input.toGalaxies(2).sumOfDistances()
 

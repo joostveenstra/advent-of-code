@@ -3,7 +3,7 @@ package year2017
 import framework.Day
 import kotlin.math.sqrt
 
-object Day23 : Day<Int> {
+object Day23 : Day {
     sealed interface Instruction
     data class Set(val to: String, val from: String) : Instruction
     data class Sub(val to: String, val from: String) : Instruction

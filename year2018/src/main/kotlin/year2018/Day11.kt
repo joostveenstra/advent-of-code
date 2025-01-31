@@ -2,7 +2,7 @@ package year2018
 
 import framework.Day
 
-object Day11 : Day<Any> {
+object Day11 : Day {
     data class Square(val x: Int, val y: Int, val size: Int, val sum: Int)
 
     private fun Int.toFuelCells() = Array(301) { x ->

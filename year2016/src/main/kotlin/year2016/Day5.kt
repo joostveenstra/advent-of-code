@@ -4,7 +4,7 @@ import framework.Day
 import java.security.MessageDigest
 import kotlin.experimental.and
 
-object Day5 : Day<String> {
+object Day5 : Day {
     private val md5 = MessageDigest.getInstance("MD5")
 
     private fun String.toMd5() = md5.digest(toByteArray())

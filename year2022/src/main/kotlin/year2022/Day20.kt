@@ -2,7 +2,7 @@ package year2022
 
 import framework.Day
 
-object Day20 : Day<Long> {
+object Day20 : Day {
     private fun String.toNumbers() = lines().map(String::toLong)
 
     private fun List<Long>.decrypt(key: Long = 1, rounds: Int = 1): Long {

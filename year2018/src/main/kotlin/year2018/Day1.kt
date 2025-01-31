@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.persistentHashSetOf
 import kotlinx.collections.immutable.plus
 
-object Day1 : Day<Int> {
+object Day1 : Day {
     private fun String.toChanges() = lines().map { it.toInt() }
 
     override fun part1(input: String) = input.toChanges().sum()

@@ -4,16 +4,11 @@ import framework.Day
 import util.*
 import kotlin.math.absoluteValue
 
-object Day18 : Day<Long> {
+object Day18 : Day {
     private fun String.toPlans() = lines().map { line ->
         val (a, b, c) = line.split(' ')
-        val first = Point.of(a.first()) to b.toInt()
-        val direction = when (c[7]) {
-            '0' -> RIGHT
-            '1' -> DOWN
-            '2' -> LEFT
-            else -> UP
-        }
+        val first = a.first().toDirection() to b.toInt()
+        val direction = cardinal[c[7].digitToInt()]
         val steps = c.substring(2..<c.length - 2).toInt(16)
         val second = direction to steps
 
@@ -22,7 +17,7 @@ object Day18 : Day<Long> {
 
     private fun determinant(a: Point, b: Point) = a.x.toLong() * b.y - a.y.toLong() * b.x
 
-    private fun List<Pair<Point, Int>>.dig(): Long {
+    private fun List<Pair<Direction, Int>>.dig(): Long {
         val points = scan(ORIGIN) { position, (direction, steps) -> position + direction * steps }
         val area = points.zipWithNext().fold(0L) { area, (a, b) -> area + determinant(a, b) }
         val perimeter = sumOf { it.second }

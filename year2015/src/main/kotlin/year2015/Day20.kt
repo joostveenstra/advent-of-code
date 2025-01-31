@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day20 : Day<Int> {
+object Day20 : Day {
     override fun part1(input: String): Int {
         val target = input.toInt() / 10
         val houses = IntArray(target) { 1 }

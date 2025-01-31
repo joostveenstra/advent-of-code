@@ -2,10 +2,13 @@ package year2015
 
 import framework.Day
 import util.Point
+import util.allNeighbours
+import util.nth
 
-object Day18 : Day<Int> {
+object Day18 : Day {
     data class Grid(val length: Int, val points: Set<Point>)
 
+    // TODO: Convert to grid??
     private fun String.toGrid() = lines().let {
         Grid(it.size, buildSet {
             it.forEachIndexed { y, row ->
@@ -30,12 +33,12 @@ object Day18 : Day<Int> {
         for (x in range) for (y in range) Point(x, y)
             .takeIf { p ->
                 val on = p in points
-                val neighboursOn = p.neighbours.count { it in points }
+                val neighboursOn = p.allNeighbours.count { it in points }
                 neighboursOn == 3 || on && neighboursOn == 2
             }?.let { add(it) }
     })
 
-    private fun Grid.animate(step: (Grid) -> Grid) = generateSequence(this, step).drop(length).first().points.size
+    private fun Grid.animate(step: (Grid) -> Grid) = generateSequence(this, step).nth(length).points.size
 
     override fun part1(input: String) = input.toGrid().animate { it.step() }
 

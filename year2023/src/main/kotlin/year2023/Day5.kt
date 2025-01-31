@@ -4,7 +4,7 @@ import framework.Day
 import util.EMPTY_LINE
 import util.allLongs
 
-object Day5 : Day<Long> {
+object Day5 : Day {
     class NumberMapper(private val maps: List<List<Long>>) {
         fun map(n: Long): Long = maps.find { (_, start, end) -> n in start..<end }?.let { (dest, start) -> n - start + dest } ?: n
 

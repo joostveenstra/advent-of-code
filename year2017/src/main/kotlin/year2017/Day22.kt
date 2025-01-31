@@ -1,23 +1,23 @@
 package year2017
 
 import framework.Day
-import util.Point
-import util.UP
+import util.*
 
-object Day22 : Day<Int> {
+object Day22 : Day {
     sealed interface Node
     data object Clean : Node
     data object Weakened: Node
     data object Infected : Node
     data object Flagged: Node
 
-    data class State(val grid: MutableMap<Point, Node>, val position: Point, val direction: Point, val infected: Int) {
-        fun next(node: Node, direction: Point) =
+    data class State(val grid: MutableMap<Point, Node>, val position: Point, val direction: Direction, val infected: Int) {
+        fun next(node: Node, direction: Direction) =
             State(grid.also { it[position] = node }, position + direction, direction, infected + if (node is Infected) 1 else 0)
     }
 
     private fun String.toInitial(): State {
         val lines = lines()
+        // TODO: Convert to grid
         val grid = buildMap {
             lines.forEachIndexed { y, row ->
                 row.forEachIndexed { x, char ->
@@ -35,7 +35,7 @@ object Day22 : Day<Int> {
             is Infected -> next(Clean, direction.turnRight())
             else -> throw IllegalStateException("This should never happen")
         }
-        return generateSequence(input.toInitial()) { it.step() }.drop(10000).first().infected
+        return generateSequence(input.toInitial()) { it.step() }.nth(10000).infected
     }
 
     override fun part2(input: String): Int {
@@ -45,6 +45,6 @@ object Day22 : Day<Int> {
             is Infected -> next(Flagged, direction.turnRight())
             is Flagged -> next(Clean, direction.turnLeft().turnLeft())
         }
-        return generateSequence(input.toInitial()) { it.step() }.drop(10000000).first().infected
+        return generateSequence(input.toInitial()) { it.step() }.nth(10000000).infected
     }
 }

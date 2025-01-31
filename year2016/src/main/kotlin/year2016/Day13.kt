@@ -2,9 +2,11 @@ package year2016
 
 import framework.Day
 import util.Point
+import util.cardinalNeighbours
 import util.dequeOf
+import util.drain
 
-object Day13 : Day<Int> {
+object Day13 : Day {
     private val start = Point(1, 1)
     private const val STEPS = 50
 
@@ -22,14 +24,13 @@ object Day13 : Day<Int> {
         val queue = dequeOf(start)
         val visited = mutableMapOf(start to 0)
 
-        while (queue.isNotEmpty()) {
-            val point = queue.removeFirst()
+        queue.drain { point ->
             if (point == goal) return visited.getValue(point)
             val cost = visited.getValue(point) + 1
             point.validNeighbours(favorite).forEach { next ->
                 if (next !in visited || cost < visited.getValue(next)) {
                     visited[next] = cost
-                    queue.addLast(next)
+                    queue += next
                 }
             }
         }
@@ -41,14 +42,13 @@ object Day13 : Day<Int> {
         val queue = dequeOf(start)
         val visited = mutableMapOf(start to 0)
 
-        while (queue.isNotEmpty()) {
-            val point = queue.removeFirst()
+        queue.drain { point ->
             val cost = visited.getValue(point) + 1
             if (cost <= STEPS) {
                 point.validNeighbours(favorite).forEach { next ->
                     if (next !in visited || cost < visited.getValue(next)) {
                         visited[next] = cost
-                        queue.addLast(next)
+                        queue += next
                     }
                 }
             }

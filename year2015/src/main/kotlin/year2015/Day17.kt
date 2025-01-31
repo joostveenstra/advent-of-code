@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day17 : Day<Int> {
+object Day17 : Day {
     private fun String.toCombinations(): Sequence<List<Int>> {
         val containers = lines().map { it.toInt() }
         val target = if (containers.size == 5) 25 else 150

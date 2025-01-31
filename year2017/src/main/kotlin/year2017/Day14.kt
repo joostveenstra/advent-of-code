@@ -2,8 +2,9 @@ package year2017
 
 import framework.Day
 import util.Point
+import util.cardinalNeighbours
 
-object Day14 : Day<Int> {
+object Day14 : Day {
     private fun String.knotHash(): List<Int> {
         val lengths = map { it.code } + listOf(17, 31, 73, 47, 23)
         val repeated = List(64) { lengths }.flatten()

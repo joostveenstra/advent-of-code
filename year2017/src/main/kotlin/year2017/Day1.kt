@@ -2,10 +2,10 @@ package year2017
 
 import framework.Day
 
-object Day1 : Day<Int> {
+object Day1 : Day {
     override fun part1(input: String) = (input + input.first())
         .map { it.digitToInt() }
-        .windowed(2)
+        .zipWithNext()
         .sumOf { (a, b) -> if (a == b) a else 0 }
 
     override fun part2(input: String) = input

@@ -5,7 +5,7 @@ internal object Templates {
 
             import framework.Day
 
-            object Day${day} : Day<Int> {
+            object Day${day} : Day {
                 override fun part1(input: String) = TODO()
 
                 override fun part2(input: String) = TODO()

@@ -2,7 +2,7 @@ package year2016
 
 import framework.Day
 
-object Day7 : Day<Int> {
+object Day7 : Day {
     private fun parse(input: String) = input.lines().map { line ->
         val (accept, reject) = line.split("[\\[\\]]".toRegex()).withIndex().partition { (index) -> index % 2 == 0 }
         accept.map { it.value } to reject.map { it.value }

@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day23 : Day<Int> {
+object Day23 : Day {
     sealed interface Instruction
     data class Hlf(val register: String) : Instruction
     data class Tpl(val register: String) : Instruction

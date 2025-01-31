@@ -2,7 +2,7 @@ package year2015
 
 import framework.Day
 
-object Day16 : Day<Int> {
+object Day16 : Day {
     private val footprint = mapOf(
         "children" to 3,
         "cats" to 7,

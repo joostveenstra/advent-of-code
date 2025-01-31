@@ -1,5 +1,8 @@
 package util
 
+fun IntRange.width() = last - first + 1
+fun LongRange.width() = last - first + 1
+
 operator fun IntRange.contains(other: IntRange): Boolean = first <= other.first && other.last <= last
 
 infix fun IntRange.overlaps(other: IntRange): Boolean = first <= other.last && other.first <= last

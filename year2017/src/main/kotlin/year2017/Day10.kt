@@ -4,7 +4,7 @@ import framework.Day
 import util.product
 import java.util.*
 
-object Day10 : Day<Any> {
+object Day10 : Day {
     private fun String.toSize() = if (length < 8) 5 else 256
 
     private fun List<Int>.knotHash(size: Int): List<Int> {

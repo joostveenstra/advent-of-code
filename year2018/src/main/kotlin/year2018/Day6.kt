@@ -1,11 +1,10 @@
 package year2018
 
 import framework.Day
-import util.Point
-import util.dequeOf
+import util.*
 
-object Day6 : Day<Int> {
-    private fun String.toCoordinates() = lines().map(Point::of)
+object Day6 : Day {
+    private fun String.toCoordinates() = lines().map { it.toPoint() }
 
     override fun part1(input: String): Int {
         val coordinates = input.toCoordinates()
@@ -36,13 +35,12 @@ object Day6 : Day<Int> {
         val queue = dequeOf(start)
         val visited = mutableSetOf(start)
 
-        while (queue.isNotEmpty()) {
-            queue.removeFirst()
-                .cardinalNeighbours
+        queue.drain { point ->
+            point.cardinalNeighbours
                 .filterNot { it in visited }
                 .filter { next -> coordinates.sumOf { it.manhattan(next) } < max }
                 .forEach { next ->
-                    queue.addLast(next)
+                    queue += next
                     visited += next
                 }
         }

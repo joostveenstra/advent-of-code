@@ -3,7 +3,7 @@ package year2015
 import framework.Day
 import util.allInts
 
-object Day6 : Day<Int> {
+object Day6 : Day {
     private fun String.execute(algorithm: (String) -> (Int) -> Int): Int {
         val grid = Array(1000) { IntArray(1000) }
 

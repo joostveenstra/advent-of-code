@@ -4,8 +4,8 @@ import framework.Day
 import util.*
 import kotlin.math.sqrt
 
-object Day22 : Day<Int> {
-    data class State(val position: Point, val direction: Point)
+object Day22 : Day {
+    data class State(val position: Point, val direction: Direction)
 
     data class Vector(val x: Int, val y: Int, val z: Int) {
         operator fun times(k: Int) = Vector(x * k, y * k, z * k)
@@ -17,6 +17,7 @@ object Day22 : Day<Int> {
 
     data class CubeState(val position: Vector, val direction: Vector)
 
+    // TODO: convert to grid?
     private fun String.toTiles() = buildMap {
         lines().dropLast(2).forEachIndexed { y, row ->
             row.forEachIndexed { x, col ->
@@ -86,9 +87,7 @@ object Day22 : Day<Int> {
         val visited = mutableSetOf(topLeft)
         val points = mutableMapOf<Vector, Info>()
 
-        while (blocks.isNotEmpty()) {
-            val (offset, i, j, k) = blocks.removeFirst()
-
+        blocks.drain { (offset, i, j, k) ->
             for (x in 0 until blockSize) for (y in 0 until blockSize) {
                 val key = (i * (2 * x - scaleIJ)) + (j * (2 * y - scaleIJ)) + (k * -scaleK)
                 points[key] = Info(offset + Point(x, y), i, j, k)

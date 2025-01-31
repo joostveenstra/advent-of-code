@@ -2,8 +2,9 @@ package year2023
 
 import framework.Day
 import util.Point
+import util.allNeighbours
 
-object Day3 : Day<Int> {
+object Day3 : Day {
     private fun parse(input: String) = with(input.lines()) {
         val symbols = buildMap {
             forEachIndexed { y, row ->
@@ -21,7 +22,7 @@ object Day3 : Day<Int> {
         symbols to parts
     }
 
-    private fun Point.adjacent(length: Int): Set<Point> = (x..<x + length).flatMap { x -> Point(x, y).neighbours }.toSet()
+    private fun Point.adjacent(length: Int): Set<Point> = (x..<x + length).flatMap { x -> Point(x, y).allNeighbours }.toSet()
 
     override fun part1(input: String): Int {
         val (symbols, parts) = parse(input)

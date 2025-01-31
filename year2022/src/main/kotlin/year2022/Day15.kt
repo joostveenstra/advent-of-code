@@ -3,10 +3,11 @@ package year2022
 import framework.Day
 import util.Point
 import util.allInts
+import util.manhattan
 import util.merge
 import kotlin.math.absoluteValue
 
-object Day15 : Day<Long> {
+object Day15 : Day {
     data class Sensor(val position: Point, val beacon: Point, val distance: Int) {
         fun findCoverageAtRow(y: Int): IntRange? {
             val dx = distance - (position.y - y).absoluteValue

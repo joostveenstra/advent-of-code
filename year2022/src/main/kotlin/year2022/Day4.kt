@@ -4,7 +4,7 @@ import framework.Day
 import util.contains
 import util.overlaps
 
-object Day4 : Day<Int> {
+object Day4 : Day {
     private fun String.toRangePairs() = lines().map {
         it.split(',').map { range ->
             range.split('-').let { (min, max) -> min.toInt()..max.toInt() }

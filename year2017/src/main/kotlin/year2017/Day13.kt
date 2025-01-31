@@ -3,7 +3,7 @@ package year2017
 import framework.Day
 import util.allInts
 
-object Day13 : Day<Int> {
+object Day13 : Day {
     private fun String.toFirewall() = lines().map { line ->
         line.allInts().toList().let { (depth, range) -> depth to range }
     }
