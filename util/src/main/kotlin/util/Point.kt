@@ -39,8 +39,8 @@ fun Direction.orthogonal() = if (isHorizontal) vertical else horizontal
 
 enum class Orientation { HORIZONTAL, VERTICAL }
 
-fun Orientation.turn() = if (this == HORIZONTAL) vertical else horizontal
-fun Orientation.orthogonal() = if (this == HORIZONTAL) VERTICAL else HORIZONTAL
+fun Orientation.orthogonal() = if (this == HORIZONTAL) vertical else horizontal
+fun Orientation.turn() = if (this == HORIZONTAL) VERTICAL else HORIZONTAL
 
 data class Point(val x: Int, val y: Int)
 
@@ -57,8 +57,8 @@ val Point.cardinalNeighbours: List<Point> get() = cardinal.map { this + it }
 val Point.diagonalNeighbours: List<Point> get() = diagonal.map { this + it }
 val Point.allNeighbours: List<Point> get() = allDirections.map { this + it }
 
-fun Point.manhattan(): Int = x.absoluteValue + y.absoluteValue
-fun Point.manhattan(other: Point): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
+val Point.manhattan get(): Int = x.absoluteValue + y.absoluteValue
+infix fun Point.manhattan(other: Point): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
 
 data class Point3D(val x: Int, val y: Int, val z: Int)
 

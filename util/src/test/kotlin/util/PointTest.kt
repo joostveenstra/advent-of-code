@@ -34,7 +34,7 @@ class PointTest {
 
     @Test
     fun manhattan() {
-        assertEquals(6, point.manhattan(Point(4, 5)))
+        assertEquals(6, point manhattan Point(4, 5))
     }
 
     @Test

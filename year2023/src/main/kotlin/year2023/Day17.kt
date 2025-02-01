@@ -23,10 +23,10 @@ object Day17 : Day {
                 if (nextPosition in this@minimize) {
                     val nextHeat = heat + get(nextPosition)
                     if (step >= least) {
-                        val next = Crucible(nextPosition, orientation.orthogonal())
+                        val next = Crucible(nextPosition, orientation.turn())
                         if (next !in visited || nextHeat < visited.getValue(next)) {
                             visited[next] = nextHeat
-                            val priority = nextHeat + next.position.manhattan(end)
+                            val priority = nextHeat + (next.position manhattan end)
                             queue += next to priority
                         }
                     }
@@ -37,7 +37,7 @@ object Day17 : Day {
 
         queue.drain { (crucible) ->
             if (crucible.position == end) return visited.getValue(crucible)
-            crucible.orientation.turn().forEach { direction ->
+            crucible.orientation.orthogonal().forEach { direction ->
                 crucible.move(1, direction, visited.getValue(crucible))
             }
         }

@@ -18,7 +18,7 @@ object Day11 : Day {
         }
     }
 
-    private fun List<Point>.sumOfDistances() = pairs().sumOf { (a, b) -> a.manhattan(b).toLong() }
+    private fun List<Point>.sumOfDistances() = pairs().sumOf { (a, b) -> (a manhattan b).toLong() }
 
     override fun part1(input: String) = input.toGalaxies(2).sumOfDistances()
 

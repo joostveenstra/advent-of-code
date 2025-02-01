@@ -16,8 +16,8 @@ object Day6 : Day {
 
         return points
             .mapNotNull { point ->
-                val (first, second) = coordinates.sortedBy { it.manhattan(point) }
-                val closest = first.manhattan(point) < second.manhattan(point)
+                val (first, second) = coordinates.sortedBy { it manhattan point }
+                val closest = first manhattan point < second manhattan point
                 if (closest) first to point else null
             }
             .groupBy { it.first }.values.map { pairs -> pairs.map { it.second } }
@@ -38,7 +38,7 @@ object Day6 : Day {
         queue.drain { point ->
             point.cardinalNeighbours
                 .filterNot { it in visited }
-                .filter { next -> coordinates.sumOf { it.manhattan(next) } < max }
+                .filter { next -> coordinates.sumOf { it manhattan next } < max }
                 .forEach { next ->
                     queue += next
                     visited += next
