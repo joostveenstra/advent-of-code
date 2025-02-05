@@ -1,7 +1,7 @@
 package util
 
-fun IntRange.width() = last - first + 1
-fun LongRange.width() = last - first + 1
+val IntRange.width get() = last - first + 1
+val LongRange.width get() = last - first + 1
 
 operator fun IntRange.contains(other: IntRange): Boolean = first <= other.first && other.last <= last
 

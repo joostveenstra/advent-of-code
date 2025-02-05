@@ -10,8 +10,6 @@ import util.allNeighbours
 import util.manhattan
 
 object Day3 : Day {
-    private val start = ORIGIN
-
     private fun Int.toPosition(): Point {
         val n = generateSequence(1) { it + 2 }.dropWhile { it * it < this }.first()
         val base = this - (n - 2) * (n - 2) - 1
@@ -26,7 +24,7 @@ object Day3 : Day {
         }
     }
 
-    override fun part1(input: String) = input.toInt().toPosition().manhattan(start)
+    override fun part1(input: String) = input.toInt().toPosition().manhattan
 
     override fun part2(input: String): Int {
         val target = input.toInt()
@@ -35,6 +33,6 @@ object Day3 : Day {
             val sum = point.allNeighbours.sumOf { memory.getOrDefault(it, 0) }
             return if (sum > target) sum else find(n + 1, memory + (point to sum))
         }
-        return find(2, persistentHashMapOf(start to 1))
+        return find(2, persistentHashMapOf(ORIGIN to 1))
     }
 }
