@@ -29,12 +29,8 @@ object Day6 : Day {
             return when {
                 next !in this -> false
                 next == obstacle || getOrNull(next) == '#' ->
-                    if (position to direction in seen) {
-                        true
-                    } else {
-                        seen += position to direction
-                        step(position, direction.turnRight())
-                    }
+                    if (!seen.add(position to direction)) true
+                    else step(position, direction.turnRight())
 
                 else -> step(next, direction)
             }
