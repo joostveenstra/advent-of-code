@@ -7,7 +7,7 @@ object Day17 : Day {
     data class Crucible(val position: Point, val orientation: Orientation)
 
     private fun IntGrid.minimize(least: Int, most: Int): Int {
-        val end = Point(width - 1, height - 1)
+        val end = Point(maxX, maxY)
         val queue = priorityQueueOf<Pair<Crucible, Int>> { it.second }
         val visited = mutableMapOf<Crucible, Int>()
 

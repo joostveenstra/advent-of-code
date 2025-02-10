@@ -4,8 +4,8 @@ import framework.DayTest
 
 class Day18Test : DayTest(Day18, {
     part1 {
-        example = 4L
-        input = 2951L
+        example = 4
+        input = 2951
     }
 
     part2 {

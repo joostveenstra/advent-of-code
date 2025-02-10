@@ -4,11 +4,11 @@ import framework.DayTest
 
 class Day21Test : DayTest(Day21, {
     part1 {
-        example = 42L
-        input = 3598L
+        example = 42
+        input = 3598
     }
 
     part2 {
-        input = 601441063166538L
+        input = 601441063166538
     }
 })

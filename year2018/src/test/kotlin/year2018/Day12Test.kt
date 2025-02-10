@@ -9,7 +9,7 @@ class Day12Test : DayTest(Day12, {
     }
 
     part2 {
-        example = 999999999374L
-        input = 1100000000511L
+        example = 999999999374
+        input = 1100000000511
     }
 })
