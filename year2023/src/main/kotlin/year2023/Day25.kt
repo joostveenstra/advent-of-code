@@ -43,7 +43,7 @@ object Day25 : Day {
 
             queue.drain { (node, head) ->
                 if (node == end) {
-                    fun reverse(index: Int) {
+                    tailrec fun reverse(index: Int) {
                         if (index != 0) {
                             val (edge, previous) = path[index]
                             used += edge
