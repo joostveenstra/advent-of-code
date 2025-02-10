@@ -2,7 +2,6 @@ package year2023
 
 import framework.Day
 import util.allLongs
-import util.component6
 import util.pairs
 import java.math.BigInteger
 
@@ -19,7 +18,7 @@ object Day24 : Day {
         fun sum() = x + y + z
     }
 
-    private fun String.toHailStones() = allLongs().chunked(6).map { (x, y, z, vx, vy, vz) -> HailStone(x, y, z, vx, vy, vz) }.toList()
+    private fun String.toHailStones() = allLongs().chunked(6).map { HailStone(it[0], it[1], it[2], it[3], it[4], it[5]) }.toList()
 
     override fun part1(input: String) = input.toHailStones().pairs().count { (a, b) ->
         val determinant = a.vy * b.vx - a.vx * b.vy
