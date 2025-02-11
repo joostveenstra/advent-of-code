@@ -22,10 +22,7 @@ object Day16 : Day {
             }
             nextDirections.forEach { nextDirection ->
                 val next = Beam(nextPosition, nextDirection)
-                if (next !in energized) {
-                    energized += next
-                    stack.push(next)
-                }
+                if (energized.add(next)) stack.push(next)
             }
         }
 

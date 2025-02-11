@@ -24,7 +24,8 @@ object Day17 : Day {
                     val nextHeat = heat + get(nextPosition)
                     if (step >= least) {
                         val next = Crucible(nextPosition, orientation.turn())
-                        if (next !in visited || nextHeat < visited.getValue(next)) {
+                        val previousHeat = visited[next]
+                        if (previousHeat == null || nextHeat < previousHeat) {
                             visited[next] = nextHeat
                             val priority = nextHeat + (next.position manhattan end)
                             queue += next to priority
