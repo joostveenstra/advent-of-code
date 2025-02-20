@@ -1,19 +1,20 @@
 package year2015
 
+import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.*
 import util.dequeOf
 import util.drain
 
-object Day22 : Day {
-    private val spells = persistentListOf(MagicMissile, Drain, Shield, Poison, Recharge)
-
+class Day22(context: Context) : Day by context {
     sealed class Spell(val cost: Int, val duration: Int)
     data object MagicMissile : Spell(53, 1)
     data object Drain : Spell(73, 1)
     data object Shield : Spell(113, 6)
     data object Poison : Spell(173, 6)
     data object Recharge : Spell(229, 5)
+
+    val spells = persistentListOf(MagicMissile, Drain, Shield, Poison, Recharge)
 
     data class State(
         val you: Int, val mana: Int, val spent: Int, val armor: Int,
@@ -22,7 +23,7 @@ object Day22 : Day {
         val bossTurn: Boolean
     )
 
-    private fun String.fight(hard: Boolean): Int {
+    fun String.fight(hard: Boolean): Int {
         val (hp, damage) = lines().map { line -> line.filter { it.isDigit() }.toInt() }
         val initial = State(50, 500, 0, 0, hp, damage, persistentHashMapOf(), false)
         val queue = dequeOf(initial)
@@ -69,7 +70,6 @@ object Day22 : Day {
         return best
     }
 
-    override fun part1(input: String) = input.fight(false)
-
-    override fun part2(input: String) = input.fight(true)
+    fun part1() = input.fight(false)
+    fun part2() = input.fight(true)
 }

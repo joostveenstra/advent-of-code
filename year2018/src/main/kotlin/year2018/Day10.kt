@@ -1,14 +1,15 @@
 package year2018
 
+import framework.Context
 import framework.Day
 import util.allInts
 
-object Day10 : Day {
+class Day10(context: Context) : Day by context {
     data class PointOfLight(val x: Int, val y: Int, val dx: Int, val dy: Int) {
         fun next() = copy(x = x + dx, y = y + dy)
     }
 
-    private fun String.findMessage(): Pair<String, Int> {
+    fun String.findMessage(): Pair<String, Int> {
         val target = if (lines().size == 31) 64L else 550L
         var points = lines().map { line ->
             val (x, y, dx, dy) = line.allInts().toList()
@@ -36,7 +37,8 @@ object Day10 : Day {
         return message to time
     }
 
-    override fun part1(input: String) = input.findMessage().first
+    val message = input.findMessage()
 
-    override fun part2(input: String) = input.findMessage().second
+    fun part1() = message.first
+    fun part2() = message.second
 }

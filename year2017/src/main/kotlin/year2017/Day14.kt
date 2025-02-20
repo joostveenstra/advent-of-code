@@ -1,11 +1,12 @@
 package year2017
 
+import framework.Context
 import framework.Day
 import util.Point
 import util.cardinalNeighbours
 
-object Day14 : Day {
-    private fun String.knotHash(): List<Int> {
+class Day14(context: Context) : Day by context {
+    fun String.knotHash(): List<Int> {
         val lengths = map { it.code } + listOf(17, 31, 73, 47, 23)
         val repeated = List(64) { lengths }.flatten()
         val initial = (0..255).toList() to 0
@@ -17,14 +18,15 @@ object Day14 : Day {
         return (numbers.drop(position) + numbers.take(position)).chunked(16).map { it.reduce(Int::xor) }
     }
 
-    private fun String.toBinary() = (0..127).map { row ->
+    fun String.toBinary() = (0..127).map { row ->
         "$this-$row".knotHash().joinToString("") { it.toString(2).padStart(8, '0') }
     }
 
-    override fun part1(input: String) = input.toBinary().sumOf { row -> row.count { it == '1' } }
+    val binary = input.toBinary()
 
-    override fun part2(input: String): Int {
-        val used = input.toBinary().withIndex().flatMap { (y, row) ->
+    fun part1() = binary.sumOf { row -> row.count { it == '1' } }
+    fun part2(): Int {
+        val used = binary.withIndex().flatMap { (y, row) ->
             (0..127).mapNotNull { x -> if (row[x] == '1') Point(x, y) else null }
         }
         val cliques = used.fold(listOf<List<Point>>()) { groups, point ->

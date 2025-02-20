@@ -1,8 +1,8 @@
 package year2023
 
-import framework.DayTest
+import framework.Test
 
-class Day13Test : DayTest(Day13, {
+class Day13Test : Test({
     part1 {
         example = 405
         input = 37975

@@ -1,8 +1,8 @@
 package year2024
 
-import framework.DayTest
+import framework.Test
 
-class Day17Test : DayTest(Day17, {
+class Day17Test : Test({
     part1 {
         example = "4,6,3,5,6,3,5,2,1,0"
         input = "7,1,2,3,2,6,7,2,5"

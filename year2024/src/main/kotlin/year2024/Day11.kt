@@ -1,14 +1,16 @@
 package year2024
 
+import framework.Context
 import framework.Day
 import util.allLongs
 import util.log10
 import util.pow
 
-object Day11 : Day {
-    private fun Sequence<Long>.blink(blinks: Int): Long {
-        val cache = mutableMapOf<Pair<Long, Int>, Long>()
+class Day11(context: Context) : Day by context {
+    val stones = input.allLongs()
 
+    fun blink(blinks: Int): Long {
+        val cache = mutableMapOf<Pair<Long, Int>, Long>()
         fun countStones(stone: Long, blinks: Int): Long = cache.getOrPut(stone to blinks) {
             when {
                 blinks == 0 -> 1
@@ -25,10 +27,9 @@ object Day11 : Day {
             }
         }
 
-        return sumOf { stone -> countStones(stone, blinks) }
+        return stones.sumOf { stone -> countStones(stone, blinks) }
     }
 
-    override fun part1(input: String) = input.allLongs().blink(25)
-
-    override fun part2(input: String) = input.allLongs().blink(75)
+    fun part1() = blink(25)
+    fun part2() = blink(75)
 }

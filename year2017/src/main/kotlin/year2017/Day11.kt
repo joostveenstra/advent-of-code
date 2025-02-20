@@ -1,11 +1,12 @@
 package year2017
 
+import framework.Context
 import framework.Day
 import kotlin.math.absoluteValue
 
-object Day11 : Day {
+class Day11(context: Context) : Day by context {
     data class Hex(val q: Int, val r: Int) {
-        private val s: Int get() = -q - r
+        val s: Int get() = -q - r
         fun distance() = maxOf(q.absoluteValue, r.absoluteValue, s.absoluteValue)
         fun step(direction: String) = when (direction) {
             "n" -> Hex(q + 1, r - 1)
@@ -17,9 +18,8 @@ object Day11 : Day {
         }
     }
 
-    private fun String.walk() = split(',').scan(Hex(0, 0), Hex::step).map { it.distance() }
+    val path = input.split(',').scan(Hex(0, 0), Hex::step).map { it.distance() }
 
-    override fun part1(input: String) = input.walk().last()
-
-    override fun part2(input: String) = input.walk().max()
+    fun part1() = path.last()
+    fun part2() = path.max()
 }

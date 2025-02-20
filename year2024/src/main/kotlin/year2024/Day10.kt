@@ -1,10 +1,14 @@
 package year2024
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day10 : Day {
-    private fun IntGrid.countTrails(head: Point, distinct: Boolean): Int {
+class Day10(context: Context) : Day by context {
+    val grid = input.toDigitGrid()
+    val heads = grid.findPoints(0)
+
+    fun IntGrid.countTrails(head: Point, distinct: Boolean): Int {
         val seen = asMutableBooleanGrid()
 
         fun step(position: Point): Int =
@@ -19,9 +23,8 @@ object Day10 : Day {
         return step(head)
     }
 
-    private fun IntGrid.score(distinct: Boolean) = findPoints(0).sumOf { countTrails(it, distinct) }
+    fun score(distinct: Boolean) = heads.sumOf { grid.countTrails(it, distinct) }
 
-    override fun part1(input: String) = input.toDigitGrid().score(false)
-
-    override fun part2(input: String) = input.toDigitGrid().score(true)
+    fun part1() = score(false)
+    fun part2() = score(true)
 }

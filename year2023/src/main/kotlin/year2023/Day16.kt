@@ -1,12 +1,15 @@
 package year2023
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day16 : Day {
+class Day16(context: Context) : Day by context {
     data class Beam(val position: Point, val direction: Direction)
 
-    private fun CharGrid.energize(start: Beam): Int {
+    val grid = this@Day16.input.toCharGrid()
+
+    fun CharGrid.energize(start: Beam): Int {
         val energized = mutableSetOf<Beam>()
         val stack = dequeOf(start)
 
@@ -29,9 +32,8 @@ object Day16 : Day {
         return energized.map { it.position }.toSet().size
     }
 
-    override fun part1(input: String) = input.toCharGrid().energize(Beam(Point(-1, 0), RIGHT))
-
-    override fun part2(input: String) = with(input.toCharGrid()) {
+    fun part1() = grid.energize(Beam(Point(-1, 0), RIGHT))
+    fun part2() = with(grid) {
         val top = xRange.map { x -> Beam(Point(x, -1), DOWN) }
         val left = yRange.map { y -> Beam(Point(-1, y), RIGHT) }
         val bottom = xRange.map { x -> Beam(Point(x, height), UP) }

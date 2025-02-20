@@ -1,11 +1,16 @@
 package year2023
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day23 : Day {
-    private fun CharGrid.longestPath(start: Point, end: Point, neighbours: Point.() -> List<Pair<Point, Int>>): Int {
-        val visited = mutableBooleanGrid(width, height)
+class Day23(context: Context) : Day by context {
+    val grid = this@Day23.input.toCharGrid()
+    val start = Point(0, 1)
+    val end = Point(grid.maxX - 1, grid.maxY)
+
+    fun longestPath(neighbours: Point.() -> List<Pair<Point, Int>>): Int {
+        val visited = grid.asMutableBooleanGrid()
 
         fun find(position: Point, distance: Int): Int =
             if (position == end) distance
@@ -21,9 +26,9 @@ object Day23 : Day {
         return find(start, 0)
     }
 
-    private fun CharGrid.neighbours(point: Point) = point.cardinalNeighbours.filter { it in this && get(it) != '#' }
+    fun CharGrid.neighbours(point: Point) = point.cardinalNeighbours.filter { it in this && get(it) != '#' }
 
-    private fun CharGrid.junctions(start: Point, end: Point): Map<Point, List<Pair<Point, Int>>> {
+    fun CharGrid.junctions(): Map<Point, List<Pair<Point, Int>>> {
         val junctions = mutableMapOf(
             start to mutableListOf<Pair<Point, Int>>(),
             end to mutableListOf(),
@@ -66,26 +71,16 @@ object Day23 : Day {
         return junctions
     }
 
-    override fun part1(input: String) = with(input.toCharGrid()) {
-        val start = Point(0, 1)
-        val end = Point(maxX - 1, maxY)
+    fun neighbours(point: Point) = when (grid[point]) {
+        '>' -> listOf(point + RIGHT)
+        '<' -> listOf(point + LEFT)
+        '^' -> listOf(point + UP)
+        'v' -> listOf(point + DOWN)
+        else -> grid.neighbours(point)
+    }.map { it to 1 }
 
-        fun neighbours(point: Point) = when (get(point)) {
-            '>' -> listOf(point + RIGHT)
-            '<' -> listOf(point + LEFT)
-            '^' -> listOf(point + UP)
-            'v' -> listOf(point + DOWN)
-            else -> this.neighbours(point)
-        }.map { it to 1 }
+    val junctions = grid.junctions()
 
-        longestPath(start, end, ::neighbours)
-    }
-
-    override fun part2(input: String) = with(input.toCharGrid()) {
-        val start = Point(0, 1)
-        val end = Point(maxX - 1, maxY)
-        val junctions = junctions(start, end)
-
-        longestPath(start, end, junctions::getValue)
-    }
+    fun part1() = longestPath(::neighbours)
+    fun part2() = longestPath(junctions::getValue)
 }

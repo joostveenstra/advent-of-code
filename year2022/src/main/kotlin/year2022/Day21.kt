@@ -1,8 +1,9 @@
 package year2022
 
+import framework.Context
 import framework.Day
 
-object Day21 : Day {
+class Day21(context: Context) : Day by context {
     sealed interface Monkey {
         companion object {
             fun of(input: String) =
@@ -17,7 +18,7 @@ object Day21 : Day {
     data class Number(val value: Long) : Monkey
     data class Expression(val left: String, val operation: Char, val right: String) : Monkey
 
-    private fun evaluateAll(monkeys: Map<String, Monkey>): Map<String, Long> {
+    fun evaluateAll(monkeys: Map<String, Monkey>): Map<String, Long> {
         val answers = mutableMapOf<String, Long>()
         fun evaluate(key: String): Long = answers.getOrPut(key) {
             with(monkeys.getValue(key)) {
@@ -36,12 +37,10 @@ object Day21 : Day {
         return answers
     }
 
-    private fun String.toMonkeys() = lines().map { it.split(": ") }.associate { (k, v) -> k to Monkey.of(v) }
+    val monkeys = lines.map { it.split(": ") }.associate { (k, v) -> k to Monkey.of(v) }
 
-    override fun part1(input: String) = evaluateAll(input.toMonkeys())["root"]
-
-    override fun part2(input: String): Long? {
-        val monkeys = input.toMonkeys()
+    fun part1() = evaluateAll(monkeys)["root"]
+    fun part2(): Long? {
         val answers = evaluateAll(monkeys)
         fun findHumanValue(key: String, value: Long): Long? = with(monkeys.getValue(key)) {
             when (this) {

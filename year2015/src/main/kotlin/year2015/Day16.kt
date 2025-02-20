@@ -1,9 +1,12 @@
 package year2015
 
+import framework.Context
 import framework.Day
 
-object Day16 : Day {
-    private val footprint = mapOf(
+class Day16(context: Context) : Day by context {
+    data class Aunt(val number: Int, val properties: Map<String, Int>)
+
+    val footprint = mapOf(
         "children" to 3,
         "cats" to 7,
         "samoyeds" to 2,
@@ -16,17 +19,14 @@ object Day16 : Day {
         "perfumes" to 1
     )
 
-    data class Aunt(val number: Int, val properties: Map<String, Int>)
-
-    private fun String.toAunts() = lines().mapIndexed { index, line ->
+    val aunts = lines.mapIndexed { index, line ->
         Aunt(index + 1, line.split("[: ,]+".toRegex()).drop(2).chunked(2).associate { (k, v) -> k to v.toInt() })
     }
 
-    private fun List<Aunt>.findNumberBy(predicate: (Map.Entry<String, Int>) -> Boolean) = first { it.properties.all(predicate) }.number
+    fun List<Aunt>.findNumberBy(predicate: (Map.Entry<String, Int>) -> Boolean) = first { it.properties.all(predicate) }.number
 
-    override fun part1(input: String) = input.toAunts().findNumberBy { (k, v) -> footprint[k] == v }
-
-    override fun part2(input: String) = input.toAunts().findNumberBy { (k, v) ->
+    fun part1() = aunts.findNumberBy { (k, v) -> footprint[k] == v }
+    fun part2() = aunts.findNumberBy { (k, v) ->
         val value = footprint.getValue(k)
         when (k) {
             "cats", "trees" -> v > value

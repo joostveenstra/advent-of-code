@@ -1,13 +1,14 @@
 package year2017
 
+import framework.Context
 import framework.Day
 import util.product
 import java.util.*
 
-object Day10 : Day {
-    private fun String.toSize() = if (length < 8) 5 else 256
+class Day10(context: Context) : Day by context {
+    val size = if (isExample) 5 else 256
 
-    private fun List<Int>.knotHash(size: Int): List<Int> {
+    fun List<Int>.knotHash(size: Int): List<Int> {
         val initial = (0 until size).toList() to 0
         val (numbers, position) = withIndex().fold(initial) { (numbers, position), (skip, length) ->
             val next = numbers.take(length).reversed() + numbers.drop(length)
@@ -17,12 +18,12 @@ object Day10 : Day {
         return numbers.drop(position) + numbers.take(position)
     }
 
-    override fun part1(input: String): Int {
+    fun part1(): Int {
         val lengths = input.split(',').map { it.toInt() }
-        return lengths.knotHash(input.toSize()).take(2).product()
+        return lengths.knotHash(size).take(2).product()
     }
 
-    override fun part2(input: String): String {
+    fun part2(): String {
         val lengths = input.map { it.code } + listOf(17, 31, 73, 47, 23)
         val repeated = List(64) { lengths }.flatten()
         return repeated.knotHash(256).chunked(16).map { it.reduce(Int::xor).toByte() }.let { HexFormat.of().formatHex(it.toByteArray()) }

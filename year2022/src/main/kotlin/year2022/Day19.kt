@@ -1,9 +1,10 @@
 package year2022
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day19 : Day {
+class Day19(context: Context) : Day by context {
     data class Resources(val ore: Int = 0, val clay: Int = 0, val obsidian: Int = 0, val geode: Int = 0) {
         operator fun plus(other: Resources) = Resources(ore + other.ore, clay + other.clay, obsidian + other.obsidian, geode + other.geode)
         operator fun minus(other: Resources) = Resources(ore - other.ore, clay - other.clay, obsidian - other.obsidian, geode - other.geode)
@@ -69,9 +70,8 @@ object Day19 : Day {
         }
     }
 
-    private fun String.toBlueprints() = lines().map(Blueprint::of)
+    val blueprints = lines.map(Blueprint::of)
 
-    override fun part1(input: String) = input.toBlueprints().sumOf { it.id * it.determineMaxGeodesCracked(24) }
-
-    override fun part2(input: String) = input.toBlueprints().take(3).productOf { it.determineMaxGeodesCracked(32) }
+    fun part1() = blueprints.sumOf { it.id * it.determineMaxGeodesCracked(24) }
+    fun part2() = blueprints.take(3).productOf { it.determineMaxGeodesCracked(32) }
 }

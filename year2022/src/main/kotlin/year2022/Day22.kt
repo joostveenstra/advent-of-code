@@ -1,10 +1,11 @@
 package year2022
 
+import framework.Context
 import framework.Day
 import util.*
 import kotlin.math.sqrt
 
-object Day22 : Day {
+class Day22(context: Context) : Day by context {
     data class State(val position: Point, val direction: Direction)
 
     data class Vector(val x: Int, val y: Int, val z: Int) {
@@ -18,22 +19,20 @@ object Day22 : Day {
     data class CubeState(val position: Vector, val direction: Vector)
 
     // TODO: convert to grid?
-    private fun String.toTiles() = buildMap {
-        lines().dropLast(2).forEachIndexed { y, row ->
+    val tiles = buildMap {
+        lines.dropLast(2).forEachIndexed { y, row ->
             row.forEachIndexed { x, col ->
                 if (col != ' ') put(Point(x, y), col == '.')
             }
         }
     }
 
-    private fun String.toMoves() = lines().last().replace("L", " L ").replace("R", " R ").split(" ")
+    val moves = lines.last().replace("L", " L ").replace("R", " R ").split(" ")
         .flatMap { (if (it.first().isDigit()) "F".repeat(it.toInt()) else it).asIterable() }
 
-    private fun Point.score() = 1000 * (y + 1) + 4 * (x + 1)
+    fun Point.score() = 1000 * (y + 1) + 4 * (x + 1)
 
-    override fun part1(input: String): Int {
-        val tiles = input.toTiles()
-        val moves = input.toMoves()
+    fun part1(): Int {
         val rows = tiles.keys.groupBy { it.y }
         val cols = tiles.keys.groupBy { it.x }
         val minX = rows.mapValues { (_, row) -> row.minOf { it.x } }
@@ -70,9 +69,7 @@ object Day22 : Day {
         return position.score() + cardinal.indexOf(direction)
     }
 
-    override fun part2(input: String): Int {
-        val tiles = input.toTiles()
-        val moves = input.toMoves()
+    fun part2(): Int {
         val blockSize = sqrt((tiles.size / 6).toDouble()).toInt()
         val scaleIJ = blockSize - 1
         val scaleK = blockSize + 1

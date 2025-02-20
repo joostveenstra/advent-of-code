@@ -1,10 +1,11 @@
 package year2017
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day19 : Day {
-    private fun String.walk() = with(toCharGrid()) {
+class Day19(context: Context) : Day by context {
+    fun String.walk() = with(toCharGrid()) {
         tailrec fun next(position: Point, direction: Direction, path: List<Char>, steps: Int): Pair<String, Int> {
             val nextPosition = position + direction
             return when (val value = get(nextPosition)) {
@@ -26,7 +27,6 @@ object Day19 : Day {
         next(start, DOWN, listOf(), 0)
     }
 
-    override fun part1(input: String) = input.walk().first
-
-    override fun part2(input: String) = input.walk().second
+    fun part1() = input.walk().first
+    fun part2() = input.walk().second
 }

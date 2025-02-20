@@ -1,13 +1,14 @@
 package year2016
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day24 : Day {
-    private fun String.toGraph(): Map<Int, Map<Int, Int>> {
+class Day24(context: Context) : Day by context {
+    val graph = run {
         // TODO: convert to grid
         val grid = buildSet {
-            lines().forEachIndexed { y, row ->
+            lines.forEachIndexed { y, row ->
                 row.forEachIndexed { x, char ->
                     if (char != '#') add(Point(x, y))
                 }
@@ -15,16 +16,16 @@ object Day24 : Day {
         }
         // TODO: convert to grid
         val nodes = buildMap {
-            lines().forEachIndexed { y, row ->
+            lines.forEachIndexed { y, row ->
                 row.forEachIndexed { x, char ->
                     if (char.isDigit()) put(char.digitToInt(), Point(x, y))
                 }
             }
         }
-        return nodes.mapValues { (_, start) -> nodes.mapValues { (_, end) -> grid.findShortestPath(start, end) } }
+        nodes.mapValues { (_, start) -> nodes.mapValues { (_, end) -> grid.findShortestPath(start, end) } }
     }
 
-    private fun Set<Point>.findShortestPath(start: Point, end: Point): Int {
+    fun Set<Point>.findShortestPath(start: Point, end: Point): Int {
         val queue = dequeOf(start)
         val visited = mutableMapOf(start to 0)
 
@@ -42,18 +43,16 @@ object Day24 : Day {
         error("This should never happen")
     }
 
-    private fun Map<Int, Map<Int, Int>>.travelingSalesman(routes: List<List<Int>>) =
+    fun Map<Int, Map<Int, Int>>.travelingSalesman(routes: List<List<Int>>) =
         routes.minOf { it.zipWithNext { a, b -> getValue(a).getValue(b) }.sum() }
 
-    override fun part1(input: String): Int {
-        val graph = input.toGraph()
+    fun part1() = run {
         val routes = (graph.keys - 0).permutations().map { listOf(0) + it }
-        return graph.travelingSalesman(routes)
+        graph.travelingSalesman(routes)
     }
 
-    override fun part2(input: String): Int {
-        val graph = input.toGraph()
+    fun part2() = run {
         val routes = (graph.keys - 0).permutations().map { listOf(0) + it + 0 }
-        return graph.travelingSalesman(routes)
+        graph.travelingSalesman(routes)
     }
 }

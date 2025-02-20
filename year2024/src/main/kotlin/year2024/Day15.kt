@@ -1,18 +1,14 @@
 package year2024
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day15 : Day {
-    private fun CharGrid.walk(moves: List<Direction>) = toMutableGrid().apply {
-        val start = findPoint('@').also { this[it] = '.' }
-        moves.fold(start) { position, direction ->
-            if (get(position + direction) == '.') position + direction
-            else push(position, direction)
-        }
-    }
+class Day15(context: Context) : Day by context {
+    val grid = input.split(EMPTY_LINE)[0].toCharGrid()
+    val moves = input.split(EMPTY_LINE)[1].lines().flatMap { l -> l.map { it.toDirection() } }
 
-    private fun MutableCharGrid.push(start: Point, direction: Direction): Point {
+    fun MutableCharGrid.push(start: Point, direction: Direction): Point {
         val queue = dequeOf(start + direction)
         val path = mutableSetOf<Point>()
 
@@ -37,7 +33,15 @@ object Day15 : Day {
         return start + direction
     }
 
-    private fun CharGrid.spread(): CharGrid {
+    fun CharGrid.walk(moves: List<Direction>) = toMutableGrid().apply {
+        val start = findPoint('@').also { this[it] = '.' }
+        moves.fold(start) { position, direction ->
+            if (get(position + direction) == '.') position + direction
+            else push(position, direction)
+        }
+    }
+
+    fun CharGrid.spread(): CharGrid {
         val wide = joinToString("") {
             when (it) {
                 '#' -> "##"
@@ -49,19 +53,8 @@ object Day15 : Day {
         return Grid(width * 2, height, wide)
     }
 
-    private fun Point.gps() = 100 * y + x
+    fun Point.gps() = 100 * y + x
 
-    private fun parse(input: String) = input.split(EMPTY_LINE).let { (g, m) ->
-        val grid = g.toCharGrid()
-        val moves = m.lines().flatMap { l -> l.map { it.toDirection() } }
-        grid to moves
-    }
-
-    override fun part1(input: String) = parse(input).let { (grid, moves) ->
-        grid.walk(moves).findPoints('O').sumOf { it.gps() }
-    }
-
-    override fun part2(input: String) = parse(input).let { (grid, moves) ->
-        grid.spread().walk(moves).findPoints('[').sumOf { it.gps() }
-    }
+    fun part1() = grid.walk(moves).findPoints('O').sumOf { it.gps() }
+    fun part2() = grid.spread().walk(moves).findPoints('[').sumOf { it.gps() }
 }

@@ -1,25 +1,26 @@
 package year2022
 
+import framework.Context
 import framework.Day
 import util.*
 
 typealias Elf = Point
 
-object Day23 : Day {
-    private val order = listOf(NORTH, SOUTH, WEST, EAST)
+class Day23(context: Context) : Day by context {
+    val order = listOf(NORTH, SOUTH, WEST, EAST)
 
     data class State(val elves: Set<Elf>, val directions: List<Direction>, val stuck: Boolean = false)
 
     // TODO: Convert to grid??
-    private fun String.toElves() = buildSet {
-        lines().forEachIndexed { y, row ->
+    val elves = buildSet {
+        lines.forEachIndexed { y, row ->
             row.forEachIndexed { x, col ->
                 if (col == '#') add(Point(x, y))
             }
         }
     }
 
-    private fun Elf.propose(elves: Set<Elf>, directions: List<Direction>): Elf? {
+    fun Elf.propose(elves: Set<Elf>, directions: List<Direction>): Elf? {
         val neighboursExist = allNeighbours.map { it in elves }
         val (e, s, w, n, se, sw, nw, ne) = neighboursExist
         val (north, south, west) = order
@@ -36,7 +37,7 @@ object Day23 : Day {
         else null
     }
 
-    private fun round(state: State): State {
+    fun round(state: State): State {
         val (elves, directions) = state
         val proposals = elves.associateWith { it.propose(elves, directions) }
         val occurrences = proposals.values.groupingBy { it }.eachCount()
@@ -47,13 +48,15 @@ object Day23 : Day {
         return State(next, directions.drop(1) + directions.first(), elves == next)
     }
 
-    private fun Set<Elf>.process(): Sequence<State> {
+    fun Set<Elf>.process(): Sequence<State> {
         val initial = State(this, order)
         return generateSequence(initial) { round(it) }
     }
 
-    override fun part1(input: String): Int {
-        val end = input.toElves().process().nth(10).elves
+    val processed = elves.process()
+
+    fun part1(): Int {
+        val end = processed.nth(10).elves
 
         val minX = end.minOf { it.x }
         val maxX = end.maxOf { it.x }
@@ -64,5 +67,5 @@ object Day23 : Day {
         return points.count { it !in end }
     }
 
-    override fun part2(input: String): Int = input.toElves().process().indexOfFirst { it.stuck }
+    fun part2(): Int = processed.indexOfFirst { it.stuck }
 }

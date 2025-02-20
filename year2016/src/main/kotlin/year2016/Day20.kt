@@ -1,15 +1,15 @@
 package year2016
 
+import framework.Context
 import framework.Day
+import util.width
 
-object Day20 : Day {
-    private fun String.toRanges() = lines().map {
+class Day20(context: Context) : Day by context {
+    val ranges = lines.map {
         it.split('-').let { (first, last) -> first.toUInt()..last.toUInt() }
     }
 
-    private val UIntRange.size get() = last - first + 1u
-
-    private infix fun UIntRange.subtract(other: UIntRange) = when {
+    infix fun UIntRange.subtract(other: UIntRange) = when {
         first >= other.first && last <= other.last -> listOf()
         first < other.first && last > other.last -> listOf(first..other.first - 1u, other.last + 1u..last)
         first < other.first && last >= other.first -> listOf(first..other.first - 1u)
@@ -17,9 +17,10 @@ object Day20 : Day {
         else -> listOf(this)
     }
 
-    private fun List<UIntRange>.intersect() = fold(listOf(0u..UInt.MAX_VALUE)) { remaining, range -> remaining.flatMap { it subtract range } }
+    fun List<UIntRange>.intersect() = fold(listOf(0u..UInt.MAX_VALUE)) { remaining, range -> remaining.flatMap { it subtract range } }
 
-    override fun part1(input: String) = input.toRanges().intersect().minOf { it.first }
+    val allowed = ranges.intersect()
 
-    override fun part2(input: String) = input.toRanges().intersect().sumOf { it.size }
+    fun part1() = allowed.minOf { it.first }
+    fun part2() = allowed.sumOf { it.width }
 }

@@ -1,11 +1,12 @@
 package year2015
 
+import framework.Context
 import framework.Day
 
-object Day17 : Day {
-    private fun String.toCombinations(): Sequence<List<Int>> {
-        val containers = lines().map { it.toInt() }
-        val target = if (containers.size == 5) 25 else 150
+class Day17(context: Context) : Day by context {
+    val combinations = lines.run {
+        val containers = map { it.toInt() }
+        val target = if (isExample) 25 else 150
 
         fun List<Int>.combinationsOfSize(target: Int): Sequence<List<Int>> = sequence {
             forEachIndexed { index, container ->
@@ -19,13 +20,11 @@ object Day17 : Day {
             }
         }
 
-        return containers.combinationsOfSize(target)
+        containers.combinationsOfSize(target)
     }
 
-    override fun part1(input: String) = input.toCombinations().count()
+    val grouped = combinations.groupBy { it.size }
 
-    override fun part2(input: String): Int {
-        val combinations = input.toCombinations().groupBy { it.size }
-        return combinations.getValue(combinations.keys.min()).size
-    }
+    fun part1() = combinations.count()
+    fun part2() = grouped.getValue(grouped.keys.min()).size
 }

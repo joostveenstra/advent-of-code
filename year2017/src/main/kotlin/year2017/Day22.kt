@@ -1,9 +1,10 @@
 package year2017
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day22 : Day {
+class Day22(context: Context) : Day by context {
     sealed interface Node
     data object Clean : Node
     data object Weakened: Node
@@ -29,7 +30,7 @@ object Day22 : Day {
         return State(grid.toMutableMap(), start, UP, 0)
     }
 
-    override fun part1(input: String): Int {
+    fun part1(): Int {
         fun State.step() = when (grid.getOrDefault(position, Clean)) {
             is Clean -> next(Infected, direction.turnLeft())
             is Infected -> next(Clean, direction.turnRight())
@@ -38,7 +39,7 @@ object Day22 : Day {
         return generateSequence(input.toInitial()) { it.step() }.nth(10000).infected
     }
 
-    override fun part2(input: String): Int {
+    fun part2(): Int {
         fun State.step() = when (grid.getOrDefault(position, Clean)) {
             is Clean -> next(Weakened, direction.turnLeft())
             is Weakened -> next(Infected, direction)

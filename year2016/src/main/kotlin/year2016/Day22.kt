@@ -1,13 +1,18 @@
 package year2016
 
+import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashMap
 import util.*
 
-object Day22 : Day {
-    private val end = ORIGIN
+class Day22(context: Context) : Day by context {
+    val end = ORIGIN
+    val grid = lines.drop(2).associate { line ->
+        val (x, y, _, used, avail) = line.allInts().toList()
+        Point(x, y) to Node(used, avail)
+    }
 
     data class Node(val used: Int, val avail: Int) {
         fun isEmpty() = used == 0
@@ -19,40 +24,32 @@ object Day22 : Day {
     data class State(val grid: PersistentMap<Point, Node>, val goal: Point, val empty: Point) {
         override fun hashCode() = (goal to empty).hashCode()
         override fun equals(other: Any?) = other is State && goal == other.goal && empty == other.empty
-        fun isEnd() = goal == end
-        fun heuristic() = 10 * (goal manhattan end) + (goal manhattan empty)
-        fun next(): List<State> {
-            val (grid, goal, empty) = this
-            val emptyNode = grid.getValue(empty)
-            return empty.cardinalNeighbours
-                .filter { it in grid }
-                .filter { emptyNode accepts grid.getValue(it) }
-                .map { nextEmpty ->
-                    val nextGoal = if (nextEmpty == goal) empty else goal
-                    State(grid.swap(nextEmpty, empty), nextGoal, nextEmpty)
-                }
-        }
     }
 
-    private fun String.toGrid() = lines().drop(2).associate { line ->
-        val (x, y, _, used, avail) = line.allInts().toList()
-        Point(x, y) to Node(used, avail)
+    fun State.isEnd() = goal == end
+    fun State.heuristic() = 10 * (goal manhattan end) + (goal manhattan empty)
+    fun State.next(): List<State> {
+        val (grid, goal, empty) = this
+        val emptyNode = grid.getValue(empty)
+        return empty.cardinalNeighbours
+            .filter { it in grid }
+            .filter { emptyNode accepts grid.getValue(it) }
+            .map { nextEmpty ->
+                val nextGoal = if (nextEmpty == goal) empty else goal
+                State(grid.swap(nextEmpty, empty), nextGoal, nextEmpty)
+            }
     }
 
-    private fun Map<Point, Node>.toInitial(): State {
-        val goal = Point(keys.maxOf { it.x }, 0)
-        val empty = entries.first { (_, v) -> v.used == 0 }.key
-        return State(toPersistentHashMap(), goal, empty)
-    }
-
-    private fun PersistentMap<Point, Node>.swap(from: Point, to: Point): PersistentMap<Point, Node> {
+    fun PersistentMap<Point, Node>.swap(from: Point, to: Point): PersistentMap<Point, Node> {
         val nodeFrom = getValue(from)
         val nodeTo = getValue(to)
         return this + (from to nodeFrom.empty()) + (to to nodeTo.accept(nodeFrom))
     }
 
-    private fun Map<Point, Node>.minimizeSteps(): Int {
-        val initial = toInitial()
+    fun Map<Point, Node>.minimizeSteps(): Int {
+        val goal = Point(keys.maxOf { it.x }, 0)
+        val empty = entries.first { (_, v) -> v.used == 0 }.key
+        val initial = State(toPersistentHashMap(), goal, empty)
         val queue = priorityQueueOf(initial to 0) { it.second }
         val cost = mutableMapOf(initial to 0)
 
@@ -71,7 +68,6 @@ object Day22 : Day {
         error("This should never happen")
     }
 
-    override fun part1(input: String) = input.toGrid().values.toList().pairs().count { (a, b) -> !a.isEmpty() && b accepts a || !b.isEmpty() && a accepts b }
-
-    override fun part2(input: String) = input.toGrid().minimizeSteps()
+    fun part1() = grid.values.toList().pairs().count { (a, b) -> !a.isEmpty() && b accepts a || !b.isEmpty() && a accepts b }
+    fun part2() = grid.minimizeSteps()
 }

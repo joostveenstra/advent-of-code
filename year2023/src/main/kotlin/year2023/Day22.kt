@@ -1,16 +1,15 @@
 package year2023
 
+import framework.Context
 import framework.Day
 import util.allInts
 import util.width
 
-object Day22 : Day {
+class Day22(context: Context) : Day by context {
     data class Brick(val xs: IntRange, val ys: IntRange, val zs: IntRange)
     data class Node(val id: Int, val depth: Int)
 
-    private fun String.toBricks() = allInts().chunked(6).map { Brick(it[0]..it[3], it[1]..it[4], it[2]..it[5]) }.toList()
-
-    private fun List<Brick>.fall(): Pair<Int, Int> {
+    fun List<Brick>.fall(): Pair<Int, Int> {
         val heights = Array(10) { IntArray(10) }
         val indices = Array(10) { IntArray(10) { Int.MAX_VALUE } }
 
@@ -55,7 +54,9 @@ object Day22 : Day {
         return safe.count { it } to dominator.sumOf { it.depth }
     }
 
-    override fun part1(input: String): Int = input.toBricks().fall().first
+    val bricks = this@Day22.input.allInts().chunked(6).map { Brick(it[0]..it[3], it[1]..it[4], it[2]..it[5]) }.toList()
+    val fallen = bricks.fall()
 
-    override fun part2(input: String): Int = input.toBricks().fall().second
+    fun part1() = fallen.first
+    fun part2() = fallen.second
 }

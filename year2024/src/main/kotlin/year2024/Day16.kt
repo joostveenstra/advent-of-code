@@ -1,12 +1,16 @@
 package year2024
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day16 : Day {
+class Day16(context: Context) : Day by context {
     data class Reindeer(val position: Point, val direction: Direction, val score: Int = 0)
 
-    private fun CharGrid.findPaths(): Pair<Int, Int> {
+    val grid = input.toCharGrid()
+    val paths = grid.traverse()
+
+    fun CharGrid.traverse(): Pair<Int, Int> {
         val start = findPoint('S')
         val end = findPoint('E')
         val forward = priorityQueueOf(Reindeer(start, EAST)) { it.score }
@@ -25,7 +29,7 @@ object Day16 : Day {
                 Reindeer(position, direction.turnRight(), score + 1000)
             ).forEach { next ->
                 val (nextPosition, nextDirection, nextScore) = next
-                if (get(nextPosition) != '#' && nextScore < (seen[nextPosition to nextDirection] ?: Int.MAX_VALUE)) {
+                if (this[nextPosition] != '#' && nextScore < (seen[nextPosition to nextDirection] ?: Int.MAX_VALUE)) {
                     forward += next
                     seen[nextPosition to nextDirection] = nextScore
                 }
@@ -56,7 +60,6 @@ object Day16 : Day {
         return min to path.size
     }
 
-    override fun part1(input: String) = input.toCharGrid().findPaths().first
-
-    override fun part2(input: String) = input.toCharGrid().findPaths().second
+    fun part1() = paths.let { (lowest) -> lowest }
+    fun part2() = paths.let { (_, tiles) -> tiles }
 }

@@ -1,11 +1,12 @@
 package year2016
 
+import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentHashMapOf
 import kotlinx.collections.immutable.plus
 
-object Day12 : Day {
+class Day12(context: Context) : Day by context {
     sealed interface Instruction
     data class Cpy(val from: String, val to: String) : Instruction
     data class Inc(val to: String) : Instruction
@@ -13,10 +14,10 @@ object Day12 : Day {
     data class Jnz(val from: String, val offset: Int) : Instruction
 
     data class Cpu(val instructions: List<Instruction>, val registers: PersistentMap<String, Int>, val i: Int = 0, val running: Boolean = true) {
-        private fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
-        private fun write(key: String, value: Int) = next().copy(registers = registers + (key to value))
-        private fun next() = copy(i = i + 1)
-        private fun jump(offset: Int) = copy(i = i + offset)
+        fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
+        fun write(key: String, value: Int) = next().copy(registers = registers + (key to value))
+        fun next() = copy(i = i + 1)
+        fun jump(offset: Int) = copy(i = i + offset)
         fun execute() =
             if (i !in instructions.indices) copy(running = false)
             else with(instructions[i]) {
@@ -29,7 +30,10 @@ object Day12 : Day {
             }
     }
 
-    private fun String.toProgram() = lines().map { line ->
+    fun List<Instruction>.run(c: Int) =
+        generateSequence(Cpu(this, persistentHashMapOf("c" to c))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
+
+    val program = lines.map { line ->
         line.split(' ').let {
             when (it[0]) {
                 "cpy" -> Cpy(it[1], it[2])
@@ -40,10 +44,6 @@ object Day12 : Day {
         }
     }
 
-    private fun List<Instruction>.run(c: Int) =
-        generateSequence(Cpu(this, persistentHashMapOf("c" to c))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
-
-    override fun part1(input: String) = input.toProgram().run(0)
-
-    override fun part2(input: String) = input.toProgram().run(1)
+    fun part1() = program.run(0)
+    fun part2() = program.run(1)
 }

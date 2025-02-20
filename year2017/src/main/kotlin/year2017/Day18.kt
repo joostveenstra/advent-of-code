@@ -1,8 +1,9 @@
 package year2017
 
+import framework.Context
 import framework.Day
 
-object Day18 : Day {
+class Day18(context: Context) : Day by context {
     sealed interface Instruction
     data class Snd(val from: String) : Instruction
     data class Set(val to: String, val from: String) : Instruction
@@ -25,7 +26,7 @@ object Day18 : Day {
         fun read(key: String) = key.toLongOrNull() ?: registers.getOrDefault(key, 0)
         fun write(key: String, value: Long) = next().copy(registers = registers + (key to value))
         fun next() = copy(i = i + 1)
-        private fun jump(offset: String) = copy(i = i + read(offset).toInt())
+        fun jump(offset: String) = copy(i = i + read(offset).toInt())
         fun execute() =
             if (i !in instructions.indices) copy(running = false)
             else with(instructions[i]) {
@@ -41,7 +42,7 @@ object Day18 : Day {
             }
     }
 
-    private fun String.toProgram() = lines().map { line ->
+    val program = lines.map { line ->
         line.split(' ').let {
             when (it[0]) {
                 "snd" -> Snd(it[1])
@@ -55,19 +56,18 @@ object Day18 : Day {
         }
     }
 
-    override fun part1(input: String): Long {
+    fun part1(): Long {
         fun rcv(cpu: Cpu, register: String) = if (cpu.read(register) != 0L) cpu.copy(running = false) else cpu.next()
-        return generateSequence(Cpu(input.toProgram(), ::rcv)) { it.execute() }.dropWhile { it.running }.first().output.last()
+        return generateSequence(Cpu(program, ::rcv)) { it.execute() }.dropWhile { it.running }.first().output.last()
     }
 
-    override fun part2(input: String): Int {
+    fun part2(): Int {
         fun rcv(cpu: Cpu, register: String) =
             if (cpu.received == cpu.input.size) cpu.copy(running = false)
             else cpu.write(register, cpu.input[cpu.received]).copy(received = cpu.received + 1)
 
         fun Pair<Cpu, Cpu>.next() = let { (a, b) -> a.copy(input = b.output).execute() to b.copy(input = a.output).execute() }
 
-        val program = input.toProgram()
         val initial = Cpu(program, ::rcv, mapOf("p" to 0)) to Cpu(program, ::rcv, mapOf("p" to 1))
         return generateSequence(initial) { it.next() }.dropWhile { (a, b) -> a.running || b.running }.first().second.output.size
     }

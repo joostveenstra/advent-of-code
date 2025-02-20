@@ -8,5 +8,5 @@ internal fun resourceAsText(fileName: String): String =
     Files.readString(Path.of(fileName.toURI()))
 
 private fun String.toURI(): URI =
-    DayTest::class.java.getResource(this)?.toURI()
+    Test::class.java.getResource(this)?.toURI()
         ?: throw IllegalArgumentException("Cannot find resource: $this")

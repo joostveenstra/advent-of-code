@@ -1,9 +1,10 @@
 package year2022
 
+import framework.Context
 import framework.Day
 import util.productOf
 
-object Day13 : Day {
+class Day13(context: Context) : Day by context {
     data class Packet(val value: String) : Comparable<Packet> {
         override fun compareTo(other: Packet): Int {
             val left = this.value
@@ -21,14 +22,13 @@ object Day13 : Day {
         }
     }
 
-    private fun String.toPackets() = lines().filter { it.isNotEmpty() }.map { Packet(it.replace("10", "A")) }
+    val packets = lines.filter { it.isNotEmpty() }.map { Packet(it.replace("10", "A")) }
 
-    override fun part1(input: String) = input.toPackets().chunked(2).withIndex()
+    fun part1() = packets.chunked(2).withIndex()
         .filter { (_, pair) -> pair.first() < pair.last() }
         .sumOf { it.index + 1 }
 
-    override fun part2(input: String): Int {
-        val packets = input.toPackets()
+    fun part2(): Int {
         val dividerPackets = listOf("[[2]]", "[[6]]").map(::Packet)
         return (packets + dividerPackets).sorted().withIndex()
             .filter { (_, p) -> p in dividerPackets }

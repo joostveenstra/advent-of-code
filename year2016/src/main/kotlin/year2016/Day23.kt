@@ -1,9 +1,10 @@
 package year2016
 
+import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.*
 
-object Day23 : Day {
+class Day23(context: Context) : Day by context {
     sealed interface Instruction
     data class Cpy(val from: String, val to: String) : Instruction
     data class Inc(val to: String) : Instruction
@@ -52,7 +53,20 @@ object Day23 : Day {
             }
     }
 
-    private fun String.toProgram() = lines().map { line ->
+    fun List<Instruction>.patch() = mapIndexed { i, op ->
+        when (i) {
+            2, 3, 4, 5, 6, 7, 8 -> Nop
+            9 -> Mul("b", "a")
+            12, 13 -> Nop
+            14 -> Mul("2", "c")
+            else -> op
+        }
+    }
+
+    fun List<Instruction>.run(a: Int) =
+        generateSequence(Cpu(toPersistentList(), persistentHashMapOf("a" to a))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
+
+    val program = lines.map { line ->
         line.split(' ').let {
             when (it[0]) {
                 "cpy" -> Cpy(it[1], it[2])
@@ -64,20 +78,6 @@ object Day23 : Day {
         }
     }
 
-    private fun List<Instruction>.patch() = mapIndexed { i, op ->
-        when (i) {
-            2, 3, 4, 5, 6, 7, 8 -> Nop
-            9 -> Mul("b", "a")
-            12, 13 -> Nop
-            14 -> Mul("2", "c")
-            else -> op
-        }
-    }
-
-    private fun List<Instruction>.run(a: Int) =
-        generateSequence(Cpu(toPersistentList(), persistentHashMapOf("a" to a))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
-
-    override fun part1(input: String) = input.toProgram().run(7)
-
-    override fun part2(input: String) = input.toProgram().patch().run(12)
+    fun part1() = program.run(7)
+    fun part2() = program.patch().run(12)
 }

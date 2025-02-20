@@ -1,18 +1,28 @@
 package year2015
 
+import framework.Context
 import framework.Day
 import util.pairs
 
-object Day21 : Day {
-    private val none = Item(0, 0, 0)
-    private val weapons = listOf(
+class Day21(context: Context) : Day by context {
+    data class Item(val cost: Int, val damage: Int, val armor: Int) {
+        operator fun plus(other: Item) = Item(cost + other.cost, damage + other.damage, armor + other.armor)
+        fun beats(boss: Item): Boolean {
+            val bossHP = boss.cost / maxOf(1, damage - boss.armor)
+            val youHP = 100 / maxOf(1, boss.damage - armor)
+            return youHP >= bossHP
+        }
+    }
+
+    val none = Item(0, 0, 0)
+    val weapons = listOf(
         Item(8, 4, 0),
         Item(10, 5, 0),
         Item(25, 6, 0),
         Item(40, 7, 0),
         Item(74, 8, 0)
     )
-    private val armors = listOf(
+    val armors = listOf(
         none,
         Item(13, 0, 1),
         Item(31, 0, 2),
@@ -20,7 +30,7 @@ object Day21 : Day {
         Item(75, 0, 4),
         Item(102, 0, 5)
     )
-    private val rings = listOf(
+    val rings = listOf(
         none,
         none,
         Item(25, 1, 0),
@@ -31,27 +41,10 @@ object Day21 : Day {
         Item(80, 0, 3)
     ).pairs().map { (a, b) -> a + b }
 
-    private val equipment = buildList { for (weapon in weapons) for (armor in armors) for (pairOfRings in rings) add(weapon + armor + pairOfRings) }
+    val equipment = buildList { for (weapon in weapons) for (armor in armors) for (pairOfRings in rings) add(weapon + armor + pairOfRings) }
 
-    data class Item(val cost: Int, val damage: Int, val armor: Int) {
-        operator fun plus(other: Item) = Item(cost + other.cost, damage + other.damage, armor + other.armor)
-    }
+    val boss = lines.map { line -> line.filter { it.isDigit() }.toInt() }.let { Item(it[0], it[1], it[2]) }
 
-    private fun String.toBoss() = lines().map { line -> line.filter { it.isDigit() }.toInt() }.let { (cost, damage, armor) -> Item(cost, damage, armor) }
-
-    private fun Item.beats(boss: Item): Boolean {
-        val bossHP = boss.cost / maxOf(1, damage - boss.armor)
-        val youHP = 100 / maxOf(1, boss.damage - armor)
-        return youHP >= bossHP
-    }
-
-    override fun part1(input: String): Int {
-        val boss = input.toBoss()
-        return equipment.filter { it.beats(boss) }.minOf { it.cost }
-    }
-
-    override fun part2(input: String): Int {
-        val boss = input.toBoss()
-        return equipment.filterNot { it.beats(boss) }.maxOf { it.cost }
-    }
+    fun part1() = equipment.filter { it.beats(boss) }.minOf { it.cost }
+    fun part2() = equipment.filterNot { it.beats(boss) }.maxOf { it.cost }
 }

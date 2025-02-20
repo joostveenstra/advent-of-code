@@ -1,10 +1,10 @@
 package year2023
 
-import framework.DayTest
+import framework.Test
 
-class Day24Test : DayTest(Day24, {
+class Day24Test : Test({
     part1 {
-        example = 0//2
+        example = 2
         input = 20847
     }
 

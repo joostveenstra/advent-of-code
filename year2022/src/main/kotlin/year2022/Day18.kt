@@ -1,21 +1,17 @@
 package year2022
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day18 : Day {
-    private fun String.toCubes() = lines().map { it.toPoint3D() }.toSet()
+class Day18(context: Context) : Day by context {
+    val cubes = lines.map { it.toPoint3D() }.toSet()
 
-    private fun Set<Point3D>.rangeOf(function: (Point3D) -> Int) = minOf(function) - 1..maxOf(function) + 1
+    fun Set<Point3D>.rangeOf(function: (Point3D) -> Int) = minOf(function) - 1..maxOf(function) + 1
 
-    override fun part1(input: String): Int {
-        val cubes = input.toCubes()
-        return cubes.sumOf { it.cardinalNeighbours.count { n -> n !in cubes } }
-    }
+    fun part1() = cubes.sumOf { it.cardinalNeighbours.count { n -> n !in cubes } }
 
-    override fun part2(input: String): Int {
-        val cubes = input.toCubes()
-
+    fun part2(): Int {
         val xs = cubes.rangeOf { it.x }
         val ys = cubes.rangeOf { it.y }
         val zs = cubes.rangeOf { it.z }

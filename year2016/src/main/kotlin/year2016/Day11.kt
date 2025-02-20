@@ -1,4 +1,6 @@
 package year2016
+
+import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
@@ -6,22 +8,7 @@ import util.dequeOf
 import util.drain
 import util.findAll
 
-object Day11 : Day {
-    private val moves = listOf(
-        Resources(2, 0),
-        Resources(1, 0),
-        Resources(1, 1),
-        Resources(0, 1),
-        Resources(0, 2)
-    )
-
-    private val adjacent = mapOf(
-        0 to listOf(1),
-        1 to listOf(0, 2),
-        2 to listOf(1, 3),
-        3 to listOf(2)
-    )
-
+class Day11(context: Context) : Day by context {
     data class Resources(val chips: Int, val generators: Int) {
         operator fun plus(other: Resources) = Resources(chips + other.chips, generators + other.generators)
         operator fun minus(other: Resources) = Resources(chips - other.chips, generators - other.generators)
@@ -29,25 +16,37 @@ object Day11 : Day {
 
     data class State(val floor: Int, val floors: PersistentList<Resources>)
 
-    private fun String.toInitial(): State {
-        val floors = lines().map { line ->
-            val chips = line.findAll("microchip".toRegex()).count()
-            val generators = line.findAll("generator".toRegex()).count()
-            Resources(chips, generators)
-        }
-        return State(0, floors.toPersistentList())
+    val floors = lines.map { line ->
+        val chips = line.findAll("microchip".toRegex()).count()
+        val generators = line.findAll("generator".toRegex()).count()
+        Resources(chips, generators)
     }
+    val initial = State(0, floors.toPersistentList())
+    val expanded = initial.copy(floors = initial.floors.set(0, initial.floors[0] + Resources(2, 2)))
 
-    private fun State.isValid() = floors.all { it.chips >= 0 && it.generators >= 0 && (it.generators == 0 || it.chips <= it.generators) }
+    val moves = listOf(
+        Resources(2, 0),
+        Resources(1, 0),
+        Resources(1, 1),
+        Resources(0, 1),
+        Resources(0, 2)
+    )
 
-    private fun State.isEnd() = floor == 3 && floors.take(3).all { it.chips == 0 && it.generators == 0 }
+    val adjacent = mapOf(
+        0 to listOf(1),
+        1 to listOf(0, 2),
+        2 to listOf(1, 3),
+        3 to listOf(2)
+    )
 
-    private fun State.next() = buildList {
+    fun State.isValid() = floors.all { it.chips >= 0 && it.generators >= 0 && (it.generators == 0 || it.chips <= it.generators) }
+    fun State.isEnd() = floor == 3 && floors.take(3).all { it.chips == 0 && it.generators == 0 }
+    fun State.next() = buildList {
         for (next in adjacent.getValue(floor)) for (move in moves)
             add(State(next, floors.set(floor, floors[floor] - move).set(next, floors[next] + move)))
     }
 
-    private fun minimize(initial: State): Int {
+    fun minimize(initial: State): Int {
         val queue = dequeOf(initial)
         val visited = mutableMapOf(initial to 0)
 
@@ -64,11 +63,6 @@ object Day11 : Day {
         return visited.entries.first { (k, _) -> k.isEnd() }.value
     }
 
-    override fun part1(input: String) = minimize(input.toInitial())
-
-    override fun part2(input: String): Int {
-        val initial = input.toInitial()
-        val expanded = initial.copy(floors = initial.floors.set(0, initial.floors[0] + Resources(2, 2)))
-        return minimize(expanded)
-    }
+    fun part1() = minimize(initial)
+    fun part2() = minimize(expanded)
 }

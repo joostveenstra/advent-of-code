@@ -1,5 +1,6 @@
 package year2023
 
+import framework.Context
 import framework.Day
 import util.*
 import kotlin.math.absoluteValue
@@ -8,10 +9,13 @@ import kotlin.math.absoluteValue
  * Uses https://en.wikipedia.org/wiki/Shoelace_formula to calculate the area enclosed by the loop
  * and https://en.wikipedia.org/wiki/Pick%27s_theorem to calculate the amount of points inside that area
  */
-object Day10 : Day {
-    private fun determinant(a: Point, b: Point) = a.x * b.y - a.y * b.x
+class Day10(context: Context) : Day by context {
+    val grid = this@Day10.input.toCharGrid()
+    val path = grid.walk()
 
-    private fun CharGrid.walk(): Pair<Int, Int> {
+    fun determinant(a: Point, b: Point) = a.x * b.y - a.y * b.x
+
+    fun CharGrid.walk(): Pair<Int, Int> {
         tailrec fun step(position: Point, direction: Direction, area: Int, steps: Int): Pair<Int, Int> {
             val nextPosition = position + direction
             val determinant = determinant(position, nextPosition)
@@ -31,7 +35,6 @@ object Day10 : Day {
         return step(start, direction, 0, 1)
     }
 
-    override fun part1(input: String) = input.toCharGrid().walk().let { (steps) -> steps / 2 }
-
-    override fun part2(input: String) = input.toCharGrid().walk().let { (steps, area) -> area - steps / 2 + 1 }
+    fun part1() = path.let { (steps) -> steps / 2 }
+    fun part2() = path.let { (steps, area) -> area - steps / 2 + 1 }
 }

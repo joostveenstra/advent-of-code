@@ -1,11 +1,12 @@
 package year2016
 
+import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentHashMapOf
 import kotlinx.collections.immutable.plus
 
-object Day25 : Day {
+class Day25(context: Context) : Day by context {
     sealed interface Instruction
     data class Cpy(val from: String, val to: String) : Instruction
     data class Inc(val to: String) : Instruction
@@ -37,7 +38,7 @@ object Day25 : Day {
             }
     }
 
-    private fun String.toProgram() = lines().map { line ->
+    val program = lines.map { line ->
         line.split(' ').let {
             when (it[0]) {
                 "cpy" -> Cpy(it[1], it[2])
@@ -49,15 +50,12 @@ object Day25 : Day {
         }
     }
 
-    override fun part1(input: String): Int {
-        val program = input.toProgram()
-        return generateSequence(0) { it + 1 }.map { a ->
-            generateSequence(Cpu(program, persistentHashMapOf("a" to a))) { it.execute() }
-                .mapNotNull { if (it.state is Output) it.state.value else null }
-                .take(10)
-                .joinToString("")
-        }.indexOf("0101010101")
-    }
+    fun part1() = generateSequence(0) { it + 1 }.map { a ->
+        generateSequence(Cpu(program, persistentHashMapOf("a" to a))) { it.execute() }
+            .mapNotNull { if (it.state is Output) it.state.value else null }
+            .take(10)
+            .joinToString("")
+    }.indexOf("0101010101")
 
-    override fun part2(input: String) = ""
+    fun part2() = "Not implemented"
 }

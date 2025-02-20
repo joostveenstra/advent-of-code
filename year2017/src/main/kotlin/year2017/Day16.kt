@@ -1,16 +1,18 @@
 package year2017
 
+import framework.Context
 import framework.Day
 import util.match
 
-object Day16 : Day {
-    private val spin = "s(\\d+)".toRegex()
-    private val exchange = "x(\\d+)/(\\d+)".toRegex()
-    private val partner = "p(\\w)/(\\w)".toRegex()
+class Day16(context: Context) : Day by context {
+    val spin = "s(\\d+)".toRegex()
+    val exchange = "x(\\d+)/(\\d+)".toRegex()
+    val partner = "p(\\w)/(\\w)".toRegex()
 
-    private fun String.toPrograms() = if (length < 14) "abcde" else "abcdefghijklmnop"
+    val programs = if (isExample) "abcde" else "abcdefghijklmnop"
+    val moves = input.split(',')
 
-    private fun List<String>.dance(initial: String) = fold(initial) { programs, move ->
+    fun List<String>.dance(initial: String) = fold(initial) { programs, move ->
         move.match(spin)?.let { (a) ->
             val x = a.toInt()
             programs.takeLast(x) + programs.dropLast(x)
@@ -37,13 +39,10 @@ object Day16 : Day {
         } ?: throw IllegalArgumentException("$move is not a valid move")
     }
 
-    override fun part1(input: String) = input.split(',').dance(input.toPrograms())
-
-    override fun part2(input: String): String {
-        val initial = input.toPrograms()
-        val moves = input.split(',')
-        val dances = generateSequence(initial) { moves.dance(it) }
-        val period = dances.drop(1).indexOf(initial) + 1
+    fun part1() = moves.dance(programs)
+    fun part2(): String {
+        val dances = generateSequence(programs) { moves.dance(it) }
+        val period = dances.drop(1).indexOf(programs) + 1
         return dances.drop(1000000000 % period).first()
     }
 }

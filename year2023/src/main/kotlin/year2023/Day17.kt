@@ -1,12 +1,15 @@
 package year2023
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day17 : Day {
+class Day17(context: Context) : Day by context {
     data class Crucible(val position: Point, val orientation: Orientation)
 
-    private fun IntGrid.minimize(least: Int, most: Int): Int {
+    val grid = this@Day17.input.toDigitGrid()
+
+    fun IntGrid.minimize(least: Int, most: Int): Int {
         val end = Point(maxX, maxY)
         val queue = priorityQueueOf<Pair<Crucible, Int>> { it.second }
         val visited = mutableMapOf<Crucible, Int>()
@@ -46,7 +49,6 @@ object Day17 : Day {
         error("This should never happen")
     }
 
-    override fun part1(input: String) = input.toDigitGrid().minimize(1, 3)
-
-    override fun part2(input: String) = input.toDigitGrid().minimize(4, 10)
+    fun part1() = grid.minimize(1, 3)
+    fun part2() = grid.minimize(4, 10)
 }

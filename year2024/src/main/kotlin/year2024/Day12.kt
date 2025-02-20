@@ -1,12 +1,16 @@
 package year2024
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day12 : Day {
+class Day12(context: Context) : Day by context {
+    val grid = input.toCharGrid()
+    val seen = grid.asMutableBooleanGrid()
+
     data class Region(val area: Int, val perimeter: Int, val sides: Int)
 
-    private fun CharGrid.fillRegion(start: Point, seen: MutableBooleanGrid): Region {
+    fun CharGrid.fillRegion(start: Point): Region {
         val region = object {
             val type = get(start)
             operator fun contains(p: Point) = getOrNull(p) == type
@@ -39,14 +43,10 @@ object Day12 : Day {
         return Region(area, perimeter, edge / 2)
     }
 
-    private fun CharGrid.findRegions(seen: MutableBooleanGrid = asMutableBooleanGrid()) =
-        points.mapNotNull { start -> if (!seen[start]) fillRegion(start, seen) else null }
+    fun CharGrid.findRegions() = points.mapNotNull { start -> if (!seen[start]) fillRegion(start) else null }
 
-    override fun part1(input: String) = with(input.toCharGrid()) {
-        findRegions().sumOf { it.area * it.perimeter }
-    }
+    val regions = grid.findRegions()
 
-    override fun part2(input: String) = with(input.toCharGrid()) {
-        findRegions().sumOf { it.area * it.sides }
-    }
+    fun part1() = regions.sumOf { it.area * it.perimeter }
+    fun part2() = regions.sumOf { it.area * it.sides }
 }

@@ -1,12 +1,22 @@
 package year2023
 
+import framework.Context
 import framework.Day
 import util.*
 
-object Day14 : Day {
-    private val order = listOf(NORTH, WEST, SOUTH, EAST)
+class Day14(context: Context) : Day by context {
+    val order = listOf(NORTH, WEST, SOUTH, EAST)
+    val grid = this@Day14.input.toCharGrid()
+    val points = grid.points
+    val pointsFlipped = grid.pointsFlipped
+    val progressions = listOf(
+        points.asReversed(),
+        pointsFlipped.asReversed(),
+        points,
+        pointsFlipped
+    )
 
-    private fun CharGrid.tilt(direction: Direction) = toMutableGrid().apply {
+    fun CharGrid.tilt(direction: Direction) = toMutableGrid().apply {
         tailrec fun slide(position: Point) {
             val next = position + direction
             if (getOrNull(next) == '.') {
@@ -16,23 +26,13 @@ object Day14 : Day {
             }
         }
 
-        val points = points
-        val pointsFlipped = pointsFlipped
-        val progressions = listOf(
-            points.asReversed(),
-            pointsFlipped.asReversed(),
-            points,
-            pointsFlipped
-        )
-        // TODO: refactor progressions
         progressions[cardinal.indexOf(direction)].filter { this[it] == 'O' }.forEach(::slide)
     }
 
-    private fun CharGrid.cycle(): CharGrid = order.fold(this) { grid, direction -> grid.tilt(direction) }
+    fun CharGrid.cycle() = order.fold(this) { grid, direction -> grid.tilt(direction) }
 
-    private fun CharGrid.load() = findPoints('O').sumOf { height - it.y }
+    fun CharGrid.load() = findPoints('O').sumOf { height - it.y }
 
-    override fun part1(input: String) = input.toCharGrid().tilt(NORTH).load()
-
-    override fun part2(input: String) = input.toCharGrid().patternRepeating(1000000000) { it.cycle() }.load()
+    fun part1() = grid.tilt(NORTH).load()
+    fun part2() = grid.patternRepeating(1000000000) { it.cycle() }.load()
 }

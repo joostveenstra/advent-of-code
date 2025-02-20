@@ -1,14 +1,15 @@
 package year2023
 
+import framework.Context
 import framework.Day
 
-object Day15 : Day {
-    private fun String.hash() = fold(0) { hash, c -> ((hash + c.code) * 17) and 0xff }
+class Day15(context: Context) : Day by context {
+    val sequence = this@Day15.input.split(',')
 
-    override fun part1(input: String) = input.split(',').sumOf { it.hash() }
+    fun String.hash() = fold(0) { hash, c -> ((hash + c.code) * 17) and 0xff }
 
-    override fun part2(input: String): Int {
-        val sequence = input.split(',')
+    fun part1() = sequence.sumOf { it.hash() }
+    fun part2() = run {
         val boxes = List(256) { mutableMapOf<String, Int>() }
 
         for (step in sequence) {
@@ -20,6 +21,8 @@ object Day15 : Day {
             }
         }
 
-        return boxes.mapIndexed { i, box -> box.values.mapIndexed { j, lens -> (i + 1) * (j + 1) * lens }.sum() }.sum()
+        boxes.mapIndexed { i, box ->
+            box.values.mapIndexed { j, lens -> (i + 1) * (j + 1) * lens }.sum()
+        }.sum()
     }
 }

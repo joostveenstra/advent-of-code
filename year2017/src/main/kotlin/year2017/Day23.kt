@@ -1,9 +1,10 @@
 package year2017
 
+import framework.Context
 import framework.Day
 import kotlin.math.sqrt
 
-object Day23 : Day {
+class Day23(context: Context) : Day by context {
     sealed interface Instruction
     data class Set(val to: String, val from: String) : Instruction
     data class Sub(val to: String, val from: String) : Instruction
@@ -17,10 +18,10 @@ object Day23 : Day {
         val i: Int = 0,
         val count: Int = 0
     ) {
-        private fun read(key: String) = key.toLongOrNull() ?: registers.getOrDefault(key, 0)
-        private fun write(key: String, value: Long) = next().copy(registers = registers + (key to value))
-        private fun next() = copy(i = i + 1)
-        private fun jump(offset: String) = copy(i = i + read(offset).toInt())
+        fun read(key: String) = key.toLongOrNull() ?: registers.getOrDefault(key, 0)
+        fun write(key: String, value: Long) = next().copy(registers = registers + (key to value))
+        fun next() = copy(i = i + 1)
+        fun jump(offset: String) = copy(i = i + read(offset).toInt())
         fun execute() =
             if (i !in instructions.indices) copy(running = false)
             else with(instructions[i]) {
@@ -33,7 +34,7 @@ object Day23 : Day {
             }
     }
 
-    private fun String.toProgram() = lines().map { line ->
+    val program = lines.map { line ->
         line.split(' ').let {
             when (it[0]) {
                 "set" -> Set(it[1], it[2])
@@ -44,9 +45,8 @@ object Day23 : Day {
         }
     }
 
-    override fun part1(input: String) = generateSequence(Cpu(input.toProgram(), mapOf("a" to 0L))) { it.execute() }.dropWhile { it.running }.first().count
-
-    override fun part2(input: String): Int {
+    fun part1() = generateSequence(Cpu(program, mapOf("a" to 0L))) { it.execute() }.dropWhile { it.running }.first().count
+    fun part2(): Int {
         fun composite(n: Int): Boolean = (2..sqrt(n.toDouble()).toInt()).any { n % it == 0 }
         return (108100..125100 step 17).count(::composite)
     }

@@ -1,8 +1,8 @@
 package year2016
 
-import framework.DayTest
+import framework.Test
 
-class Day21Test : DayTest(Day21, {
+class Day21Test : Test({
     part1 {
         example = "fbdecgha"
         input = "baecdfgh"

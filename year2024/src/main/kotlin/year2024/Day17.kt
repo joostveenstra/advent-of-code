@@ -1,9 +1,15 @@
 package year2024
 
+import framework.Context
 import framework.Day
 import util.allInts
 
-object Day17 : Day {
+class Day17(context: Context) : Day by context {
+    val numbers = input.allInts()
+    val a = numbers.first().toLong()
+    val instructions = numbers.drop(3).toList()
+    val computer = Computer(instructions, a)
+
     class Computer(
         private val instructions: List<Int>,
         private var a: Long
@@ -51,23 +57,15 @@ object Day17 : Day {
         }
     }
 
-    override fun part1(input: String): String {
-        val computer = input.allInts().toList().let { Computer(it.drop(3), it.first().toLong()) }
-        return generateSequence { computer.run() }.joinToString(",")
-    }
+    fun findLowestA(ip: Int, a: Long): Long? =
+        if (ip < 0) a
+        else (0L..8).firstNotNullOfOrNull { n ->
+            val next = (a shl 3) or n
+            Computer(instructions, next).run()
+                ?.takeIf { it == instructions[ip].toLong() }
+                ?.let { findLowestA(ip - 1, next) }
+        }
 
-    override fun part2(input: String): Long? {
-        val instructions = input.allInts().drop(3).toList()
-
-        fun findLowestA(ip: Int, a: Long): Long? =
-            if (ip < 0) a
-            else (0L..8).firstNotNullOfOrNull { n ->
-                val next = (a shl 3) or n
-                Computer(instructions, next).run()
-                    ?.takeIf { it == instructions[ip].toLong() }
-                    ?.let { findLowestA(ip - 1, next) }
-            }
-
-        return findLowestA(instructions.lastIndex, 0)
-    }
+    fun part1() = generateSequence { computer.run() }.joinToString(",")
+    fun part2() = findLowestA(instructions.lastIndex, 0)
 }

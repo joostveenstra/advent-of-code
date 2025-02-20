@@ -1,23 +1,23 @@
 package year2016
 
+import framework.Context
 import framework.Day
 import util.*
 import java.security.MessageDigest
 import java.util.*
 
-object Day17 : Day {
-    private val start = ORIGIN
-    private val goal = Point(3, 3)
+class Day17(context: Context) : Day by context {
+    val start = ORIGIN
+    val goal = Point(3, 3)
+    val directions = "UDLR".map { it to it.toDirection() }
 
-    private val directions = "UDLR".map { it to it.toDirection() }
+    val md5: MessageDigest = MessageDigest.getInstance("MD5")
 
-    private val md5 = MessageDigest.getInstance("MD5")
+    fun String.toMd5(): String = HexFormat.of().formatHex(md5.digest(toByteArray()))
 
-    private fun String.toMd5() = HexFormat.of().formatHex(md5.digest(toByteArray()))
+    fun Point.isValid() = (0..3).let { range -> x in range && y in range }
 
-    private fun Point.isValid() = (0..3).let { range -> x in range && y in range }
-
-    private fun pathsToVault(passcode: String): List<String> {
+    fun pathsToVault(passcode: String): List<String> {
         val stack = dequeOf(start to "")
         val paths = mutableListOf<String>()
 
@@ -34,7 +34,8 @@ object Day17 : Day {
         return paths
     }
 
-    override fun part1(input: String) = pathsToVault(input).minBy { it.length }
+    val paths = pathsToVault(input)
 
-    override fun part2(input: String) = pathsToVault(input).maxOf { it.length }
+    fun part1() = paths.minBy { it.length }
+    fun part2() = paths.maxOf { it.length }
 }

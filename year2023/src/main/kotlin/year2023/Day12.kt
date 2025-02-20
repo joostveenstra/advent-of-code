@@ -1,9 +1,10 @@
 package year2023
 
+import framework.Context
 import framework.Day
 
-object Day12 : Day {
-    private fun String.toRows(multiplier: Int) = lines().map { line ->
+class Day12(context: Context) : Day by context {
+    fun String.toRows(multiplier: Int) = lines().map { line ->
         line.split(' ').let { (left, right) ->
             val springs = List(multiplier) { left }.joinToString("?")
             val sizes = List(multiplier) { right }.joinToString(",")
@@ -11,7 +12,7 @@ object Day12 : Day {
         }
     }
 
-    private fun Pair<String, List<Int>>.arrangements() = let { (springs, sizes) ->
+    fun Pair<String, List<Int>>.arrangements() = let { (springs, sizes) ->
         val cache = mutableMapOf<Triple<String, List<Int>, Int>, Long>()
         fun arrangements(springs: String, sizes: List<Int>, done: Int = 0): Long = cache.getOrPut(Triple(springs, sizes, done)) {
             when {
@@ -34,7 +35,6 @@ object Day12 : Day {
         arrangements("$springs.", sizes)
     }
 
-    override fun part1(input: String) = input.toRows(1).sumOf { it.arrangements() }
-
-    override fun part2(input: String) = input.toRows(5).sumOf { it.arrangements() }
+    fun part1() = this@Day12.input.toRows(1).sumOf { it.arrangements() }
+    fun part2() = this@Day12.input.toRows(5).sumOf { it.arrangements() }
 }

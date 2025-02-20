@@ -1,18 +1,19 @@
 package year2022
 
+import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.*
 import util.dequeOf
 import util.drain
 import util.push
 
-object Day16 : Day {
+class Day16(context: Context) : Day by context {
     data class Valve(val flow: Int, val neighbours: List<String>)
 
     data class State(val todo: PersistentSet<String>, val visited: PersistentSet<String>, val from: String, val time: Int, val pressure: Int)
 
-    private fun String.toValves(): Triple<Map<String, Valve>, Map<String, Map<String, Int>>, Set<String>> {
-        val valves = lines().associate { line ->
+    val valves = run {
+        val valves = lines.associate { line ->
             line.split("[^A-Z0-9]+".toRegex()).let {
                 val (_, name, flowRate) = it
                 name to Valve(flowRate.toInt(), it.drop(3))
@@ -20,10 +21,10 @@ object Day16 : Day {
         }
         val paths = valves.mapValues { (k, _) -> valves.determineShortestPathsFrom(k) }
         val valvesToVisit = valves.filterValues { it.flow > 0 }.keys
-        return Triple(valves, paths, valvesToVisit)
+        Triple(valves, paths, valvesToVisit)
     }
 
-    private fun Map<String, Valve>.determineShortestPathsFrom(root: String): Map<String, Int> {
+    fun Map<String, Valve>.determineShortestPathsFrom(root: String): Map<String, Int> {
         val queue = dequeOf(root)
         val visited = mutableMapOf(root to 1)
 
@@ -37,8 +38,8 @@ object Day16 : Day {
         return visited
     }
 
-    private fun determineSubSetsMaxPressure(input: String, initialTime: Int): Map<Set<String>, Int> {
-        val (valves, paths, valvesToVisit) = input.toValves()
+    fun determineSubSetsMaxPressure(initialTime: Int): Map<Set<String>, Int> {
+        val (valves, paths, valvesToVisit) = valves
         val initial = State(valvesToVisit.toPersistentSet(), persistentSetOf(), "AA", initialTime, 0)
         val stack = dequeOf(initial)
         val maxPressure = mutableMapOf<Set<String>, Int>().withDefault { 0 }
@@ -57,10 +58,9 @@ object Day16 : Day {
         return maxPressure
     }
 
-    override fun part1(input: String) = determineSubSetsMaxPressure(input, 30).values.max()
-
-    override fun part2(input: String): Int {
-        val subSetsMax = determineSubSetsMaxPressure(input, 26)
+    fun part1() = determineSubSetsMaxPressure(30).values.max()
+    fun part2(): Int {
+        val subSetsMax = determineSubSetsMaxPressure(26)
         val disjoint = buildList {
             for ((you, youPressure) in subSetsMax)
                 for ((elephant, elephantPressure) in subSetsMax)

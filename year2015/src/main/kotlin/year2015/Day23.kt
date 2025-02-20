@@ -1,8 +1,9 @@
 package year2015
 
+import framework.Context
 import framework.Day
 
-object Day23 : Day {
+class Day23(context: Context) : Day by context {
     sealed interface Instruction
     data class Hlf(val register: String) : Instruction
     data class Tpl(val register: String) : Instruction
@@ -12,10 +13,10 @@ object Day23 : Day {
     data class Jio(val register: String, val offset: Int) : Instruction
 
     data class Cpu(val instructions: List<Instruction>, val a: Int = 0, val b: Int = 0, val i: Int = 0, val running: Boolean = true) {
-        private fun read(register: String) = if (register == "a") a else b
-        private fun write(register: String, op: (Int) -> Int) = next().run { if (register == "a") copy(a = op(a)) else copy(b = op(b)) }
-        private fun next() = copy(i = i + 1)
-        private fun jump(offset: Int) = copy(i = i + offset)
+        fun read(register: String) = if (register == "a") a else b
+        fun write(register: String, op: (Int) -> Int) = next().run { if (register == "a") copy(a = op(a)) else copy(b = op(b)) }
+        fun next() = copy(i = i + 1)
+        fun jump(offset: Int) = copy(i = i + offset)
         fun execute() =
             if (i !in instructions.indices) copy(running = false)
             else with(instructions[i]) {
@@ -30,7 +31,9 @@ object Day23 : Day {
             }
     }
 
-    private fun String.toProgram() = lines().map { line ->
+    fun List<Instruction>.run(a: Int) = generateSequence(Cpu(this, a)) { it.execute() }.dropWhile { it.running }.first().b
+
+    val program = lines.map { line ->
         line.split("[, ]+".toRegex()).let {
             when (it[0]) {
                 "hlf" -> Hlf(it[1])
@@ -43,9 +46,6 @@ object Day23 : Day {
         }
     }
 
-    private fun List<Instruction>.run(a: Int) = generateSequence(Cpu(this, a)) { it.execute() }.dropWhile { it.running }.first().b
-
-    override fun part1(input: String) = input.toProgram().run(0)
-
-    override fun part2(input: String) = input.toProgram().run(1)
+    fun part1() = program.run(0)
+    fun part2() = program.run(1)
 }

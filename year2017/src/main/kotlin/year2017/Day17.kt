@@ -1,10 +1,12 @@
 package year2017
 
+import framework.Context
 import framework.Day
 
-object Day17 : Day {
-    override fun part1(input: String): Int {
-        val steps = input.toInt()
+class Day17(context: Context) : Day by context {
+    val steps = input.toInt()
+
+    fun part1(): Int {
         val buffer = mutableListOf(0)
         var index = 0
 
@@ -16,8 +18,7 @@ object Day17 : Day {
         return buffer[index + 1]
     }
 
-    override fun part2(input: String): Int {
-        val steps = input.toInt()
+    fun part2(): Int {
         var index = 0
         var result = -1
 

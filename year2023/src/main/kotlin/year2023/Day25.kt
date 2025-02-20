@@ -1,12 +1,13 @@
 package year2023
 
+import framework.Context
 import framework.Day
 import util.dequeOf
 import util.drain
 
-object Day25 : Day {
-    private fun String.toEdges() = buildMap {
-        lines().forEach { line ->
+class Day25(context: Context) : Day by context {
+    val edges = buildMap {
+        lines.forEach { line ->
             val (key, remaining) = line.split(": ")
             val neighbours = remaining.split(' ')
             val node = getOrPut(key) { mutableSetOf() }
@@ -17,7 +18,7 @@ object Day25 : Day {
         }
     }
 
-    private fun Map<String, Set<String>>.furthest(start: String): String {
+    fun Map<String, Set<String>>.furthest(start: String): String {
         val queue = dequeOf(start)
         val seen = mutableSetOf(start)
 
@@ -33,7 +34,7 @@ object Day25 : Day {
         error("This should not happen")
     }
 
-    private fun Map<String, Set<String>>.flow(start: String, end: String): Int {
+    fun Map<String, Set<String>>.flow(start: String, end: String): Int {
         val used = mutableSetOf<Pair<String, String>>()
 
         fun traverse(): Int {
@@ -71,12 +72,10 @@ object Day25 : Day {
         return traverse()
     }
 
-    override fun part1(input: String) = with(input.toEdges()) {
+    fun part1() = with(edges) {
         val start = furthest(keys.first())
         val end = furthest(start)
         val cut = flow(start, end)
         cut * (size - cut)
     }
-
-    override fun part2(input: String) = 0
 }
