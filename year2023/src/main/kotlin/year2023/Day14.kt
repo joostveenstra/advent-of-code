@@ -6,7 +6,7 @@ import util.*
 
 class Day14(context: Context) : Day by context {
     val order = listOf(NORTH, WEST, SOUTH, EAST)
-    val grid = this@Day14.input.toCharGrid()
+    val grid = input.toCharGrid()
     val points = grid.points
     val pointsFlipped = grid.pointsFlipped
     val progressions = listOf(

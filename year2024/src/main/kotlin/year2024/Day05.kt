@@ -2,12 +2,11 @@ package year2024
 
 import framework.Context
 import framework.Day
-import util.EMPTY_LINE
 import util.midpoint
 
 class Day05(context: Context) : Day by context {
-    val rules = input.split(EMPTY_LINE)[0].lines().toSet()
-    val updates = input.split(EMPTY_LINE)[1].lines().map { it.split(',') }
+    val rules = lines.takeWhile { it.isNotEmpty() }.toSet()
+    val updates = lines.dropWhile { it.isNotEmpty() }.drop(1).map { it.split(',') }
     val order = Comparator<String> { a, b ->
         when {
             "$a|$b" in rules -> -1

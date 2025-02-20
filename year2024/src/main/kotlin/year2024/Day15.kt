@@ -5,8 +5,8 @@ import framework.Day
 import util.*
 
 class Day15(context: Context) : Day by context {
-    val grid = input.split(EMPTY_LINE)[0].toCharGrid()
-    val moves = input.split(EMPTY_LINE)[1].lines().flatMap { l -> l.map { it.toDirection() } }
+    val grid = lines.takeWhile { it.isNotEmpty() }.toCharGrid()
+    val moves = lines.dropWhile { it.isNotEmpty() }.drop(1).flatMap { l -> l.map { it.toDirection() } }
 
     fun MutableCharGrid.push(start: Point, direction: Direction): Point {
         val queue = dequeOf(start + direction)

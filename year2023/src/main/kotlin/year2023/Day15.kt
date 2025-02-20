@@ -4,7 +4,7 @@ import framework.Context
 import framework.Day
 
 class Day15(context: Context) : Day by context {
-    val sequence = this@Day15.input.split(',')
+    val sequence = input.split(',')
 
     fun String.hash() = fold(0) { hash, c -> ((hash + c.code) * 17) and 0xff }
 

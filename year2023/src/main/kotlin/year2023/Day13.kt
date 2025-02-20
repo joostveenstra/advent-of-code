@@ -6,7 +6,7 @@ import util.EMPTY_LINE
 import util.transpose
 
 class Day13(context: Context) : Day by context {
-    val patterns = this@Day13.input.split(EMPTY_LINE).map { pattern ->
+    val patterns = input.split(EMPTY_LINE).map { pattern ->
         val lines = pattern.lines()
         val rows = lines.map { it.toList().toBinary() }
         val columns = lines.map { it.toList() }.transpose().map { it.toBinary() }

@@ -2,15 +2,14 @@ package year2024
 
 import framework.Context
 import framework.Day
-import util.EMPTY_LINE
 import util.drain
 import util.toDeque
 
 class Day24(context: Context) : Day by context {
     data class Gate(val left: String, val op: String, val right: String, val out: String)
 
-    val wires = input.split(EMPTY_LINE)[0].lines().associate { it.take(3) to it.last().digitToInt() }
-    val gates = input.split(EMPTY_LINE)[1].lines().map { it.split(" ").let { Gate(it[0], it[1], it[2], it[4]) } }
+    val wires = lines.takeWhile { it.isNotEmpty() }.associate { it.take(3) to it.last().digitToInt() }
+    val gates = lines.dropWhile { it.isNotEmpty() }.drop(1).map { it.split(" ").let { Gate(it[0], it[1], it[2], it[4]) } }
 
     fun simulate() = wires.toMutableMap().apply {
         val queue = gates.toDeque()

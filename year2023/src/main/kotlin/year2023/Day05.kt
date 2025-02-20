@@ -6,7 +6,7 @@ import util.EMPTY_LINE
 import util.allLongs
 
 class Day05(context: Context) : Day by context {
-    val mappers = this@Day05.input.split(EMPTY_LINE).drop(1).map { map ->
+    val mappers = input.split(EMPTY_LINE).drop(1).map { map ->
         map.lines().drop(1)
             .map { line ->
                 line.allLongs().toList().let { (dest, start, length) ->
@@ -17,7 +17,7 @@ class Day05(context: Context) : Day by context {
             .let { NumberMapper(it) }
     }
 
-    val numbers = this@Day05.input.lineSequence().first().allLongs()
+    val numbers = input.lineSequence().first().allLongs()
     val seeds = numbers.toList()
     val seedRanges = numbers.chunked(2).map { (start, length) -> start to start + length }.toList()
 

@@ -44,6 +44,6 @@ class Day07(context: Context) : Day by context {
 
     fun List<Hand>.winnings() = sorted().withIndex().sumOf { (index, hand) -> (index + 1) * hand.bid }
 
-    fun part1() = this@Day07.input.toHands(false).winnings()
-    fun part2() = this@Day07.input.toHands(true).winnings()
+    fun part1() = input.toHands(false).winnings()
+    fun part2() = input.toHands(true).winnings()
 }

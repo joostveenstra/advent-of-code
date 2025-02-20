@@ -7,7 +7,7 @@ import util.*
 class Day16(context: Context) : Day by context {
     data class Beam(val position: Point, val direction: Direction)
 
-    val grid = this@Day16.input.toCharGrid()
+    val grid = input.toCharGrid()
 
     fun CharGrid.energize(start: Beam): Int {
         val energized = mutableSetOf<Beam>()

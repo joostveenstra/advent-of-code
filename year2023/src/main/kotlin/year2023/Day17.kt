@@ -7,7 +7,7 @@ import util.*
 class Day17(context: Context) : Day by context {
     data class Crucible(val position: Point, val orientation: Orientation)
 
-    val grid = this@Day17.input.toDigitGrid()
+    val grid = input.toDigitGrid()
 
     fun IntGrid.minimize(least: Int, most: Int): Int {
         val end = Point(maxX, maxY)

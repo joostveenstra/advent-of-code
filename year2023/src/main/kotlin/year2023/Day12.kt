@@ -35,6 +35,6 @@ class Day12(context: Context) : Day by context {
         arrangements("$springs.", sizes)
     }
 
-    fun part1() = this@Day12.input.toRows(1).sumOf { it.arrangements() }
-    fun part2() = this@Day12.input.toRows(5).sumOf { it.arrangements() }
+    fun part1() = input.toRows(1).sumOf { it.arrangements() }
+    fun part2() = input.toRows(5).sumOf { it.arrangements() }
 }

@@ -2,7 +2,6 @@ package year2023
 
 import framework.Context
 import framework.Day
-import util.EMPTY_LINE
 
 class Day19(context: Context) : Day by context {
     sealed interface Rule {
@@ -18,7 +17,7 @@ class Day19(context: Context) : Day by context {
     data class Less(override val category: Char, override val value: Int, override val next: String) : Condition
     data class Greater(override val category: Char, override val value: Int, override val next: String) : Condition
 
-    val workflows = this@Day19.input.split(EMPTY_LINE)[0].lines().associate { line ->
+    val workflows = lines.takeWhile { it.isNotEmpty() }.associate { line ->
         val tokens = line.split('{', ':', ',', '}')
         val key = tokens.first()
         val rules = tokens.drop(1).chunked(2).map { (left, right) ->
@@ -35,7 +34,7 @@ class Day19(context: Context) : Day by context {
         }
         key to rules
     }
-    val parts = this@Day19.input.split(EMPTY_LINE)[1].lines().map { line ->
+    val parts = lines.dropWhile { it.isNotEmpty() }.drop(1).map { line ->
         line.substring(1, line.length - 1).split(',').associate { category ->
             val (key, value) = category.split('=')
             key.first() to value.toInt()

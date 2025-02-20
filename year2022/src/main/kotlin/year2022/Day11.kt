@@ -5,7 +5,10 @@ import framework.Day
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentList
-import util.*
+import util.allInts
+import util.nth
+import util.product
+import util.productOf
 
 class Day11(context: Context) : Day by context {
     data class Monkey(
@@ -20,19 +23,18 @@ class Day11(context: Context) : Day by context {
         fun endRound() = copy(items = items.clear(), inspections = inspections + items.size)
     }
 
-    val monkeys = input.split(EMPTY_LINE).map {
-        val lines = it.lines()
-        val items = lines[1].allInts().map { it.toLong() }.toPersistentList()
-        val operation: (Long) -> Long = lines[2].split(' ').takeLast(2).let { (operator, value) ->
+    val monkeys = lines.chunked(7).map { chunk ->
+        val items = chunk[1].allInts().map { it.toLong() }.toPersistentList()
+        val operation: (Long) -> Long = chunk[2].split(' ').takeLast(2).let { (operator, value) ->
             when {
                 value == "old" -> { x -> x * x }
                 operator == "*" -> { x -> x * value.toLong() }
                 else -> { x -> x + value.toLong() }
             }
         }
-        val test = lines[3].allInts().first()
-        val monkeyTrue = lines[4].allInts().first()
-        val monkeyFalse = lines[5].allInts().first()
+        val test = chunk[3].allInts().first()
+        val monkeyTrue = chunk[4].allInts().first()
+        val monkeyFalse = chunk[5].allInts().first()
 
         Monkey(items, operation, test, monkeyTrue, monkeyFalse)
     }.toPersistentList()

@@ -10,7 +10,7 @@ import kotlin.math.absoluteValue
  * and https://en.wikipedia.org/wiki/Pick%27s_theorem to calculate the amount of points inside that area
  */
 class Day10(context: Context) : Day by context {
-    val grid = this@Day10.input.toCharGrid()
+    val grid = input.toCharGrid()
     val path = grid.walk()
 
     fun determinant(a: Point, b: Point) = a.x * b.y - a.y * b.x

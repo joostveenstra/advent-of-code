@@ -5,7 +5,7 @@ import framework.Day
 import util.*
 
 class Day23(context: Context) : Day by context {
-    val grid = this@Day23.input.toCharGrid()
+    val grid = input.toCharGrid()
     val start = Point(0, 1)
     val end = Point(grid.maxX - 1, grid.maxY)
 

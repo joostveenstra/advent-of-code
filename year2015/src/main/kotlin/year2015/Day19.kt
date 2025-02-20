@@ -2,19 +2,18 @@ package year2015
 
 import framework.Context
 import framework.Day
-import util.EMPTY_LINE
 import util.drain
 import util.priorityQueueOf
 
 typealias Rules = List<Pair<String, List<String>>>
 
 class Day19(context: Context) : Day by context {
-    val split = input.split(EMPTY_LINE)
-    val rules = split.first().toRules(false)
-    val reversed = split.first().toRules(true)
-    val medicine = split.last()
+    val first = lines.takeWhile { it.isNotEmpty() }
+    val rules = first.toRules(false)
+    val reversed = first.toRules(true)
+    val medicine = lines.last()
 
-    fun String.toRules(reversed: Boolean) = lines()
+    fun List<String>.toRules(reversed: Boolean) = this
         .map { it.split(" => ").let { (k, v) -> if (reversed) v to k else k to v } }
         .groupBy { it.first }
         .map { (k, v) -> k to v.map { it.second } }

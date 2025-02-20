@@ -11,14 +11,14 @@ class Day17(context: Context) : Day by context {
     val computer = Computer(instructions, a)
 
     class Computer(
-        private val instructions: List<Int>,
-        private var a: Long
+        val instructions: List<Int>,
+        var a: Long
     ) {
-        private var b: Long = 0
-        private var c: Long = 0
-        private var ip: Int = 0
+        var b: Long = 0
+        var c: Long = 0
+        var ip: Int = 0
 
-        private fun Int.toCombo() = when (this) {
+        fun Int.toCombo() = when (this) {
             in 0..3 -> toLong()
             4 -> a
             5 -> b

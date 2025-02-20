@@ -5,11 +5,10 @@ import framework.Day
 import util.*
 
 class Day18(context: Context) : Day by context {
+    val time = if (isExample) 12 else 1024
     val size = if (isExample) 7 else 71
     val grid = mutableGrid(size, size) { Int.MAX_VALUE }
-    val bytes = input.allInts().chunked(2).map { (x, y) -> Point(x, y) }.toList()
-
-    init {
+    val bytes = input.allInts().chunked(2).map { (x, y) -> Point(x, y) }.toList().also { bytes ->
         bytes.forEachIndexed { i, b -> grid[b] = i + 1 }
     }
 
@@ -29,8 +28,6 @@ class Day18(context: Context) : Day by context {
 
         return null
     }
-
-    val time = if (isExample) 12 else 1024
 
     fun part1() = grid.shortestPath(time)
 

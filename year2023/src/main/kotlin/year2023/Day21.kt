@@ -5,7 +5,7 @@ import framework.Day
 import util.*
 
 class Day21(context: Context) : Day by context {
-    val grid = this@Day21.input.toCharGrid()
+    val grid = input.toCharGrid()
     val steps = if (isExample) 6 else 64
 
     fun CharGrid.countPlots(max: Int = height): Map<Point, Int> {

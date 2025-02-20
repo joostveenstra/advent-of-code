@@ -54,7 +54,7 @@ class Day22(context: Context) : Day by context {
         return safe.count { it } to dominator.sumOf { it.depth }
     }
 
-    val bricks = this@Day22.input.allInts().chunked(6).map { Brick(it[0]..it[3], it[1]..it[4], it[2]..it[5]) }.toList()
+    val bricks = input.allInts().chunked(6).map { Brick(it[0]..it[3], it[1]..it[4], it[2]..it[5]) }.toList()
     val fallen = bricks.fall()
 
     fun part1() = fallen.first
