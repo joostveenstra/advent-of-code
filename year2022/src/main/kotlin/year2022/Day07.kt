@@ -21,7 +21,7 @@ class Day07(context: Context) : Day by context {
                 command == "$ cd .." -> path.pop()
                 command.first().isDigit() -> path.peek().fileSizes += command.substringBefore(' ').toInt()
                 command.startsWith("$ cd") -> Directory().let {
-                    path.peek().subDirs += it
+                    path.peek().subDirs.add(it)
                     path.push(it)
                     add(it)
                 }

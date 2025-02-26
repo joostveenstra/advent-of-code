@@ -29,7 +29,7 @@ class Day12(context: Context) : Day by context {
                 if (next in region) {
                     if (!seen[next]) {
                         seen.enable(next)
-                        queue += next
+                        queue.add(next)
                     }
                 } else {
                     perimeter += 1

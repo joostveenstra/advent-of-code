@@ -18,7 +18,7 @@ class Day21(context: Context) : Day by context {
                 val nextSteps = steps + 1
                 position.cardinalNeighbours.filter { it !in seen && it in this && get(it) != '#' }.forEach { next ->
                     seen[next] = nextSteps
-                    queue += next to nextSteps
+                    queue.add(next to nextSteps)
                 }
             }
         }

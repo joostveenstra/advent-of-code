@@ -55,7 +55,7 @@ class Day11(context: Context) : Day by context {
             current.next().filter { it.isValid() }.forEach { next ->
                 if (next !in visited || cost < visited.getValue(next)) {
                     visited[next] = cost
-                    queue += next
+                    queue.add(next)
                 }
             }
         }

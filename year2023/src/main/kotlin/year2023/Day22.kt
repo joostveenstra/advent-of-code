@@ -48,7 +48,7 @@ class Day22(context: Context) : Day by context {
                 else -> underlying.map(dominator::get).reduce(::commonAncestor)
             }
 
-            dominator += ancestor
+            dominator.add(ancestor)
         }
 
         return safe.count { it } to dominator.sumOf { it.depth }

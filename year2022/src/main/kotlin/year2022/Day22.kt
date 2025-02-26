@@ -98,8 +98,8 @@ class Day22(context: Context) : Day by context {
             )
 
             neighbours.filter { it.point in tiles }.filterNot { it.point in visited }.forEach { next ->
-                blocks.addLast(next)
-                visited += next.point
+                blocks.add(next)
+                visited.add(next.point)
             }
         }
 

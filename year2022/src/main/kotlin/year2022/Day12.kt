@@ -22,7 +22,7 @@ class Day12(context: Context) : Day by context {
             if (get(point) == goal) return visited.getValue(point)
             point.cardinalNeighbours.filter { it in this }.filterNot { it in visited }.forEach { next ->
                 if (get(point).height() - get(next).height() <= 1) {
-                    queue += next
+                    queue.add(next)
                     visited[next] = visited.getValue(point) + 1
                 }
             }

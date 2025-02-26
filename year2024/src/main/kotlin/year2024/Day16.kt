@@ -30,7 +30,7 @@ class Day16(context: Context) : Day by context {
             ).forEach { next ->
                 val (nextPosition, nextDirection, nextScore) = next
                 if (this[nextPosition] != '#' && nextScore < (seen[nextPosition to nextDirection] ?: Int.MAX_VALUE)) {
-                    forward += next
+                    forward.add(next)
                     seen[nextPosition to nextDirection] = nextScore
                 }
             }
@@ -42,7 +42,7 @@ class Day16(context: Context) : Day by context {
         val path = mutableSetOf<Point>()
 
         backward.drain { (position, direction, score) ->
-            path += position
+            path.add(position)
             if (position == start) return@drain
             listOf(
                 Reindeer(position - direction, direction, score - 1),
@@ -51,7 +51,7 @@ class Day16(context: Context) : Day by context {
             ).forEach { next ->
                 val (nextPosition, nextDirection, nextScore) = next
                 if (nextScore == seen[nextPosition to nextDirection]) {
-                    backward += next
+                    backward.add(next)
                     seen[nextPosition to nextDirection] = Int.MAX_VALUE
                 }
             }

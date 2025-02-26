@@ -15,9 +15,9 @@ class Day17(context: Context) : Day by context {
         val visited = mutableMapOf<Crucible, Int>()
 
         Orientation.entries.forEach { orientation ->
-            val init = Crucible(ORIGIN, orientation) to 0
-            queue += init
-            visited += init
+            val init = Crucible(ORIGIN, orientation)
+            queue.add(init to 0)
+            visited[init] = 0
         }
 
         tailrec fun Crucible.move(step: Int, direction: Direction, heat: Int) {
@@ -31,7 +31,7 @@ class Day17(context: Context) : Day by context {
                         if (previousHeat == null || nextHeat < previousHeat) {
                             visited[next] = nextHeat
                             val priority = nextHeat + (next.position manhattan end)
-                            queue += next to priority
+                            queue.add(next to priority)
                         }
                     }
                     move(step + 1, direction, nextHeat)

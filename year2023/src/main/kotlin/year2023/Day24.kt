@@ -36,7 +36,7 @@ class Day24(context: Context) : Day by context {
         }
     }
 
-    fun part2() = run{
+    fun part2() = run {
         val (p0, v0) = hailstones[0].asVector()
         val (p1, v1) = hailstones[1].asVector().let { (p, v) -> p - p0 to v - v0 }
         val (p2, v2) = hailstones[2].asVector().let { (p, v) -> p - p0 to v - v0 }

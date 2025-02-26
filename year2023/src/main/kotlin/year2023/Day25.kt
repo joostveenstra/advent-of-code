@@ -12,8 +12,8 @@ class Day25(context: Context) : Day by context {
             val neighbours = remaining.split(' ')
             val node = getOrPut(key) { mutableSetOf() }
             neighbours.forEach { n ->
-                node += n
-                getOrPut(n) { mutableSetOf() } += key
+                node.add(n)
+                getOrPut(n) { mutableSetOf() }.add(key)
             }
         }
     }
@@ -26,8 +26,8 @@ class Day25(context: Context) : Day by context {
             val neighbours = getValue(node).filterNot { it in seen }
             if (neighbours.isEmpty() && queue.isEmpty()) return node
             neighbours.forEach { next ->
-                queue += next
-                seen += next
+                queue.add(next)
+                seen.add(next)
             }
         }
 
@@ -47,7 +47,7 @@ class Day25(context: Context) : Day by context {
                     tailrec fun reverse(index: Int) {
                         if (index != 0) {
                             val (edge, previous) = path[index]
-                            used += edge
+                            used.add(edge)
                             reverse(previous)
                         }
                     }
@@ -58,8 +58,8 @@ class Day25(context: Context) : Day by context {
                 getValue(node).forEach { next ->
                     val edge = node to next
                     if (edge !in used && seen.add(next)) {
-                        queue += next to path.size
-                        path += edge to head
+                        queue.add(next to path.size)
+                        path.add(edge to head)
                     }
                 }
             }

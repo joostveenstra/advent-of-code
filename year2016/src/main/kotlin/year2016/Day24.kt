@@ -35,7 +35,7 @@ class Day24(context: Context) : Day by context {
             point.cardinalNeighbours.filter { it in this }.forEach { next ->
                 if (next !in visited || cost < visited.getValue(next)) {
                     visited[next] = cost
-                    queue += next
+                    queue.add(next)
                 }
             }
         }

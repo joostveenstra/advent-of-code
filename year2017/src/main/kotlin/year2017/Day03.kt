@@ -31,7 +31,7 @@ class Day03(context: Context) : Day by context {
             val point = n.toPosition()
             val sum = point.allNeighbours.sumOf { memory.getOrDefault(it, 0) }
             return if (sum > target) sum else {
-                memory += (point to sum)
+                memory[point] = sum
                 find(n + 1)
             }
         }

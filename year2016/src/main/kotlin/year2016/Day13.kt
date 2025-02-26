@@ -31,7 +31,7 @@ class Day13(context: Context) : Day by context {
             point.validNeighbours(favorite).forEach { next ->
                 if (next !in visited || cost < visited.getValue(next)) {
                     visited[next] = cost
-                    queue += next
+                    queue.add(next)
                 }
             }
         }
@@ -49,7 +49,7 @@ class Day13(context: Context) : Day by context {
                 point.validNeighbours(favorite).forEach { next ->
                     if (next !in visited || cost < visited.getValue(next)) {
                         visited[next] = cost
-                        queue += next
+                        queue.add(next)
                     }
                 }
             }

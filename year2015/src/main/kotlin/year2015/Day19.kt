@@ -36,7 +36,7 @@ class Day19(context: Context) : Day by context {
                 if (next !in visited || nextCost < visited.getValue(next)) {
                     visited[next] = nextCost
                     val priority = nextCost + next.length
-                    queue += next to priority
+                    queue.add(next to priority)
                 }
             }
         }

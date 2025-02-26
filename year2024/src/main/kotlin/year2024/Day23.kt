@@ -1,7 +1,7 @@
 package year2024
 
-import framework.Day
 import framework.Context
+import framework.Day
 import util.pairs
 
 class Day23(context: Context) : Day by context {
@@ -14,7 +14,7 @@ class Day23(context: Context) : Day by context {
     fun part1() = run {
         val seen = mutableSetOf<String>()
         nodes.keys.filter { it.startsWith('t') }.sumOf { node ->
-            seen += node
+            seen.add(node)
             nodes.getValue(node).pairs().count { (a, b) -> a !in seen && b !in seen && b in nodes.getValue(a) }
         }
     }
@@ -26,8 +26,8 @@ class Day23(context: Context) : Day by context {
                 val clique = mutableListOf(node)
                 neighbours.forEach { n ->
                     if (clique.all { it in nodes.getValue(n) }) {
-                        clique += n
-                        seen += n
+                        clique.add(n)
+                        seen.add(n)
                     }
                 }
                 clique

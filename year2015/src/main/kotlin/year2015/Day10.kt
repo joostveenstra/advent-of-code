@@ -16,8 +16,8 @@ class Day10(context: Context) : Day by context {
         }
     }
 
-    fun String.generate(turns: Int) = generateSequence(this, ::next).nth(turns).length
+    fun generate(turns: Int) = generateSequence(input, ::next).nth(turns).length
 
-    fun part1() = input.generate(40)
-    fun part2() = input.generate(50)
+    fun part1() = generate(40)
+    fun part2() = generate(50)
 }

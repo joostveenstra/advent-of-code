@@ -8,9 +8,10 @@ class Day18(context: Context) : Day by context {
     val time = if (isExample) 12 else 1024
     val size = if (isExample) 7 else 71
     val grid = mutableGrid(size, size) { Int.MAX_VALUE }
-    val bytes = input.allInts().chunked(2).map { (x, y) -> Point(x, y) }.toList().also { bytes ->
-        bytes.forEachIndexed { i, b -> grid[b] = i + 1 }
-    }
+    val bytes = input.allInts().chunked(2).map { (x, y) -> Point(x, y) }.toList()
+        .also { bytes ->
+            bytes.forEachIndexed { i, b -> grid[b] = i + 1 }
+        }
 
     fun IntGrid.shortestPath(time: Int): Int? {
         val start = ORIGIN
@@ -21,7 +22,7 @@ class Day18(context: Context) : Day by context {
         queue.drain { (position, cost) ->
             if (position == end) return cost
             position.cardinalNeighbours.filter { it in this && time < this[it] && !seen[it] }.forEach { next ->
-                queue += next to cost + 1
+                queue.add(next to cost + 1)
                 seen.enable(next)
             }
         }

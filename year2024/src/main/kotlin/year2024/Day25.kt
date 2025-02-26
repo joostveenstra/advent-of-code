@@ -14,7 +14,7 @@ class Day25(context: Context) : Day by context {
                     schematic[row][col] == '#'
                 }
             }.toIntArray()
-            if (schematic[0][0] == '#') locks += pins else keys += pins
+            if (schematic[0][0] == '#') locks.add(pins) else keys.add(pins)
         }
     }
 

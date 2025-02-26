@@ -26,7 +26,7 @@ class Day14(context: Context) : Day by context {
 
     fun part1() = binary.sumOf { row -> row.count { it == '1' } }
     fun part2(): Int {
-        val used = binary.withIndex().flatMap { (y, row) ->
+        val used = binary.flatMapIndexed { y, row ->
             (0..127).mapNotNull { x -> if (row[x] == '1') Point(x, y) else null }
         }
         val cliques = used.fold(listOf<List<Point>>()) { groups, point ->

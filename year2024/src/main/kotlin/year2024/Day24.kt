@@ -15,7 +15,7 @@ class Day24(context: Context) : Day by context {
         val queue = gates.toDeque()
         queue.drain { gate ->
             val (left, op, right, out) = gate
-            if (left !in this || right !in this) queue += gate
+            if (left !in this || right !in this) queue.add(gate)
             else {
                 val l = getValue(left)
                 val r = getValue(right)

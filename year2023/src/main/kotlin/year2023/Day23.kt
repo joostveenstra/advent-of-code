@@ -31,7 +31,7 @@ class Day23(context: Context) : Day by context {
     fun CharGrid.junctions(): Map<Point, List<Pair<Point, Int>>> {
         val junctions = mutableMapOf(
             start to mutableListOf<Pair<Point, Int>>(),
-            end to mutableListOf(),
+            end to mutableListOf()
         )
 
         entries.forEach { (point, char) ->
@@ -47,10 +47,10 @@ class Day23(context: Context) : Day by context {
             queue.drain { (point, distance) ->
                 neighbours(point).filter { it !in visited }.forEach { next ->
                     if (next in junctions) {
-                        junctions.getValue(junction) += (next to distance + 1)
+                        junctions.getValue(junction).add(next to distance + 1)
                     } else {
-                        queue += (next to distance + 1)
-                        visited += next
+                        queue.add(next to distance + 1)
+                        visited.add(next)
                     }
                 }
             }
@@ -63,8 +63,8 @@ class Day23(context: Context) : Day by context {
             val neighbours = junctions.getValue(point)
             neighbours.removeAll { (p) -> p in visited }
             neighbours.filter { (next) -> junctions.getValue(next).size <= 3 }.forEach { (next) ->
-                queue += next
-                visited += next
+                queue.add(next)
+                visited.add(next)
             }
         }
 

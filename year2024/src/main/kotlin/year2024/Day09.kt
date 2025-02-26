@@ -29,7 +29,7 @@ class Day09(context: Context) : Day by context {
         val files = mutableListOf<Pair<Int, Int>>()
         val free = List(10) { priorityQueueOf<Int>() }
         disk.foldIndexed(0) { i, position, size ->
-            if (i % 2 == 0) files += position to size else free[size] += position
+            if (i % 2 == 0) files.add(position to size) else free[size].add(position)
             position + size
         }
 
@@ -40,7 +40,7 @@ class Day09(context: Context) : Day by context {
             val start = if (next < position) {
                 free[available].poll()
                 val remaining = available - size
-                if (remaining > 0) free[remaining] += (next + size)
+                if (remaining > 0) free[remaining].add(next + size)
                 next
             } else position
             id * (2L * start + size - 1) * size / 2

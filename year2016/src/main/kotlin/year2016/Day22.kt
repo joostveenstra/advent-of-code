@@ -60,7 +60,7 @@ class Day22(context: Context) : Day by context {
                 if (next !in cost || nextCost < cost.getValue(next)) {
                     cost[next] = nextCost
                     val priority = nextCost + next.heuristic()
-                    queue += next to priority
+                    queue.add(next to priority)
                 }
             }
         }

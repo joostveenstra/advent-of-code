@@ -29,7 +29,7 @@ class Day02(context: Context) : Day by context {
             4 5 6
             7 8 9
         """.trimIndent().toKeypad()
-        this.input.walk(start, keypad)
+        input.walk(start, keypad)
     }
 
     fun part2() = run {
@@ -41,6 +41,6 @@ class Day02(context: Context) : Day by context {
               A B C
                 D
         """.trimIndent().toKeypad()
-        this.input.walk(start, keypad)
+        input.walk(start, keypad)
     }
 }

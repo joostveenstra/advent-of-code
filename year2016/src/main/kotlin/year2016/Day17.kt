@@ -22,7 +22,7 @@ class Day17(context: Context) : Day by context {
         val paths = mutableListOf<String>()
 
         stack.drain { (chamber, path) ->
-            if (chamber == goal) paths += path
+            if (chamber == goal) paths.add(path)
             else directions.asSequence()
                 .zip((passcode + path).toMd5().asSequence())
                 .filter { (_, char) -> char > 'a' }

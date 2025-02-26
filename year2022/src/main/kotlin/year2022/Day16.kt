@@ -30,7 +30,7 @@ class Day16(context: Context) : Day by context {
 
         queue.drain { valve ->
             getValue(valve).neighbours.filterNot { it in visited }.forEach { next ->
-                queue += next
+                queue.add(next)
                 visited[next] = visited.getValue(valve) + 1
             }
         }

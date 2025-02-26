@@ -23,8 +23,8 @@ class Day18(context: Context) : Day by context {
         queue.drain { point ->
             point.cardinalNeighbours.filterNot { it in visited }.filterNot { it in cubes }.forEach { next ->
                 if (next.x in xs && next.y in ys && next.z in zs) {
-                    queue += next
-                    visited += next
+                    queue.add(next)
+                    visited.add(next)
                 }
             }
         }

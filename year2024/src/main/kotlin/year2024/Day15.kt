@@ -17,11 +17,11 @@ class Day15(context: Context) : Day by context {
                 when (get(position)) {
                     '#' -> return start
                     '.' -> return@drain
-                    '[' -> queue += position + RIGHT
-                    ']' -> queue += position + LEFT
+                    '[' -> queue.add(position + RIGHT)
+                    ']' -> queue.add(position + LEFT)
                 }
-                path += position
-                queue += position + direction
+                path.add(position)
+                queue.add(position + direction)
             }
         }
 

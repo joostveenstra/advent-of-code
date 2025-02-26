@@ -39,8 +39,8 @@ class Day06(context: Context) : Day by context {
                 .filterNot { it in visited }
                 .filter { next -> coordinates.sumOf { it manhattan next } < max }
                 .forEach { next ->
-                    queue += next
-                    visited += next
+                    queue.add(next)
+                    visited.add(next)
                 }
         }
 
