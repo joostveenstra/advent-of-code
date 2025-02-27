@@ -18,5 +18,5 @@ class Day01(context: Context) : Day by context {
     }.flatMap { it.positions }
 
     fun part1() = path.last().manhattan
-    fun part2() = path.groupingBy { it }.eachCount().filterValues { it > 1 }.keys.first().manhattan
+    fun part2() = path.frequencies().filterValues { it > 1 }.keys.first().manhattan
 }

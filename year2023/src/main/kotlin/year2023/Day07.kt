@@ -2,6 +2,7 @@ package year2023
 
 import framework.Context
 import framework.Day
+import util.frequencies
 
 class Day07(context: Context) : Day by context {
     enum class Type { HIGH_CARD, ONE_PAIR, TWO_PAIR, THREE_OF_A_KIND, FULL_HOUSE, FOUR_OF_A_KIND, FIVE_OF_A_KIND }
@@ -18,7 +19,7 @@ class Day07(context: Context) : Day by context {
     }
 
     fun String.toType(jokers: Boolean): Type {
-        val groups = groupingBy { it }.eachCount()
+        val groups = frequencies()
         val replaced = if (jokers && 'J' in groups) {
             val max = groups.filterKeys { it != 'J' }.maxByOrNull { it.value }?.key
             max?.let { groups + (it to groups.getValue(it) + groups.getValue('J')) - 'J' } ?: groups

@@ -76,6 +76,8 @@ fun <T, M> Iterable<T>.allIdenticalBy(map: (T) -> M): Boolean {
 }
 
 fun <T> Iterable<T>.frequencies() = groupingBy { it }.eachCount()
+fun <T> Sequence<T>.frequencies() = groupingBy { it }.eachCount()
+fun CharSequence.frequencies() = groupingBy { it }.eachCount()
 
 inline fun <T> Iterator<T>.drain(use: (T) -> Unit) {
     while (hasNext()) use(next())

@@ -40,7 +40,7 @@ class Day23(context: Context) : Day by context {
     fun round(state: State): State {
         val (elves, directions) = state
         val proposals = elves.associateWith { it.propose(elves, directions) }
-        val occurrences = proposals.values.groupingBy { it }.eachCount()
+        val occurrences = proposals.values.frequencies()
         val next = proposals.map { (elf, proposal) ->
             proposal?.let { if (occurrences[it] == 1) it else elf } ?: elf
         }.toSet()

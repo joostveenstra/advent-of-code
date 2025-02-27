@@ -2,11 +2,12 @@ package year2018
 
 import framework.Context
 import framework.Day
+import util.frequencies
 import util.pairSequence
 
 class Day02(context: Context) : Day by context {
     fun part1() = with(lines) {
-        val occurrences = map { line -> line.groupingBy { it }.eachCount().values.toSet() }
+        val occurrences = map { line -> line.frequencies().values.toSet() }
         occurrences.count { 2 in it } * occurrences.count { 3 in it }
     }
 

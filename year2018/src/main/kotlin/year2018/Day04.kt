@@ -3,6 +3,7 @@ package year2018
 import framework.Context
 import framework.Day
 import util.allInts
+import util.frequencies
 
 class Day04(context: Context) : Day by context {
     val guards = run {
@@ -15,7 +16,7 @@ class Day04(context: Context) : Day by context {
                 else -> Triple(guards + (id to guards.getOrDefault(id, listOf()) + (start until minute)), id, start)
             }
         }
-        guards.mapValues { (_, v) -> v.groupingBy { it }.eachCount() }
+        guards.mapValues { (_, v) -> v.frequencies() }
     }
 
     fun analyze(strategy: (Iterable<Int>) -> Int): Int {
