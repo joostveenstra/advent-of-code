@@ -1,14 +1,16 @@
 internal object Templates {
+    private fun Int.prefix() = toString().padStart(2, '0')
+
     fun generateDay(year: Int, day: Int) =
         """
             package year${year}
 
+            import framework.Context
             import framework.Day
 
-            object Day${day} : Day {
-                override fun part1(input: String) = TODO()
-
-                override fun part2(input: String) = TODO()
+            class Day${day.prefix()}(context: Context) : Day by context {
+                fun part1() = TODO()
+                fun part2() = TODO()
             }
         """.trimIndent()
 
@@ -16,9 +18,9 @@ internal object Templates {
         """
             package year${year}
 
-            import framework.DayTest
+            import framework.Test
 
-            class Day${day}Test : DayTest(Day${day}, {
+            class Day${day.prefix()}Test : DayTest({
                 part1 {
                     example = 0
                     input = 0
