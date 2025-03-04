@@ -7,7 +7,7 @@ import util.log10
 import util.pow
 
 class Day11(context: Context) : Day by context {
-    val stones = input.allLongs()
+    val stones = input.allLongs().toList()
 
     fun blink(blinks: Int): Long {
         val cache = mutableMapOf<Pair<Long, Int>, Long>()

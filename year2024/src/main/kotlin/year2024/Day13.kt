@@ -7,7 +7,7 @@ import util.allLongs
 class Day13(context: Context) : Day by context {
     data class ClawMachine(val ax: Long, val ay: Long, val bx: Long, val by: Long, val px: Long, val py: Long)
 
-    val claws = input.allLongs().chunked(6).map { ClawMachine(it[0], it[1], it[2], it[3], it[4], it[5]) }
+    val claws = input.allLongs().chunked(6).map { ClawMachine(it[0], it[1], it[2], it[3], it[4], it[5]) }.toList()
 
     fun ClawMachine.correct(n: Long) = copy(px = px + n, py = py + n)
 
