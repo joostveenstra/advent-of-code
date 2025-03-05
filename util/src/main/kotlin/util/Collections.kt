@@ -126,7 +126,7 @@ fun <T> List<T>.combinations(k: Int, acc: List<T> = listOf()): List<List<T>> {
     when (k) {
         1 -> forEach { result.add(acc + it) }
         size -> result.add(acc + this)
-        else -> forEachIndexed { i, e -> result.addAll(subList(i + 1, size).combinationSequence(k - 1, acc + e)) }
+        else -> forEachIndexed { i, e -> result.addAll(subList(i + 1, size).combinations(k - 1, acc + e)) }
     }
     return result
 }
