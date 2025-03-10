@@ -1,9 +1,15 @@
 rootProject.name = "advent-of-code"
 
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
 include(":cli")
 include(":framework")
 include(":util")
-include(":year")
 include(":year2015")
 include(":year2016")
 include(":year2017")
