@@ -1,5 +1,5 @@
 plugins {
-    `advent-of-code`
+    `kotlin-conventions`
 }
 
 dependencies {

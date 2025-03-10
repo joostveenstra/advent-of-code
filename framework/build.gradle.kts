@@ -1,4 +1,4 @@
 plugins {
-    `advent-of-code`
+    `kotlin-conventions`
     `test-fixtures`
 }
