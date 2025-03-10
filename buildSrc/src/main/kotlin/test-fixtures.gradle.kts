@@ -6,7 +6,7 @@ plugins {
 val libs = versionCatalogs.named("libs")
 
 dependencies {
-    testFixturesImplementation(libs.findLibrary("jUnit").get())
+    testFixturesImplementation(libs.findLibrary("junit-jupiter-api").get())
     testFixturesImplementation(kotlin("reflect"))
     testFixturesImplementation(kotlin("test"))
 }
