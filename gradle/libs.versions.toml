@@ -1,11 +1,11 @@
 [versions]
+cliKt = "5.0.3"
 junit = "5.10.1"
 kotlin = "2.1.10"
-cliKt = "5.0.3"
 kotlinx-collections-immutable = "0.3.8"
 
 [libraries]
+cliKt = { module = "com.github.ajalt.clikt:clikt", version.ref = "cliKt" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-cliKt = { module = "com.github.ajalt.clikt:clikt", version.ref = "cliKt" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
