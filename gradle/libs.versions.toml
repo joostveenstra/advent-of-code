@@ -1,8 +1,8 @@
 [versions]
 junit = "5.10.1"
 kotlin = "2.1.10"
-cliKt = "3.5.2"
-kotlinx-collections-immutable = "0.3.5"
+cliKt = "5.0.3"
+kotlinx-collections-immutable = "0.3.8"
 
 [libraries]
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
