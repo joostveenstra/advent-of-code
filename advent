@@ -1,8 +1,3 @@
 #!/bin/sh
 
-if [ $# -eq 0 ]; then
-  echo "You have to pass at least one argument. For more information see the README of the repository."
-  exit 1
-fi
-
 ./gradlew --quiet ":cli:installDist" && "./cli/build/install/cli/bin/cli" "$@"
