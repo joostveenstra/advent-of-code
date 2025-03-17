@@ -22,7 +22,7 @@ abstract class Test(init: TestSpecBuilder.() -> Unit) {
         val parts = notNullProperties().mapValues { it.value.notNullProperties() }
         val files = parts.values.flatMap { it.keys }.toSet()
         val functions = parts.mapValues { part ->
-            klass.functions.find { it.name == part.key }
+            klass.functions.first { it.name == part.key }
         }
 
         return files.map { name ->
@@ -34,7 +34,7 @@ abstract class Test(init: TestSpecBuilder.() -> Unit) {
                 parts.entries.forEach { (key, values) ->
                     val part = functions.getValue(key)
                     values[name]?.let { value ->
-                        val result = part?.call(day)
+                        val result = part.call(day)
                         assertEquals(value.toString(), result.toString(), key)
                     }
                 }
