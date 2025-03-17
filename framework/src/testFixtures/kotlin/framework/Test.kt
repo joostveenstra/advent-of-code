@@ -1,6 +1,5 @@
 package framework
 
-import org.junit.jupiter.api.DisplayNameGeneration
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import kotlin.reflect.full.functions
