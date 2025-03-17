@@ -34,7 +34,8 @@ abstract class Test(init: TestSpecBuilder.() -> Unit) {
                 parts.entries.forEach { (key, values) ->
                     val part = functions.getValue(key)
                     values[name]?.let { value ->
-                        assertEquals(value.toString(), part?.call(day).toString(), key)
+                        val result = part?.call(day)
+                        assertEquals(value.toString(), result.toString(), key)
                     }
                 }
             }
