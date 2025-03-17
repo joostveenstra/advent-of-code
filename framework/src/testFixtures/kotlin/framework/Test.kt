@@ -8,7 +8,6 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.test.assertEquals
 
-@DisplayNameGeneration(FullyQualified::class)
 abstract class Test(init: TestSpecBuilder.() -> Unit) {
     private val test = test(init)
     private val dayNum = javaClass.name.substringAfter("Day").substringBefore("Test")
