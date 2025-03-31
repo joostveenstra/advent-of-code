@@ -19,7 +19,7 @@ class Day18(context: Context) : Day by context {
 
     fun List<Pair<Direction, Int>>.dig(): Long {
         val points = scan(ORIGIN) { position, (direction, steps) -> position + direction * steps }
-        val area = points.zipWithNext().fold(0L) { area, (a, b) -> area + determinant(a, b) }
+        val area = points.zipWithNext().sumOf { (a, b) -> determinant(a, b) }
         val perimeter = sumOf { it.second }
         return area.absoluteValue / 2 + perimeter / 2 + 1
     }
