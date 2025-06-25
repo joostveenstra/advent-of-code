@@ -4,7 +4,6 @@ import framework.Context
 import framework.Day
 import util.*
 import java.security.MessageDigest
-import java.util.*
 
 class Day17(context: Context) : Day by context {
     val start = ORIGIN
@@ -13,7 +12,7 @@ class Day17(context: Context) : Day by context {
 
     val md5: MessageDigest = MessageDigest.getInstance("MD5")
 
-    fun String.toMd5(): String = HexFormat.of().formatHex(md5.digest(toByteArray()))
+    fun String.toMd5(): String = md5.digest(toByteArray()).toHexString()
 
     fun Point.isValid() = (0..3).let { range -> x in range && y in range }
 

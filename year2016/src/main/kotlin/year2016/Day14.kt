@@ -5,14 +5,13 @@ import framework.Day
 import util.find
 import util.nth
 import java.security.MessageDigest
-import java.util.*
 
 class Day14(context: Context) : Day by context {
     val md5: MessageDigest = MessageDigest.getInstance("MD5")
     val three = "(.)\\1{2}".toRegex()
     val five = "(.)\\1{4}".toRegex()
 
-    fun String.toMd5(): String = HexFormat.of().formatHex(md5.digest(toByteArray()))
+    fun String.toMd5(): String = md5.digest(toByteArray()).toHexString()
     fun String.toMd5Stretched() = generateSequence(toMd5()) { it.toMd5() }.nth(2016)
 
     fun isValid(window: IndexedValue<List<String>>) =

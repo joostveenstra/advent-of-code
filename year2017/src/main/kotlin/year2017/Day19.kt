@@ -16,10 +16,8 @@ class Day19(context: Context) : Day by context {
                     next(nextPosition, nextDirection, path, steps + 1)
                 }
 
-                else -> when {
-                    value.isLetter() -> next(nextPosition, direction, path + value, steps + 1)
-                    else -> next(nextPosition, direction, path, steps + 1)
-                }
+                else if (value.isLetter()) -> next(nextPosition, direction, path + value, steps + 1)
+                else -> next(nextPosition, direction, path, steps + 1)
             }
         }
 
