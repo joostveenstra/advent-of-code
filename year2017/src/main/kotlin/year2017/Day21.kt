@@ -5,8 +5,6 @@ import framework.Day
 import util.nth
 import util.transpose
 
-typealias Pattern = List<List<Char>>
-
 class Day21(context: Context) : Day by context {
     val start = """
         .#.

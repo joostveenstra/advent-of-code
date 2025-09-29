@@ -11,8 +11,6 @@ import util.toPoint
 import kotlin.math.max
 import kotlin.math.min
 
-typealias Cave = PersistentSet<Point>
-
 class Day14(context: Context) : Day by context {
     val source = Point(500, 0)
     val directions = listOf(

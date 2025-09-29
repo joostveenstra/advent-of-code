@@ -7,8 +7,6 @@ import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashSet
 import util.*
 
-typealias Shape = List<Point>
-
 class Day17(context: Context) : Day by context {
     val rocks: List<Shape> = listOf(
         listOf(Point(0, 0), Point(1, 0), Point(2, 0), Point(3, 0)),

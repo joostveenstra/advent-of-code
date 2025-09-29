@@ -4,8 +4,6 @@ import framework.Context
 import framework.Day
 import util.*
 
-typealias Elf = Point
-
 class Day23(context: Context) : Day by context {
     val order = listOf(NORTH, SOUTH, WEST, EAST)
 

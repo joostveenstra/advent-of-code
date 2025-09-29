@@ -5,8 +5,6 @@ import framework.Day
 import util.drain
 import util.priorityQueueOf
 
-typealias Rules = List<Pair<String, List<String>>>
-
 class Day19(context: Context) : Day by context {
     val first = lines.takeWhile { it.isNotEmpty() }
     val rules = first.toRules(false)
