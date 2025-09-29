@@ -20,7 +20,7 @@ internal object Templates {
 
             import framework.Test
 
-            class Day${day.prefix()}Test : DayTest({
+            class Day${day.prefix()}Test : Test({
                 part1 {
                     example = 0
                     input = 0
