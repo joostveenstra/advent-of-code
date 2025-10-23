@@ -22,13 +22,14 @@ val horizontal = listOf(LEFT, RIGHT)
 val vertical = listOf(UP, DOWN)
 val allDirections = cardinal + diagonal
 
-fun Char.toDirection() = when (this) {
+fun Char.toDirectionOrNull() = when (this) {
     '^', 'U', 'N' -> UP
     'v', 'D', 'S' -> DOWN
     '<', 'L', 'W' -> LEFT
     '>', 'R', 'E' -> RIGHT
-    else -> throw IllegalArgumentException("$this is not a valid direction")
+    else -> null
 }
+fun Char.toDirection() = toDirectionOrNull() ?: throw IllegalArgumentException("$this is not a valid direction")
 
 val Direction.isHorizontal get() = this == RIGHT || this == LEFT
 val Direction.isVertical get() = this == DOWN || this == UP
