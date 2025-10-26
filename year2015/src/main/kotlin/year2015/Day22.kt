@@ -2,9 +2,8 @@ package year2015
 
 import framework.Context
 import framework.Day
-import kotlinx.collections.immutable.*
-import util.dequeOf
 import util.drain
+import util.priorityQueueOf
 
 class Day22(context: Context) : Day by context {
     sealed class Spell(val cost: Int, val duration: Int)
@@ -14,20 +13,20 @@ class Day22(context: Context) : Day by context {
     data object Poison : Spell(173, 6)
     data object Recharge : Spell(229, 5)
 
-    val spells = persistentListOf(MagicMissile, Drain, Shield, Poison, Recharge)
+    val spells = listOf(MagicMissile, Drain, Shield, Poison, Recharge)
 
     data class State(
         val you: Int, val mana: Int, val spent: Int, val armor: Int,
         val boss: Int, val damage: Int,
-        val active: PersistentMap<Spell, Int>,
+        val active: Map<Spell, Int>,
         val bossTurn: Boolean
     )
 
     fun String.fight(hard: Boolean): Int {
         val (hp, damage) = lines().map { line -> line.filter { it.isDigit() }.toInt() }
-        val initial = State(50, 500, 0, 0, hp, damage, persistentHashMapOf(), false)
-        val queue = dequeOf(initial)
-        var best = Int.MAX_VALUE
+        val initial = State(50, 500, 0, 0, hp, damage, mapOf(), false)
+        val queue = priorityQueueOf(initial) { it.spent }
+        val seen = mutableSetOf(initial)
 
         fun State.effect(spell: Spell) = when (spell) {
             MagicMissile -> copy(boss = boss - 4)
@@ -40,7 +39,7 @@ class Day22(context: Context) : Day by context {
         fun State.applyEffects(): State = active.entries.fold(copy(armor = 0)) { state, (spell, duration) ->
             val next = state.effect(spell)
             if (duration == 1) next.copy(active = state.active - spell)
-            else next.copy(active = state.active - spell + (spell to duration - 1))
+            else next.copy(active = state.active + (spell to duration - 1))
         }
 
         fun State.youCast(spell: Spell) = copy(mana = mana - spell.cost, spent = spent + spell.cost, active = active + (spell to spell.duration), bossTurn = true)
@@ -48,8 +47,7 @@ class Day22(context: Context) : Day by context {
         fun State.hard() = copy(you = you - 1)
 
         fun State.youWin() = boss <= 0
-        fun State.bossWins() = you <= 0
-        fun State.canBeatBest() = spent < best
+        fun State.bossWins() = you <= 0 || mana < 53
 
         fun State.nextStates(): List<State> =
             if (bossTurn) listOf(bossAttacks())
@@ -60,14 +58,14 @@ class Day22(context: Context) : Day by context {
                 .applyEffects()
                 .run {
                     when {
-                        bossWins() || !canBeatBest() -> Unit
-                        youWin() -> best = minOf(best, spent)
-                        else -> nextStates().forEach(queue::add)
+                        bossWins() -> Unit
+                        youWin() -> return spent
+                        else -> nextStates().forEach { next -> if (seen.add(next)) queue.add(next) }
                     }
                 }
         }
 
-        return best
+        error("This should never happen")
     }
 
     fun part1() = input.fight(false)

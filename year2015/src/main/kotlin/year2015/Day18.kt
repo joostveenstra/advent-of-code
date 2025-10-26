@@ -2,43 +2,30 @@ package year2015
 
 import framework.Context
 import framework.Day
-import util.Point
-import util.allNeighbours
-import util.nth
+import util.*
 
 class Day18(context: Context) : Day by context {
-    data class Grid(val length: Int, val points: Set<Point>)
-
-    val grid = lines.let {
-        Grid(it.size, buildSet {
-            it.forEachIndexed { y, row ->
-                row.forEachIndexed { x, char ->
-                    if (char == '#') add(Point(x, y))
-                }
-            }
-        })
-    }
-
-    fun Grid.corners() = listOf(
+    val grid = lines.toGrid { it == '#' }
+    val corners = listOf(
         Point(0, 0),
-        Point(length - 1, 0),
-        Point(0, length - 1),
-        Point(length - 1, length - 1)
+        Point(grid.width - 1, 0),
+        Point(0, grid.height - 1),
+        Point(grid.width - 1, grid.height - 1)
     )
 
-    fun Grid.cornersOn() = Grid(length, points + corners())
+    fun BooleanGrid.cornersOn() = toMutableGrid().apply { corners.forEach { enable(it) } }
 
-    fun Grid.step(): Grid = Grid(length, buildSet {
-        val range = 0 until length
-        for (x in range) for (y in range) Point(x, y)
-            .takeIf { p ->
-                val on = p in points
-                val neighboursOn = p.allNeighbours.count { it in points }
-                neighboursOn == 3 || on && neighboursOn == 2
-            }?.let { add(it) }
-    })
+    fun BooleanGrid.step(): BooleanGrid {
+        val next = asMutableBooleanGrid()
+        points.filter { p ->
+            val on = get(p)
+            val neighboursOn = p.allNeighbours.count { getOrNull(it) ?: false }
+            neighboursOn == 3 || on && neighboursOn == 2
+        }.forEach { next.enable(it) }
+        return next
+    }
 
-    fun Grid.animate(step: (Grid) -> Grid) = generateSequence(this, step).nth(length).points.size
+    fun BooleanGrid.animate(step: (BooleanGrid) -> BooleanGrid) = generateSequence(this, step).nth(height).count { it }
 
     fun part1() = grid.animate { it.step() }
     fun part2() = grid.animate { it.step().cornersOn() }
