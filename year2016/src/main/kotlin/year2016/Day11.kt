@@ -4,9 +4,9 @@ import framework.Context
 import framework.Day
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
-import util.dequeOf
 import util.drain
 import util.findAll
+import util.priorityQueueOf
 
 class Day11(context: Context) : Day by context {
     data class Resources(val chips: Int, val generators: Int) {
@@ -40,27 +40,27 @@ class Day11(context: Context) : Day by context {
     )
 
     fun State.isValid() = floors.all { it.chips >= 0 && it.generators >= 0 && (it.generators == 0 || it.chips <= it.generators) }
-    fun State.isEnd() = floor == 3 && floors.take(3).all { it.chips == 0 && it.generators == 0 }
+    fun State.isEnd(total: Int) = floor == 3 && floors[3].let { it.chips + it.generators } == total
     fun State.next() = buildList {
         for (next in adjacent.getValue(floor)) for (move in moves)
-            add(State(next, floors.set(floor, floors[floor] - move).set(next, floors[next] + move)))
+            State(next, floors.set(floor, floors[floor] - move).set(next, floors[next] + move))
+                .takeIf { it.isValid() }
+                ?.let { add(it) }
     }
 
     fun minimize(initial: State): Int {
-        val queue = dequeOf(initial)
-        val visited = mutableMapOf(initial to 0)
+        val total = initial.floors.sumOf { it.chips + it.generators }
+        val queue = priorityQueueOf(initial to 0) { it.second }
+        val visited = mutableSetOf(initial)
 
-        queue.drain { current ->
-            val cost = visited.getValue(current) + 1
-            current.next().filter { it.isValid() }.forEach { next ->
-                if (next !in visited || cost < visited.getValue(next)) {
-                    visited[next] = cost
-                    queue.add(next)
-                }
+        queue.drain { (current, cost) ->
+            if (current.isEnd(total)) return cost
+            current.next().forEach { next ->
+                if (visited.add(next)) queue.add(next to cost + 1)
             }
         }
 
-        return visited.entries.first { (k, _) -> k.isEnd() }.value
+        error("This should never happen")
     }
 
     fun part1() = minimize(initial)

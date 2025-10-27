@@ -2,7 +2,6 @@ package year2016
 
 import framework.Context
 import framework.Day
-import kotlinx.collections.immutable.*
 
 class Day23(context: Context) : Day by context {
     sealed interface Instruction
@@ -14,14 +13,14 @@ class Day23(context: Context) : Day by context {
     data class Mul(val from: String, val to: String) : Instruction
     object Nop : Instruction
 
-    data class Cpu(val instructions: PersistentList<Instruction>, val registers: PersistentMap<String, Int>, val i: Int = 0, val running: Boolean = true) {
-        private fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
-        private fun write(key: String, value: Int) = next().copy(registers = registers + (key to value))
-        private fun next() = copy(i = i + 1)
-        private fun jump(offset: String) = copy(i = i + read(offset))
-        private fun toggle(key: String): Cpu {
+    data class Cpu(val instructions: MutableList<Instruction>, val registers: MutableMap<String, Int>, var i: Int = 0, var running: Boolean = true) {
+        fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
+        fun write(key: String, value: Int) = next().apply { registers[key] = value }
+        fun next() = apply { i += 1 }
+        fun jump(offset: String) = apply { i += read(offset) }
+        fun toggle(key: String) {
             val index = i + read(key)
-            return if (index !in instructions.indices) next() else {
+            if (index !in instructions.indices) next() else {
                 val newOp = with(instructions[index]) {
                     when (this) {
                         is Inc -> Dec(to)
@@ -33,13 +32,13 @@ class Day23(context: Context) : Day by context {
                         is Nop -> Nop
                     }
                 }
-                val newInstructions = instructions.set(index, newOp)
-                next().copy(instructions = newInstructions)
+                next()
+                instructions[index] = newOp
             }
         }
 
         fun execute() =
-            if (i !in instructions.indices) copy(running = false)
+            if (i !in instructions.indices) running = false
             else with(instructions[i]) {
                 when (this) {
                     is Cpy -> write(to, read(from))
@@ -63,8 +62,10 @@ class Day23(context: Context) : Day by context {
         }
     }
 
-    fun List<Instruction>.run(a: Int) =
-        generateSequence(Cpu(toPersistentList(), persistentHashMapOf("a" to a))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
+    fun List<Instruction>.run(a: Int) = with(Cpu(toMutableList(), mutableMapOf("a" to a))) {
+        while (running) execute()
+        registers.getValue("a")
+    }
 
     val program = lines.map { line ->
         line.split(' ').let {

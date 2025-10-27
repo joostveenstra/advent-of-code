@@ -4,8 +4,8 @@ import framework.Context
 import framework.Day
 import util.Point
 import util.cardinalNeighbours
-import util.dequeOf
 import util.drain
+import util.priorityQueueOf
 
 class Day13(context: Context) : Day by context {
     val steps = 50
@@ -22,17 +22,13 @@ class Day13(context: Context) : Day by context {
     fun Point.validNeighbours(favorite: Int) = cardinalNeighbours.filter { it.isValid() }.filter { it.isOpenSpace(favorite) }
 
     fun findShortestPathTo(goal: Point, favorite: Int): Int {
-        val queue = dequeOf(start)
-        val visited = mutableMapOf(start to 0)
+        val queue = priorityQueueOf(start to 0) { it.second }
+        val visited = mutableSetOf(start)
 
-        queue.drain { point ->
-            if (point == goal) return visited.getValue(point)
-            val cost = visited.getValue(point) + 1
+        queue.drain { (point, cost) ->
+            if (point == goal) return cost
             point.validNeighbours(favorite).forEach { next ->
-                if (next !in visited || cost < visited.getValue(next)) {
-                    visited[next] = cost
-                    queue.add(next)
-                }
+                if (visited.add(next)) queue.add(next to cost + 1)
             }
         }
 
@@ -40,17 +36,13 @@ class Day13(context: Context) : Day by context {
     }
 
     fun findNumberOfPossibleGoals(favorite: Int): Int {
-        val queue = dequeOf(start)
-        val visited = mutableMapOf(start to 0)
+        val queue = priorityQueueOf(start to 0) { it.second }
+        val visited = mutableSetOf(start)
 
-        queue.drain { point ->
-            val cost = visited.getValue(point) + 1
-            if (cost <= steps) {
+        queue.drain { (point, cost) ->
+            if (cost < steps) {
                 point.validNeighbours(favorite).forEach { next ->
-                    if (next !in visited || cost < visited.getValue(next)) {
-                        visited[next] = cost
-                        queue.add(next)
-                    }
+                    if (visited.add(next)) queue.add(next to cost + 1)
                 }
             }
         }

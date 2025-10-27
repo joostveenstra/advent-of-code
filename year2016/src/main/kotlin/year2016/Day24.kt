@@ -6,7 +6,6 @@ import util.*
 
 class Day24(context: Context) : Day by context {
     val graph = run {
-        // TODO: convert to grid
         val grid = buildSet {
             lines.forEachIndexed { y, row ->
                 row.forEachIndexed { x, char ->
@@ -14,7 +13,6 @@ class Day24(context: Context) : Day by context {
                 }
             }
         }
-        // TODO: convert to grid
         val nodes = buildMap {
             lines.forEachIndexed { y, row ->
                 row.forEachIndexed { x, char ->
@@ -26,16 +24,14 @@ class Day24(context: Context) : Day by context {
     }
 
     fun Set<Point>.findShortestPath(start: Point, end: Point): Int {
-        val queue = dequeOf(start)
-        val visited = mutableMapOf(start to 0)
+        val queue = priorityQueueOf(start to 0) { it.second }
+        val visited = mutableSetOf(start)
 
-        queue.drain { point ->
-            if (point == end) return visited.getValue(point)
-            val cost = visited.getValue(point) + 1
+        queue.drain { (point, cost) ->
+            if (point == end) return cost
             point.cardinalNeighbours.filter { it in this }.forEach { next ->
-                if (next !in visited || cost < visited.getValue(next)) {
-                    visited[next] = cost
-                    queue.add(next)
+                if (visited.add(next)) {
+                    queue.add(next to cost + 1)
                 }
             }
         }
