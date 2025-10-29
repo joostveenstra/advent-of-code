@@ -13,14 +13,14 @@ class Day23(context: Context) : Day by context {
     data class Mul(val from: String, val to: String) : Instruction
     object Nop : Instruction
 
-    data class Cpu(val instructions: MutableList<Instruction>, val registers: MutableMap<String, Int>, var i: Int = 0, var running: Boolean = true) {
+    data class Cpu(val instructions: MutableList<Instruction>, val registers: MutableMap<String, Int>, val i: Int = 0, val running: Boolean = true) {
         fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
         fun write(key: String, value: Int) = next().apply { registers[key] = value }
-        fun next() = apply { i += 1 }
-        fun jump(offset: String) = apply { i += read(offset) }
-        fun toggle(key: String) {
+        fun next() = copy(i = i + 1)
+        fun jump(offset: String) = copy(i = i + read(offset))
+        fun toggle(key: String): Cpu {
             val index = i + read(key)
-            if (index !in instructions.indices) next() else {
+            return if (index !in instructions.indices) next() else {
                 val newOp = with(instructions[index]) {
                     when (this) {
                         is Inc -> Dec(to)
@@ -32,13 +32,12 @@ class Day23(context: Context) : Day by context {
                         is Nop -> Nop
                     }
                 }
-                next()
-                instructions[index] = newOp
+                next().apply { instructions[index] = newOp }
             }
         }
 
         fun execute() =
-            if (i !in instructions.indices) running = false
+            if (i !in instructions.indices) copy(running = false)
             else with(instructions[i]) {
                 when (this) {
                     is Cpy -> write(to, read(from))
@@ -62,10 +61,8 @@ class Day23(context: Context) : Day by context {
         }
     }
 
-    fun List<Instruction>.run(a: Int) = with(Cpu(toMutableList(), mutableMapOf("a" to a))) {
-        while (running) execute()
-        registers.getValue("a")
-    }
+    fun List<Instruction>.run(a: Int) =
+        generateSequence(Cpu(toMutableList(), mutableMapOf("a" to a))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
 
     val program = lines.map { line ->
         line.split(' ').let {

@@ -5,47 +5,25 @@ import framework.Day
 import util.*
 
 class Day22(context: Context) : Day by context {
-    sealed interface Node
-    data object Clean : Node
-    data object Weakened: Node
-    data object Infected : Node
-    data object Flagged: Node
-
-    data class State(val grid: MutableMap<Point, Node>, val position: Point, val direction: Direction, val infected: Int) {
-        fun next(node: Node, direction: Direction) =
-            State(grid.also { it[position] = node }, position + direction, direction, infected + if (node is Infected) 1 else 0)
+    val initial = lines.toGrid { it == '#' }
+    val start = Point(256, 256)
+    val offset = 256 - initial.width / 2
+    val grid = buildIntGrid(512, 512, 1) {
+        initial.points.filter { initial[it] }.forEach { this[it + Point(offset, offset)] = 3 }
     }
 
-    private fun String.toInitial(): State {
-        val lines = lines()
-        // TODO: Convert to grid
-        val grid = buildMap {
-            lines.forEachIndexed { y, row ->
-                row.forEachIndexed { x, char ->
-                    if (char == '#') put(Point(x, y), Infected)
-                }
-            }
+    tailrec fun MutableIntGrid.move(position: Point, direction: Int, bursts: Int, step: Int, infected: Int = 0): Int =
+        if (bursts == 0) infected
+        else {
+            val current = this[position]
+            val next = (current + step) and 3 // % 4
+            val nextDirection = (direction + current + 2) and 3 // % 4
+            this[position] = next
+            move(position + cardinal[nextDirection], nextDirection, bursts - 1, step, infected + ((next + 1) shr 2)) // if (next == 3) 1 else 0
         }
-        val start = Point(lines.size / 2, lines.size / 2)
-        return State(grid.toMutableMap(), start, UP, 0)
-    }
 
-    fun part1(): Int {
-        fun State.step() = when (grid.getOrDefault(position, Clean)) {
-            is Clean -> next(Infected, direction.turnLeft())
-            is Infected -> next(Clean, direction.turnRight())
-            else -> throw IllegalStateException("This should never happen")
-        }
-        return generateSequence(input.toInitial()) { it.step() }.nth(10000).infected
-    }
+    fun move(bursts: Int, step: Int) = grid.toMutableGrid().move(start, cardinal.indexOf(UP), bursts, step)
 
-    fun part2(): Int {
-        fun State.step() = when (grid.getOrDefault(position, Clean)) {
-            is Clean -> next(Weakened, direction.turnLeft())
-            is Weakened -> next(Infected, direction)
-            is Infected -> next(Flagged, direction.turnRight())
-            is Flagged -> next(Clean, direction.turnLeft().turnLeft())
-        }
-        return generateSequence(input.toInitial()) { it.step() }.nth(10000000).infected
-    }
+    fun part1(): Int = move(10000, 2)
+    fun part2(): Int = move(10000000, 1)
 }

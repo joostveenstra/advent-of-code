@@ -13,13 +13,13 @@ class Day23(context: Context) : Day by context {
 
     data class Cpu(
         val instructions: List<Instruction>,
-        val registers: Map<String, Long> = mapOf(),
+        val registers: MutableMap<String, Long> = mutableMapOf(),
         val running: Boolean = true,
         val i: Int = 0,
         val count: Int = 0
     ) {
         fun read(key: String) = key.toLongOrNull() ?: registers.getOrDefault(key, 0)
-        fun write(key: String, value: Long) = next().copy(registers = registers + (key to value))
+        fun write(key: String, value: Long) = next().apply { registers[key] = value }
         fun next() = copy(i = i + 1)
         fun jump(offset: String) = copy(i = i + read(offset).toInt())
         fun execute() =
@@ -45,7 +45,7 @@ class Day23(context: Context) : Day by context {
         }
     }
 
-    fun part1() = generateSequence(Cpu(program, mapOf("a" to 0L))) { it.execute() }.dropWhile { it.running }.first().count
+    fun part1() = generateSequence(Cpu(program, mutableMapOf("a" to 0L))) { it.execute() }.dropWhile { it.running }.first().count
     fun part2(): Int {
         fun composite(n: Int): Boolean = (2..sqrt(n.toDouble()).toInt()).any { n % it == 0 }
         return (108100..125100 step 17).count(::composite)

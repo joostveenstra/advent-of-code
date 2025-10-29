@@ -10,13 +10,13 @@ class Day12(context: Context) : Day by context {
     data class Dec(val to: String) : Instruction
     data class Jnz(val from: String, val offset: Int) : Instruction
 
-    data class Cpu(val instructions: List<Instruction>, val registers: MutableMap<String, Int>, var i: Int = 0, var running: Boolean = true) {
+    data class Cpu(val instructions: List<Instruction>, val registers: MutableMap<String, Int>, val i: Int = 0, val running: Boolean = true) {
         fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
         fun write(key: String, value: Int) = next().apply { registers[key] = value }
-        fun next() = apply { i += 1 }
-        fun jump(offset: Int) = apply { i += offset }
+        fun next() = copy(i = i + 1)
+        fun jump(offset: Int) = copy(i = i + offset)
         fun execute() =
-            if (i !in instructions.indices) running = false
+            if (i !in instructions.indices) copy(running = false)
             else with(instructions[i]) {
                 when (this) {
                     is Cpy -> write(to, read(from))
@@ -27,10 +27,8 @@ class Day12(context: Context) : Day by context {
             }
     }
 
-    fun List<Instruction>.run(c: Int) = with(Cpu(this, mutableMapOf("c" to c))) {
-        while (running) execute()
-        registers.getValue("a")
-    }
+    fun List<Instruction>.run(c: Int) =
+        generateSequence(Cpu(this, mutableMapOf("c" to c))) { it.execute() }.dropWhile { it.running }.first().registers.getValue("a")
 
     val program = lines.map { line ->
         line.split(' ').let {

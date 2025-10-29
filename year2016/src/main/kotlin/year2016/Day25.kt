@@ -16,14 +16,14 @@ class Day25(context: Context) : Day by context {
     object Halted : State
     data class Output(val value: Int) : State
 
-    data class Cpu(val instructions: List<Instruction>, val registers: MutableMap<String, Int>, var i: Int = 0, var state: State = Running) {
-        private fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
-        private fun write(key: String, value: Int) = next().apply { registers[key] = value }
-        private fun next() = apply { i += 1; state = Running }
-        private fun jump(offset: Int) = apply { i += offset; state = Running }
-        private fun output(value: Int) = next().apply { state = Output(value) }
+    data class Cpu(val instructions: List<Instruction>, val registers: MutableMap<String, Int>, val i: Int = 0, val state: State = Running) {
+        fun read(key: String) = key.toIntOrNull() ?: registers.getOrDefault(key, 0)
+        fun write(key: String, value: Int) = next().apply { registers[key] = value }
+        fun next() = copy(i = i + 1, state = Running)
+        fun jump(offset: Int) = copy(i = i + offset, state = Running)
+        fun output(value: Int) = next().copy(state = Output(value))
         fun execute() =
-            if (i !in instructions.indices) state = Halted
+            if (i !in instructions.indices) copy(state = Halted)
             else with(instructions[i]) {
                 when (this) {
                     is Cpy -> write(to, read(from))
@@ -48,15 +48,9 @@ class Day25(context: Context) : Day by context {
     }
 
     fun part1() = generateSequence(0) { it + 1 }.map { a ->
-        with(Cpu(program, mutableMapOf("a" to a))) {
-            val output = mutableListOf<Int>()
-            while (output.size < 10) {
-                execute()
-                if (state is Output) output.add((state as Output).value)
-            }
-            output.joinToString("")
-        }
+        generateSequence(Cpu(program, mutableMapOf("a" to a))) { it.execute() }
+            .mapNotNull { if (it.state is Output) it.state.value else null }
+            .take(10)
+            .joinToString("")
     }.indexOf("0101010101")
-
-    fun part2() = "Not implemented"
 }

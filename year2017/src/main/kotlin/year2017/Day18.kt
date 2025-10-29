@@ -16,22 +16,22 @@ class Day18(context: Context) : Day by context {
     data class Cpu(
         val instructions: List<Instruction>,
         val rcv: (Cpu, String) -> Cpu,
-        val registers: Map<String, Long> = mapOf(),
+        val registers: MutableMap<String, Long> = mutableMapOf(),
         val running: Boolean = true,
         val i: Int = 0,
         val received: Int = 0,
-        val input: List<Long> = listOf(),
-        val output: List<Long> = listOf()
+        val input: MutableList<Long> = mutableListOf(),
+        val output: MutableList<Long> = mutableListOf()
     ) {
         fun read(key: String) = key.toLongOrNull() ?: registers.getOrDefault(key, 0)
-        fun write(key: String, value: Long) = next().copy(registers = registers + (key to value))
+        fun write(key: String, value: Long) = next().apply { registers[key] = value }
         fun next() = copy(i = i + 1)
         fun jump(offset: String) = copy(i = i + read(offset).toInt())
         fun execute() =
             if (i !in instructions.indices) copy(running = false)
             else with(instructions[i]) {
                 when (this) {
-                    is Snd -> next().copy(output = output + read(from))
+                    is Snd -> next().apply { output.add(read(from)) }
                     is Set -> write(to, read(from))
                     is Add -> write(to, read(to) + read(from))
                     is Mul -> write(to, read(to) * read(from))
@@ -68,7 +68,7 @@ class Day18(context: Context) : Day by context {
 
         fun Pair<Cpu, Cpu>.next() = let { (a, b) -> a.copy(input = b.output).execute() to b.copy(input = a.output).execute() }
 
-        val initial = Cpu(program, ::rcv, mapOf("p" to 0)) to Cpu(program, ::rcv, mapOf("p" to 1))
+        val initial = Cpu(program, ::rcv, mutableMapOf("p" to 0)) to Cpu(program, ::rcv, mutableMapOf("p" to 1))
         return generateSequence(initial) { it.next() }.dropWhile { (a, b) -> a.running || b.running }.first().second.output.size
     }
 }
