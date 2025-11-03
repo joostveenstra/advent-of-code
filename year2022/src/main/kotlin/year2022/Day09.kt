@@ -1,8 +1,6 @@
 package year2022
 import framework.Context
 import framework.Day
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.plus
 import util.ORIGIN
 import util.Point
 import util.plus
@@ -22,15 +20,16 @@ class Day09(context: Context) : Day by context {
 
     fun simulate(size: Int): Int {
         val start = ORIGIN
-        val initial = List(size) { start } to persistentListOf(start)
-        val (_, visited) = moves.fold(initial) { (rope, visited), move ->
+        val visited = mutableSetOf(start)
+        val initial = List(size) { start }
+        moves.fold(initial) { rope, move ->
             val nextHead = rope.first() + move
             val nextRope = rope.drop(1).scan(nextHead) { head, tail ->
                 if (tail touches head) tail else tail moveTowards head
             }
-            nextRope to visited + nextRope.last()
+            nextRope.also { visited.add(it.last()) }
         }
-        return visited.toSet().size
+        return visited.size
     }
 
     fun part1() = simulate(2)

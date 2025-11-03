@@ -2,7 +2,6 @@ package year2022
 
 import framework.Context
 import framework.Day
-import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashSet
 import util.Point

@@ -9,7 +9,6 @@ class Day23(context: Context) : Day by context {
 
     data class State(val elves: Set<Elf>, val directions: List<Direction>, val stuck: Boolean = false)
 
-    // TODO: Convert to grid??
     val elves = buildSet {
         lines.forEachIndexed { y, row ->
             row.forEachIndexed { x, col ->
@@ -61,8 +60,7 @@ class Day23(context: Context) : Day by context {
         val minY = end.minOf { it.y }
         val maxY = end.maxOf { it.y }
 
-        val points = buildList { for (x in minX..maxX) for (y in minY..maxY) add(Point(x, y)) }
-        return points.count { it !in end }
+        return (maxX - minX + 1) * (maxY - minY + 1) - end.size
     }
 
     fun part2(): Int = processed.indexOfFirst { it.stuck }

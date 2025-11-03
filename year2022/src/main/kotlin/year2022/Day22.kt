@@ -18,7 +18,6 @@ class Day22(context: Context) : Day by context {
 
     data class CubeState(val position: Vector, val direction: Vector)
 
-    // TODO: convert to grid?
     val tiles = buildMap {
         lines.dropLast(2).forEachIndexed { y, row ->
             row.forEachIndexed { x, col ->

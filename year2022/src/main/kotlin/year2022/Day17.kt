@@ -44,7 +44,6 @@ class Day17(context: Context) : Day by context {
 
     fun part1() = simulate(input).drop(2022).first().toLong()
     fun part2(): Long {
-        // TODO: pattern abstraction
         val guess = 1000
         val height = simulate(input).drop(1).take(5 * guess).toList()
         val delta = height.zipWithNext { a, b -> b - a }
