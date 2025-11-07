@@ -46,8 +46,7 @@ class Day23(context: Context) : Day by context {
     }
 
     fun part1() = generateSequence(Cpu(program, mutableMapOf("a" to 0L))) { it.execute() }.dropWhile { it.running }.first().count
-    fun part2(): Int {
-        fun composite(n: Int): Boolean = (2..sqrt(n.toDouble()).toInt()).any { n % it == 0 }
-        return (108100..125100 step 17).count(::composite)
+    fun part2() = (108100..125100 step 17).count { n ->
+        (2..sqrt(n.toDouble()).toInt()).any { n % it == 0 }
     }
 }
