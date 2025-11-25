@@ -10,7 +10,7 @@ class Day01(context: Context) : Day by context {
     fun fuel(mass: Int) = mass / 3 - 2
 
     fun part1() = mass.sumOf(::fuel)
-    fun part2() = mass.sumOf { line ->
-        generateSequence(line, ::fuel).drop(1).takeWhile { it > 0 }.sum()
+    fun part2() = mass.sumOf { m ->
+        generateSequence(m, ::fuel).drop(1).takeWhile { it > 0 }.sum()
     }
 }
