@@ -14,13 +14,13 @@ class Day02(context: Context) : Day by context {
 
         for (i in indices step 4) {
             val opcode = this[i]
-            val input1 = this[i + 1]
-            val input2 = this[i + 2]
+            val left = this[i + 1]
+            val right = this[i + 2]
             val output = this[i + 3]
 
             when (opcode) {
-                1 -> this[output] = this[input1] + this[input2]
-                2 -> this[output] = this[input1] * this[input2]
+                1 -> this[output] = this[left] + this[right]
+                2 -> this[output] = this[left] * this[right]
                 else -> break
             }
         }
