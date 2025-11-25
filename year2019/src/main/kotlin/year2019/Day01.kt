@@ -2,12 +2,15 @@ package year2019
 
 import framework.Context
 import framework.Day
+import util.allInts
 
 class Day01(context: Context) : Day by context {
+    val mass = input.allInts().toList()
+    
     fun fuel(mass: Int) = mass / 3 - 2
 
-    fun part1() = lines.sumOf { fuel(it.toInt()) }
-    fun part2() = lines.sumOf { line ->
-        generateSequence(line.toInt(), ::fuel).drop(1).takeWhile { it > 0 }.sum()
+    fun part1() = mass.sumOf(::fuel)
+    fun part2() = mass.sumOf { line ->
+        generateSequence(line, ::fuel).drop(1).takeWhile { it > 0 }.sum()
     }
 }
