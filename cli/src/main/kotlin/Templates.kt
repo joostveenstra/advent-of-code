@@ -7,8 +7,8 @@ internal object Templates {
             import framework.Day
 
             class Day${day}(context: Context) : Day by context {
-                fun part1() = TODO()
-                fun part2() = TODO()
+                fun part1() = 0
+                fun part2() = 0
             }
         """.trimIndent()
 
