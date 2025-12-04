@@ -13,12 +13,12 @@ class PointTest {
 
     @Test
     fun cardinalNeighbours() {
-        assertEquals(listOf(Point(2, 2), Point(1, 3), Point(0, 2), Point(1, 1)), point.cardinalNeighbours)
+        assertEquals(listOf(Point(2, 2), Point(1, 3), Point(0, 2), Point(1, 1)), point.cardinal)
     }
 
     @Test
     fun diagonalNeighbours() {
-        assertEquals(listOf(Point(2, 3), Point(0, 3), Point(0, 1), Point(2, 1)), point.diagonalNeighbours)
+        assertEquals(listOf(Point(2, 3), Point(0, 3), Point(0, 1), Point(2, 1)), point.diagonal)
     }
 
     @Test

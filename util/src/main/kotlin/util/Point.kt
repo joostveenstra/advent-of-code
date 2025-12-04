@@ -16,11 +16,11 @@ val SOUTH = DOWN
 val WEST = LEFT
 val NORTH = UP
 
-val cardinal = listOf(RIGHT, DOWN, LEFT, UP)
-val diagonal = listOf(RIGHT + DOWN, LEFT + DOWN, LEFT + UP, RIGHT + UP)
+val dCardinal = listOf(RIGHT, DOWN, LEFT, UP)
+val dDiagonal = listOf(RIGHT + DOWN, LEFT + DOWN, LEFT + UP, RIGHT + UP)
 val horizontal = listOf(LEFT, RIGHT)
 val vertical = listOf(UP, DOWN)
-val allDirections = cardinal + diagonal
+val allDirections = dCardinal + dDiagonal
 
 fun Char.toDirectionOrNull() = when (this) {
     '^', 'U', 'N' -> UP
@@ -54,8 +54,8 @@ operator fun Point.times(n: Int): Point = Point(x * n, y * n)
 operator fun Point.div(n: Int): Point = Point(x / n, y / n)
 operator fun Point.unaryMinus() = Point(-x, -y)
 
-val Point.cardinalNeighbours: List<Point> get() = cardinal.map { this + it }
-val Point.diagonalNeighbours: List<Point> get() = diagonal.map { this + it }
+val Point.cardinal: List<Point> get() = dCardinal.map { this + it }
+val Point.diagonal: List<Point> get() = dDiagonal.map { this + it }
 val Point.allNeighbours: List<Point> get() = allDirections.map { this + it }
 
 val Point.manhattan get(): Int = x.absoluteValue + y.absoluteValue

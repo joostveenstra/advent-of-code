@@ -20,8 +20,8 @@ interface Plane {
     }
 
     fun takeOrNull(p: Point) = p.takeIf { it in this }
-    fun Point.cardinal() = cardinal.mapNotNull { takeOrNull(this + it) }
-    fun Point.diagonal() = diagonal.mapNotNull { takeOrNull(this + it) }
+    fun Point.cardinal() = dCardinal.mapNotNull { takeOrNull(this + it) }
+    fun Point.diagonal() = dDiagonal.mapNotNull { takeOrNull(this + it) }
     fun Point.allAdjacent() = allDirections.mapNotNull { takeOrNull(this + it) }
 
     fun Point.toIndex() = x + y * width
@@ -48,10 +48,10 @@ operator fun Plane.contains(p: Point) = p.x in 0..<width && p.y in 0..<height
 interface GridLike<T> : Plane, Iterable<T> {
     val elements: List<T>
 
-    fun Point.cardinalElements() = cardinal.mapNotNull { getOrNull(this + it) }
-    fun Point.cardinalElementsIndexed() = cardinal.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
-    fun Point.diagonalElements() = diagonal.mapNotNull { getOrNull(this + it) }
-    fun Point.diagonalElementsIndexed() = diagonal.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
+    fun Point.cardinalElements() = dCardinal.mapNotNull { getOrNull(this + it) }
+    fun Point.cardinalElementsIndexed() = dCardinal.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
+    fun Point.diagonalElements() = dDiagonal.mapNotNull { getOrNull(this + it) }
+    fun Point.diagonalElementsIndexed() = dDiagonal.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
     fun Point.allAdjacentElements() = allDirections.mapNotNull { getOrNull(this + it) }
     fun Point.allAdjacentElementsIndexed() = allDirections.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
 }

@@ -36,7 +36,7 @@ class Day16(context: Context) : Day by context {
             }
         }
 
-        val backward = cardinal.mapNotNull { direction ->
+        val backward = dCardinal.mapNotNull { direction ->
             seen[end to direction]?.let { Reindeer(end, direction, it) }
         }.toDeque()
         val path = mutableSetOf<Point>()

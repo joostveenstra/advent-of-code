@@ -65,7 +65,7 @@ class Day22(context: Context) : Day by context {
             }
         }
 
-        return position.score() + cardinal.indexOf(direction)
+        return position.score() + dCardinal.indexOf(direction)
     }
 
     fun part2(): Int {

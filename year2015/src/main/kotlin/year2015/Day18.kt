@@ -19,7 +19,7 @@ class Day18(context: Context) : Day by context {
         val next = asMutableBooleanGrid()
         points.filter { p ->
             val on = get(p)
-            val neighboursOn = p.allNeighbours.count { getOrNull(it) ?: false }
+            val neighboursOn = p.allAdjacentElements().count { it }
             neighboursOn == 3 || on && neighboursOn == 2
         }.forEach { next.enable(it) }
         return next

@@ -35,7 +35,7 @@ class Day06(context: Context) : Day by context {
         val visited = mutableSetOf(start)
 
         queue.drain { point ->
-            point.cardinalNeighbours
+            point.cardinal
                 .filterNot { it in visited }
                 .filter { next -> coordinates.sumOf { it manhattan next } < max }
                 .forEach { next ->

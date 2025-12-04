@@ -26,7 +26,7 @@ class Day14(context: Context) : Day by context {
             }
         }
 
-        progressions[cardinal.indexOf(direction)].filter { this[it] == 'O' }.forEach(::slide)
+        progressions[dCardinal.indexOf(direction)].filter { this[it] == 'O' }.forEach(::slide)
     }
 
     fun CharGrid.cycle() = order.fold(this) { grid, direction -> grid.tilt(direction) }

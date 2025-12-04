@@ -29,7 +29,7 @@ class Day24(context: Context) : Day by context {
 
         queue.drain { (point, cost) ->
             if (point == end) return cost
-            point.cardinalNeighbours.filter { it in this }.forEach { next ->
+            point.cardinal.filter { it in this }.forEach { next ->
                 if (visited.add(next)) {
                     queue.add(next to cost + 1)
                 }

@@ -3,7 +3,7 @@ package year2016
 import framework.Context
 import framework.Day
 import util.Point
-import util.cardinalNeighbours
+import util.cardinal
 import util.drain
 import util.priorityQueueOf
 
@@ -19,7 +19,7 @@ class Day13(context: Context) : Day by context {
     }
 
     fun Point.isValid() = x >= 0 && y >= 0
-    fun Point.validNeighbours(favorite: Int) = cardinalNeighbours.filter { it.isValid() }.filter { it.isOpenSpace(favorite) }
+    fun Point.validNeighbours(favorite: Int) = cardinal.filter { it.isValid() }.filter { it.isOpenSpace(favorite) }
 
     fun findShortestPathTo(goal: Point, favorite: Int): Int {
         val queue = priorityQueueOf(start to 0) { it.second }

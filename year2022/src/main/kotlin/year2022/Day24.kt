@@ -3,7 +3,7 @@ package year2022
 import framework.Context
 import framework.Day
 import util.Point
-import util.cardinalNeighbours
+import util.cardinal
 
 class Day24(context: Context) : Day by context {
     val start = Point(1, 0)
@@ -12,7 +12,7 @@ class Day24(context: Context) : Day by context {
     val height = valley.size - 2
     val goal = Point(width, height + 1)
 
-    fun Point.possibleMoves() = cardinalNeighbours + this
+    fun Point.possibleMoves() = cardinal + this
 
     fun Point.isValid(time: Int) =
         y in valley.indices

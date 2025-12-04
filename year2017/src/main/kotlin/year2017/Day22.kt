@@ -19,10 +19,10 @@ class Day22(context: Context) : Day by context {
             val next = (current + step) and 3 // % 4
             val nextDirection = (direction + current + 2) and 3 // % 4
             this[position] = next
-            move(position + cardinal[nextDirection], nextDirection, bursts - 1, step, infected + ((next + 1) shr 2)) // if (next == 3) 1 else 0
+            move(position + dCardinal[nextDirection], nextDirection, bursts - 1, step, infected + ((next + 1) shr 2)) // if (next == 3) 1 else 0
         }
 
-    fun move(bursts: Int, step: Int) = grid.toMutableGrid().move(start, cardinal.indexOf(UP), bursts, step)
+    fun move(bursts: Int, step: Int) = grid.toMutableGrid().move(start, dCardinal.indexOf(UP), bursts, step)
 
     fun part1(): Int = move(10000, 2)
     fun part2(): Int = move(10000000, 1)

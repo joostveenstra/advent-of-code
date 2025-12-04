@@ -26,7 +26,7 @@ class Day23(context: Context) : Day by context {
         return find(start, 0)
     }
 
-    fun CharGrid.neighbours(point: Point) = point.cardinalNeighbours.filter { it in this && get(it) != '#' }
+    fun CharGrid.neighbours(point: Point) = point.cardinal().filter { get(it) != '#' }
 
     fun CharGrid.junctions(): Map<Point, List<Pair<Point, Int>>> {
         val junctions = mutableMapOf(

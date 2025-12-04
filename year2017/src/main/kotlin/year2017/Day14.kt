@@ -3,7 +3,7 @@ package year2017
 import framework.Context
 import framework.Day
 import util.Point
-import util.cardinalNeighbours
+import util.cardinal
 
 class Day14(context: Context) : Day by context {
     fun String.knotHash(): List<Int> {
@@ -30,7 +30,7 @@ class Day14(context: Context) : Day by context {
             (0..127).mapNotNull { x -> if (row[x] == '1') Point(x, y) else null }
         }
         val cliques = used.fold(listOf<List<Point>>()) { groups, point ->
-            val (other, linked) = groups.partition { group -> point.cardinalNeighbours.none { it in group } }
+            val (other, linked) = groups.partition { group -> point.cardinal.none { it in group } }
             other + listOf(linked.flatten() + point)
         }
         return cliques.size

@@ -16,7 +16,7 @@ class Day21(context: Context) : Day by context {
         queue.drain { (position, steps) ->
             if (steps <= max) {
                 val nextSteps = steps + 1
-                position.cardinalNeighbours.filter { it !in seen && it in this && get(it) != '#' }.forEach { next ->
+                position.cardinal().filter { it !in seen && get(it) != '#' }.forEach { next ->
                     seen[next] = nextSteps
                     queue.add(next to nextSteps)
                 }

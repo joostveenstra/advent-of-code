@@ -14,8 +14,8 @@ class Day10(context: Context) : Day by context {
         fun step(position: Point): Int =
             when (val height = get(position)) {
                 9 -> 1
-                else -> position.cardinalNeighbours
-                    .filter { getOrNull(it) == height + 1 && (distinct || !seen[it]) }
+                else -> position.cardinal()
+                    .filter { get(it) == height + 1 && (distinct || !seen[it]) }
                     .onEach(seen::enable)
                     .sumOf(::step)
             }

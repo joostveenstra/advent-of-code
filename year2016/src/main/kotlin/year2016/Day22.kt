@@ -31,7 +31,7 @@ class Day22(context: Context) : Day by context {
     fun State.next(): List<State> {
         val (grid, goal, empty) = this
         val emptyNode = grid.getValue(empty)
-        return empty.cardinalNeighbours
+        return empty.cardinal
             .filter { it in grid }
             .filter { emptyNode accepts grid.getValue(it) }
             .map { nextEmpty ->

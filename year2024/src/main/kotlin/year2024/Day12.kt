@@ -24,7 +24,7 @@ class Day12(context: Context) : Day by context {
 
         queue.drain { point ->
             area += 1
-            cardinal.forEach { direction ->
+            dCardinal.forEach { direction ->
                 val next = point + direction
                 if (next in region) {
                     if (!seen[next]) {

@@ -18,11 +18,11 @@ class Day08(context: Context) : Day by context {
     }
 
     fun part1() = grid.entries.count { (tree, height) ->
-        cardinal.any { direction -> tree.canLookOutside(direction, height) }
+        dCardinal.any { direction -> tree.canLookOutside(direction, height) }
     }
 
 
     fun part2() = grid.entries.maxOf { (tree, height) ->
-        cardinal.productOf { direction -> tree.viewingDistance(direction, height) }
+        dCardinal.productOf { direction -> tree.viewingDistance(direction, height) }
     }
 }

@@ -21,7 +21,7 @@ class Day18(context: Context) : Day by context {
 
         queue.drain { (position, cost) ->
             if (position == end) return cost
-            position.cardinalNeighbours.filter { it in this && time < this[it] && !seen[it] }.forEach { next ->
+            position.cardinal().filter { time < this[it] && !seen[it] }.forEach { next ->
                 queue.add(next to cost + 1)
                 seen.enable(next)
             }

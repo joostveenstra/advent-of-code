@@ -9,7 +9,7 @@ class Day18(context: Context) : Day by context {
     val plans = lines.map { line ->
         val (a, b, c) = line.split(' ')
         val first = a.first().toDirection() to b.toInt()
-        val direction = cardinal[c[7].digitToInt()]
+        val direction = dCardinal[c[7].digitToInt()]
         val steps = c.substring(2..<c.length - 2).toInt(16)
         val second = direction to steps
         first to second

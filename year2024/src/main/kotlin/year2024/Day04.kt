@@ -14,11 +14,15 @@ class Day04(context: Context) : Day by context {
         else -> containsWordAt(position + direction, direction, word.drop(1))
     }
 
-    fun part1() = grid.findPoints('X').sumOf { x ->
-        allDirections.count { d -> grid.containsWordAt(x, d, "XMAS") }
+    fun part1() = with(grid) {
+        findPoints('X').sumOf { x ->
+            allDirections.count { d -> containsWordAt(x, d, "XMAS") }
+        }
     }
 
-    fun part2() = grid.findPoints('A').count { a ->
-        a.diagonalNeighbours.mapNotNull(grid::getOrNull).joinToString("") in xmas
+    fun part2() = with(grid) { 
+        findPoints('A').count { a ->
+            a.diagonalElements().joinToString("") in xmas
+        }
     }
 }
