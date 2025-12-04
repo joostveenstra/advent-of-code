@@ -19,6 +19,11 @@ interface Plane {
         return xRange.map { Point(it, index) }
     }
 
+    fun takeOrNull(p: Point) = p.takeIf { it in this }
+    fun Point.cardinal() = cardinal.mapNotNull { takeOrNull(this + it) }
+    fun Point.diagonal() = diagonal.mapNotNull { takeOrNull(this + it) }
+    fun Point.allAdjacent() = allDirections.mapNotNull { takeOrNull(this + it) }
+
     fun Point.toIndex() = x + y * width
     fun toPointIndex(x: Int, y: Int) = x + y * width
     fun pointFromIndex(index: Int) = Point(index % width, index / width)
@@ -28,8 +33,8 @@ val Plane.minX get() = 0
 val Plane.minY get() = 0
 val Plane.maxX get() = width - 1
 val Plane.maxY get() = height - 1
-val Plane.xRange: IntRange get() = (0..<width)
-val Plane.yRange: IntRange get() = (0..<height)
+val Plane.xRange: IntRange get() = 0..<width
+val Plane.yRange: IntRange get() = 0..<height
 
 val Plane.rows get() = yRange.map { y -> xRange.map { x -> Point(x, y) } }
 val Plane.columns get() = xRange.map { x -> yRange.map { y -> Point(x, y) } }
@@ -38,17 +43,17 @@ val Plane.pointsSequence get() = xRange.asSequence().flatMap { x -> yRange.map {
 val Plane.pointsFlipped get() = yRange.flatMap { y -> xRange.map { x -> Point(x, y) } }
 val Plane.pointsFlippedSequence get() = yRange.asSequence().flatMap { y -> xRange.map { x -> Point(x, y) } }
 
-operator fun Plane.contains(p: Point) = p.x >= 0 && p.x < width && p.y >= 0 && p.y < height
+operator fun Plane.contains(p: Point) = p.x in 0..<width && p.y in 0..<height
 
 interface GridLike<T> : Plane, Iterable<T> {
     val elements: List<T>
 
-    fun Point.cardinalElements(): List<T> = cardinalNeighbours.mapNotNull { getOrNull(it) }
-    fun Point.cardinalIndexed(): List<Pair<Point, T>> = cardinalNeighbours.mapNotNull { p -> getOrNull(p)?.let { p to it } }
-    fun Point.diagonalElements(): List<T> = diagonalNeighbours.mapNotNull { getOrNull(it) }
-    fun Point.diagonalIndexed(): List<Pair<Point, T>> = diagonalNeighbours.mapNotNull { p -> getOrNull(p)?.let { p to it } }
-    fun Point.allAdjacentElements(): List<T> = allNeighbours.mapNotNull { getOrNull(it) }
-    fun Point.allAdjacentIndexed(): List<Pair<Point, T>> = allNeighbours.mapNotNull { p -> getOrNull(p)?.let { p to it } }
+    fun Point.cardinalElements() = cardinal.mapNotNull { getOrNull(this + it) }
+    fun Point.cardinalElementsIndexed() = cardinal.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
+    fun Point.diagonalElements() = diagonal.mapNotNull { getOrNull(this + it) }
+    fun Point.diagonalElementsIndexed() = diagonal.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
+    fun Point.allAdjacentElements() = allDirections.mapNotNull { getOrNull(this + it) }
+    fun Point.allAdjacentElementsIndexed() = allDirections.mapNotNull { d -> (this + d).let { p -> getOrNull(p)?.let { p to it } } }
 }
 
 val <T> GridLike<T>.entries get() = points.map { it to get(it) }
@@ -105,8 +110,8 @@ inline fun <T> List<String>.toMutableGrid(transform: (Char) -> T) = toGrid(trans
 fun <T> GridLike<T>.toGrid() = Grid(width, height, elements.toList())
 fun <T> GridLike<T>.toMutableGrid() = MutableGrid(width, height, elements.toMutableList())
 
-fun <T, R> GridLike<T>.asGrid(init: (Point) -> R) = grid(width, height, init)
-fun <T, R> GridLike<T>.asMutableGrid(init: (Point) -> R) = mutableGrid(width, height, init)
+inline fun <T, R> GridLike<T>.asGrid(init: (Point) -> R) = grid(width, height, init)
+inline fun <T, R> GridLike<T>.asMutableGrid(init: (Point) -> R) = mutableGrid(width, height, init)
 fun <T> GridLike<T>.asIntGrid() = intGrid(width, height)
 fun <T> GridLike<T>.asMutableIntGrid() = mutableIntGrid(width, height)
 fun <T> GridLike<T>.asBooleanGrid() = booleanGrid(width, height)
