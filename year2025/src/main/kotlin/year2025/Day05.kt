@@ -11,5 +11,4 @@ class Day05(context: Context) : Day by context {
 
     fun part1() = ids.count { id -> ranges.any { id in it } }
     fun part2() = ranges.merge().sumOf { it.width }
-    
 }
