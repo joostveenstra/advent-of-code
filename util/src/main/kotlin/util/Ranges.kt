@@ -9,30 +9,33 @@ operator fun IntRange.contains(other: IntRange): Boolean = first <= other.first 
 infix fun IntRange.overlaps(other: IntRange): Boolean = first <= other.last && other.first <= last
 
 @JvmName("mergeIntRange")
-fun List<IntRange>.merge(): List<IntRange> {
-    val sorted = sortedBy { it.first }
-    val merged = mutableListOf(sorted.first())
-
-    for (range in sorted.subList(1, sorted.size)) {
-        val bigRange = merged.last()
-        if (range.first <= bigRange.last)
-            merged[merged.lastIndex] = bigRange.first..maxOf(bigRange.last, range.last)
-        else
-            merged.add(range)
-    }
-
-    return merged
-}
+fun Iterable<IntRange>.merge() = mergeRanges(
+    first = IntRange::first,
+    last = IntRange::last,
+    builder = Int::rangeTo
+)
 
 @JvmName("mergeLongRange")
-fun List<LongRange>.merge(): List<LongRange> {
-    val sorted = sortedBy { it.first }
-    val merged = mutableListOf(sorted.first())
+fun Iterable<LongRange>.merge() = mergeRanges(
+    first = LongRange::first,
+    last = LongRange::last,
+    builder = Long::rangeTo
+)
 
-    for (range in sorted.subList(1, sorted.size)) {
+private inline fun <T, V : Comparable<V>> Iterable<T>.mergeRanges(
+    crossinline first: T.() -> V,
+    last: T.() -> V,
+    builder: (V, V) -> T
+): List<T> {
+    val sorted = sortedBy(first).iterator()
+    if (!sorted.hasNext()) return emptyList()
+    val merged = mutableListOf(sorted.next())
+
+    sorted.drain { range ->
         val bigRange = merged.last()
-        if (range.first <= bigRange.last)
-            merged[merged.lastIndex] = bigRange.first..maxOf(bigRange.last, range.last)
+        val last = bigRange.last()
+        if (range.first() <= last)
+            merged[merged.lastIndex] = builder(bigRange.first(), maxOf(last, range.last()))
         else
             merged.add(range)
     }
