@@ -5,9 +5,9 @@ import framework.Day
 import util.allIdentical
 
 class Day02(context: Context) : Day by context {
-    val ranges = input.split(',').map {
+    val ranges = input.splitToSequence(',').map {
         it.split('-').map(String::toLong).let { (start, end) -> start..end }
-    }
+    }.flatten()
 
     fun Long.repeatedTwice() = with(toString()) {
         val half = length / 2
@@ -18,6 +18,6 @@ class Day02(context: Context) : Day by context {
         (1..length / 2).any { size -> length % size == 0 && chunked(size).allIdentical() }
     }
 
-    fun part1() = ranges.asSequence().flatten().filter { it.repeatedTwice() }.sum()
-    fun part2() = ranges.asSequence().flatten().filter { it.repeatedMultiple() }.sum()
+    fun part1() = ranges.filter { it.repeatedTwice() }.sum()
+    fun part2() = ranges.filter { it.repeatedMultiple() }.sum()
 }
