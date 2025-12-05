@@ -25,4 +25,4 @@ gradle-app.setting
 .kotlin
 
 # AoC resources
-**/src/test/resources/**
+**/src/test/resources/*/input.txt
