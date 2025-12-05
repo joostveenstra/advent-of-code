@@ -22,4 +22,7 @@ gradle-app.setting
 .idea
 
 # Kotlin
-/.kotlin/
+.kotlin
+
+# AoC resources
+**/src/test/resources/**
