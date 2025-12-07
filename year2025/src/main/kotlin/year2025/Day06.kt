@@ -23,6 +23,6 @@ class Day06(context: Context) : Day by context {
     fun part2() = lines.dropLast(1).map { it.toList() }
         .transpose()
         .split { col -> col.all { it == ' ' } }
-        .map { col -> col.map { it.joinToString("").trim().toLong() } }
+        .map { cols -> cols.map { it.joinToString("").trim().toLong() } }
         .solve()
 }
