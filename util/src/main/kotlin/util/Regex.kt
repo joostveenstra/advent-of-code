@@ -2,8 +2,10 @@ package util
 
 val EMPTY_LINE = "\r?\n\r?\n".toRegex()
 
-fun String.allInts() = "-?\\d+".toRegex().findAll(this).map { it.value.toInt() }
-fun String.allLongs() = "-?\\d+".toRegex().findAll(this).map { it.value.toLong() }
+fun String.allInts() = "\\d+".toRegex().findAll(this).map { it.value.toInt() }
+fun String.allIntsSigned() = "-?\\d+".toRegex().findAll(this).map { it.value.toInt() }
+fun String.allLongs() = "\\d+".toRegex().findAll(this).map { it.value.toLong() }
+fun String.allLongsSigned() = "-?\\d+".toRegex().findAll(this).map { it.value.toLong() }
 
 fun String.match(regex: Regex) = regex.matchEntire(this)?.destructured
 

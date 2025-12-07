@@ -2,13 +2,13 @@ package year2015
 
 import framework.Context
 import framework.Day
-import util.allInts
+import util.allIntsSigned
 import util.product
 import util.transpose
 
 class Day15(context: Context) : Day by context {
     val recipes = lines.run {
-        val ingredients = map { it.allInts().toList() }
+        val ingredients = map { it.allIntsSigned().toList() }
         fun range(offset: Int) = 0..100 - offset
         buildList {
             for (a in range(0)) for (b in range(a)) for (c in range(a + b)) for (d in range(a + b + c)) {

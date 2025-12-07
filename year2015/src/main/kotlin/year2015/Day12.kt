@@ -2,7 +2,7 @@ package year2015
 
 import framework.Context
 import framework.Day
-import util.allInts
+import util.allIntsSigned
 
 class Day12(context: Context) : Day by context {
     sealed interface Json
@@ -43,6 +43,6 @@ class Day12(context: Context) : Day by context {
         is JsonObject -> if (JsonString("red") in values) 0 else values.sumOf { it.evaluate() }
     }
 
-    fun part1() = input.allInts().sum()
+    fun part1() = input.allIntsSigned().sum()
     fun part2() = input.toJson().first.evaluate()
 }

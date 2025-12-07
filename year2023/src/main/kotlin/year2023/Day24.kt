@@ -2,13 +2,13 @@ package year2023
 
 import framework.Context
 import framework.Day
-import util.allLongs
+import util.allLongsSigned
 import util.pairs
 import java.math.BigInteger
 
 class Day24(context: Context) : Day by context {
     val range = if (isExample) 7.0..27.0 else 200_000_000_000_000.0..400_000_000_000_000.0
-    val hailstones = input.allLongs().chunked(6).map { HailStone(it[0], it[1], it[2], it[3], it[4], it[5]) }.toList()
+    val hailstones = input.allLongsSigned().chunked(6).map { HailStone(it[0], it[1], it[2], it[3], it[4], it[5]) }.toList()
 
     data class HailStone(val x: Long, val y: Long, val z: Long, val vx: Long, val vy: Long, val vz: Long)
 

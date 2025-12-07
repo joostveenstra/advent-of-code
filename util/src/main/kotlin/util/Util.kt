@@ -75,6 +75,54 @@ fun <T, M> Iterable<T>.allIdenticalBy(map: (T) -> M): Boolean {
     return true
 }
 
+fun <T> Iterable<Iterable<T>>.transpose(forceDrain: Boolean = true) = buildList {
+    val iterators = this@transpose.map { it.iterator() }
+    while (iterators.all { it.hasNext() }) add(iterators.map { it.next() })
+    if (forceDrain && iterators.any { it.hasNext() }) error("Iterators were not drained while swapping")
+}
+
+fun <T> Sequence<Iterable<T>>.transpose(forceDrain: Boolean = true) = sequence {
+    val iterators = this@transpose.map { it.iterator() }.toList()
+    while (iterators.all { it.hasNext() }) yield(iterators.map { it.next() })
+    if (forceDrain && iterators.any { it.hasNext() }) error("Iterators were not drained while swapping")
+}
+
+fun <T> Sequence<T>.split(predicate: (T) -> Boolean): Sequence<List<T>> = sequence {
+    var current = mutableListOf<T>()
+
+    for (element in this@split) {
+        if (predicate(element)) {
+            if (current.isNotEmpty()) yield(current)
+            current = mutableListOf()
+        } else {
+            current += element
+        }
+    }
+
+    if (current.isNotEmpty()) yield(current)
+}
+
+fun <T> Sequence<T>.split(value: T): Sequence<List<T>> = split { it == value }
+
+fun <T> Iterable<T>.split(predicate: (T) -> Boolean): List<List<T>> {
+    val result = mutableListOf<List<T>>()
+    var current = mutableListOf<T>()
+
+    for (element in this) {
+        if (predicate(element)) {
+            if (current.isNotEmpty()) result += current
+            current = mutableListOf()
+        } else {
+            current += element
+        }
+    }
+
+    if (current.isNotEmpty()) result += current
+    return result
+}
+
+fun <T> Iterable<T>.split(value: T): List<List<T>> = split { it == value }
+
 fun <T> Iterable<T>.frequencies() = groupingBy { it }.eachCount()
 fun <T> Sequence<T>.frequencies() = groupingBy { it }.eachCount()
 fun CharSequence.frequencies() = groupingBy { it }.eachCount()

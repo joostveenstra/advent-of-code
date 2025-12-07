@@ -3,11 +3,10 @@ package year2025
 import framework.Context
 import framework.Day
 import util.allIdentical
+import util.allLongs
 
 class Day02(context: Context) : Day by context {
-    val ranges = input.splitToSequence(',').map {
-        it.split('-').map(String::toLong).let { (start, end) -> start..end }
-    }.flatten()
+    val ranges = input.allLongs().chunked(2).map { (start, end) -> start..end }.flatten()
 
     fun Long.repeatedTwice() = with(toString()) {
         val half = length / 2

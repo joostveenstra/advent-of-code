@@ -3,7 +3,7 @@ package year2022
 import framework.Context
 import framework.Day
 import util.Point
-import util.allInts
+import util.allIntsSigned
 import util.manhattan
 import util.merge
 import kotlin.math.absoluteValue
@@ -17,7 +17,7 @@ class Day15(context: Context) : Day by context {
     }
 
     val sensors = lines.map { line ->
-        line.allInts().toList().let { (xSensor, ySensor, xBeacon, yBeacon) ->
+        line.allIntsSigned().toList().let { (xSensor, ySensor, xBeacon, yBeacon) ->
             val sensor = Point(xSensor, ySensor)
             val beacon = Point(xBeacon, yBeacon)
             Sensor(sensor, beacon, sensor manhattan beacon)

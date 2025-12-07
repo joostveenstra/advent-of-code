@@ -3,11 +3,11 @@ package year2024
 import framework.Context
 import framework.Day
 import util.allDistinctBy
-import util.allInts
+import util.allIntsSigned
 import util.product
 
 class Day14(context: Context) : Day by context {
-    val robots = input.allInts().chunked(4).map { Robot(it[0], it[1], it[2], it[3]) }.toList()
+    val robots = input.allIntsSigned().chunked(4).map { Robot(it[0], it[1], it[2], it[3]) }.toList()
     val width = if (isExample) 11 else 101
     val height = if (isExample) 7 else 103
     val midX = width / 2

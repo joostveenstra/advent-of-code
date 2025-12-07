@@ -2,7 +2,7 @@ package year2018
 
 import framework.Context
 import framework.Day
-import util.allInts
+import util.allIntsSigned
 
 class Day10(context: Context) : Day by context {
     data class PointOfLight(val x: Int, val y: Int, val dx: Int, val dy: Int) {
@@ -12,7 +12,7 @@ class Day10(context: Context) : Day by context {
     fun String.findMessage(): Pair<String, Int> {
         val target = if (lines().size == 31) 64L else 550L
         var points = lines().map { line ->
-            val (x, y, dx, dy) = line.allInts().toList()
+            val (x, y, dx, dy) = line.allIntsSigned().toList()
             PointOfLight(x, y, dx, dy)
         }
         var area = target

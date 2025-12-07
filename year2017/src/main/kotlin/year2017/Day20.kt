@@ -11,7 +11,7 @@ class Day20(context: Context) : Day by context {
 
     val goal = Point3D(0, 0, 0)
     val particles = lines.map { line ->
-        val (position, velocity, acceleration) = line.allInts().chunked(3).map { (x, y, z) -> Point3D(x, y, z) }.toList()
+        val (position, velocity, acceleration) = line.allIntsSigned().chunked(3).map { (x, y, z) -> Point3D(x, y, z) }.toList()
         Particle(position, velocity, acceleration)
     }
 

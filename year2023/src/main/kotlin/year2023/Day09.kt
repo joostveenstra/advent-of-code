@@ -2,10 +2,10 @@ package year2023
 
 import framework.Context
 import framework.Day
-import util.allInts
+import util.allIntsSigned
 
 class Day09(context: Context) : Day by context {
-    val reports = lines.map { it.allInts().toList() }
+    val reports = lines.map { it.allIntsSigned().toList() }
 
     fun List<Int>.extrapolate() = generateSequence(this) { it.zipWithNext { a, b -> b - a } }
         .takeWhile { step -> step.any { it != 0 } }
