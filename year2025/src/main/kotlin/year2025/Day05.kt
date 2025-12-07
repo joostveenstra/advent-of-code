@@ -6,9 +6,13 @@ import util.merge
 import util.width
 
 class Day05(context: Context) : Day by context {
-    val ranges = lines.takeWhile { it.isNotEmpty() }.map { it.split('-').map(String::toLong).let { (a, b) -> a..b } }
-    val ids = lines.dropWhile { it.isNotEmpty() }.drop(1).map { it.toLong() }
+    val ranges = lines.takeWhile { it.isNotEmpty() }.map {
+        it.split('-').map(String::toLong).let { (a, b) -> a..b }
+    }.merge()
+    val ids = lines.dropWhile { it.isNotEmpty() }.drop(1).map { it.toLong() }.sorted()
 
-    fun part1() = ids.count { id -> ranges.any { id in it } }
-    fun part2() = ranges.merge().sumOf { it.width }
+    fun index(id: Long) = ids.binarySearch(id).let { if (it >= 0) it else -(it + 1) }
+
+    fun part1() = ranges.sumOf { index(it.last + 1) - index(it.first) }
+    fun part2() = ranges.sumOf { it.width }
 }
