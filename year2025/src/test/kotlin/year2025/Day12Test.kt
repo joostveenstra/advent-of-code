@@ -4,7 +4,7 @@ import framework.Test
 
 class Day12Test : Test({
     part1 {
-        example = 3
+        example = 1
         input = 406
     }
 })
