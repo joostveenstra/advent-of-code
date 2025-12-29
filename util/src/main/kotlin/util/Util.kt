@@ -45,6 +45,12 @@ inline fun <T> Iterable<T>.findIndexOf(selector: (T) -> Boolean): Int? {
     return null
 }
 
+inline fun <T> MutableList<T>.mapInPlace(transform: (T) -> T) = forEachIndexed { idx, t -> this[idx] = transform(t) }
+inline fun <T> MutableList<T>.mapInPlaceIndexed(transform: (idx: Int, T) -> T) = forEachIndexed { idx, t -> this[idx] = transform(idx, t) }
+
+inline fun <T> Array<T>.mapInPlace(transform: (T) -> T) = forEachIndexed { idx, t -> this[idx] = transform(t) }
+inline fun IntArray.mapInPlace(transform: (Int) -> Int) = forEachIndexed { idx, t -> this[idx] = transform(t) }
+
 fun <T> Iterable<T>.allDistinct(): Boolean {
     val set = hashSetOf<T>()
     iterator().drain { if (!set.add(it)) return false }
