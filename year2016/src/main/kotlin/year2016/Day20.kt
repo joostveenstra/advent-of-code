@@ -2,7 +2,7 @@ package year2016
 
 import framework.Context
 import framework.Day
-import util.width
+import util.size
 
 class Day20(context: Context) : Day by context {
     val ranges = lines.map {
@@ -22,5 +22,5 @@ class Day20(context: Context) : Day by context {
     val allowed = ranges.intersect()
 
     fun part1() = allowed.minOf { it.first }
-    fun part2() = allowed.sumOf { it.width }
+    fun part2() = allowed.sumOf { it.size }
 }

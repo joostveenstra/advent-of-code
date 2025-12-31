@@ -13,7 +13,7 @@ class Day09(context: Context) : Day by context {
             min(a.y, b.y)..max(a.y, b.y)
         )
 
-        val area = x.width.toLong() * y.width
+        val area = x.size.toLong() * y.size
         
         fun inner() = Rectangle(
             x.first + 1..<x.last,

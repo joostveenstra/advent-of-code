@@ -3,7 +3,7 @@ package year2023
 import framework.Context
 import framework.Day
 import util.allInts
-import util.width
+import util.size
 
 class Day22(context: Context) : Day by context {
     data class Brick(val xs: IntRange, val ys: IntRange, val zs: IntRange)
@@ -17,7 +17,7 @@ class Day22(context: Context) : Day by context {
         val dominator = mutableListOf<Node>()
 
         sortedBy { it.zs.first }.forEachIndexed { i, (xs, ys, zs) ->
-            val height = zs.width
+            val height = zs.size
             val top = xs.maxOf { x ->
                 ys.maxOf { y -> heights[x][y] }
             }
