@@ -14,7 +14,7 @@ class Day09(context: Context) : Day by context {
         )
 
         val area = x.size.toLong() * y.size
-        
+
         fun inner() = Rectangle(
             x.first + 1..<x.last,
             y.first + 1..<y.last
@@ -28,5 +28,8 @@ class Day09(context: Context) : Day by context {
     val rectangles = tiles.pairs().map { (a, b) -> Rectangle(a, b) }.sortedByDescending { it.area }
 
     fun part1() = rectangles.first().area
-    fun part2() = rectangles.first { r -> edges.none { r.inner() overlaps it } }.area
+    fun part2() = rectangles.first { r ->
+        val inner = r.inner()
+        edges.none { it overlaps inner }
+    }.area
 }
