@@ -25,6 +25,8 @@ fun Long.pow(n: Long): Long = when {
     else -> this * pow(n - 1L)
 }
 
+fun Long.pow(n: Int): Long = pow(n.toLong())
+
 fun Long.powMod(n: Long, mod: Long): Long = when {
     n == 0L -> 1L
     n % 2L == 0L -> (this % mod * this % mod).pow(n / 2L) % mod
