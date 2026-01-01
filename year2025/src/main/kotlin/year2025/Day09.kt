@@ -3,14 +3,12 @@ package year2025
 import framework.Context
 import framework.Day
 import util.*
-import kotlin.math.max
-import kotlin.math.min
 
 class Day09(context: Context) : Day by context {
     data class Rectangle(val x: IntRange, val y: IntRange) {
         constructor(a: Point, b: Point) : this(
-            min(a.x, b.x)..max(a.x, b.x),
-            min(a.y, b.y)..max(a.y, b.y)
+            minOf(a.x, b.x)..maxOf(a.x, b.x),
+            minOf(a.y, b.y)..maxOf(a.y, b.y)
         )
 
         val area = x.size.toLong() * y.size
