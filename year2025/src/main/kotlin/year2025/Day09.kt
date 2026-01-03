@@ -25,7 +25,7 @@ class Day09(context: Context) : Day by context {
     val edges = (tiles + tiles.first()).zipWithNext { a, b -> Rectangle(a, b) }
     val rectangles = tiles.pairs().map { (a, b) -> Rectangle(a, b) }.sortedByDescending { it.area }
 
-    fun Rectangle.redGreen() = edges.none { it overlaps inner() }
+    fun Rectangle.redGreen() = inner().let { i -> edges.none { it overlaps i } }
     
     fun part1() = rectangles.first().area
     fun part2() = rectangles.first { it.redGreen() }.area
