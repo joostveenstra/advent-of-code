@@ -10,7 +10,7 @@ class Day24(context: Context) : Day by context {
 
     fun List<Long>.balance(groups: Int): Long {
         val weight = sum() / groups
-        return generateSequence(1) { it + 1 }.flatMap { combinationSequence(it) }.filter { it.sum() == weight }.first().product()
+        return generateSequence(1) { it + 1 }.flatMap { combinationSequence(it) }.first { it.sum() == weight }.product()
     }
 
     fun part1() = packages.balance(3)

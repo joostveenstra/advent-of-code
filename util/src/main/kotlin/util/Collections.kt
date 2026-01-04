@@ -2,6 +2,7 @@ package util
 
 import java.util.*
 import kotlin.collections.ArrayDeque
+import kotlin.collections.first
 
 typealias Deque<T> = ArrayDeque<T>
 
@@ -122,22 +123,37 @@ fun <T> List<T>.pairSequence(): Sequence<Pair<T, T>> = sequence {
 
 fun <T> Iterable<T>.combinations(k: Int) = toList().combinations(k)
 fun <T> List<T>.combinations(k: Int, acc: List<T> = listOf()): List<List<T>> {
-    val result = mutableListOf<List<T>>()
-    when (k) {
-        1 -> forEach { result.add(acc + it) }
-        size -> result.add(acc + this)
-        else -> forEachIndexed { i, e -> result.addAll(subList(i + 1, size).combinations(k - 1, acc + e)) }
+    val result = mutableListOf(take(k))
+    val c = IntArray(k) { it }
+    fun next(): Boolean {
+        for (i in k - 1 downTo 0)
+            if (c[i] < size - k + i) {
+                c[i]++
+                for (j in i + 1 until k)
+                    c[j] = c[j - 1] + 1
+                return true
+            }
+        return false
     }
+    while (next()) result.add(c.map(::get))
     return result
 }
 
 fun <T> Iterable<T>.combinationSequence(k: Int) = toList().combinationSequence(k)
 fun <T> List<T>.combinationSequence(k: Int, acc: List<T> = listOf()): Sequence<List<T>> = sequence {
-    when (k) {
-        1 -> forEach { yield(acc + it) }
-        size -> yield(acc + this@combinationSequence)
-        else -> forEachIndexed { i, e -> yieldAll(subList(i + 1, size).combinationSequence(k - 1, acc + e)) }
+    yield(take(k))
+    val c = IntArray(k) { it }
+    fun next(): Boolean {
+        for (i in k - 1 downTo 0)
+            if (c[i] < size - k + i) {
+                c[i]++
+                for (j in i + 1 until k)
+                    c[j] = c[j - 1] + 1
+                return true
+            }
+        return false
     }
+    while (next()) yield(c.map(::get))
 }
 
 fun <T> List<List<T>>.transpose(): List<List<T>> =
