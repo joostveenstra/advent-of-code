@@ -129,7 +129,7 @@ fun <T> List<T>.combinations(k: Int, acc: List<T> = listOf()): List<List<T>> {
         for (i in k - 1 downTo 0)
             if (c[i] < size - k + i) {
                 c[i]++
-                for (j in i + 1 until k)
+                for (j in i + 1..<k)
                     c[j] = c[j - 1] + 1
                 return true
             }
@@ -147,7 +147,7 @@ fun <T> List<T>.combinationSequence(k: Int, acc: List<T> = listOf()): Sequence<L
         for (i in k - 1 downTo 0)
             if (c[i] < size - k + i) {
                 c[i]++
-                for (j in i + 1 until k)
+                for (j in i + 1..<k)
                     c[j] = c[j - 1] + 1
                 return true
             }

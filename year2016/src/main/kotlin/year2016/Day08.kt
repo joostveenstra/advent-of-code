@@ -25,7 +25,7 @@ class Day08(context: Context) : Day by context {
 
     fun Screen.draw(operations: List<Operation>): Set<Point> = operations.fold(setOf()) { points, op ->
         when (op) {
-            is Rect -> points + (0 until op.width).flatMap { x -> (0 until op.height).map { y -> Point(x, y) } }
+            is Rect -> points + (0..<op.width).flatMap { x -> (0..<op.height).map { y -> Point(x, y) } }
             is Row -> points.map { p -> if (op.row != p.y) p else Point((p.x + op.offset) % width, p.y) }.toSet()
             is Col -> points.map { p -> if (op.col != p.x) p else Point(p.x, (p.y + op.offset) % height) }.toSet()
         }
@@ -34,8 +34,8 @@ class Day08(context: Context) : Day by context {
     val points = screen.draw(operations)
 
     fun part1() = points.size
-    fun part2() = (0 until screen.height).joinToString("\n") { y ->
-        (0 until screen.width).joinToString("") { x ->
+    fun part2() = (0..<screen.height).joinToString("\n") { y ->
+        (0..<screen.width).joinToString("") { x ->
             if (Point(x, y) in points) "#" else "."
         }
     }

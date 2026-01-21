@@ -7,8 +7,8 @@ class Day20(context: Context) : Day by context {
     fun part1() = run {
         val target = input.toInt() / 10
         val houses = IntArray(target) { 1 }
-        for (i in 2 until target)
-            for (j in i until target step i)
+        for (i in 2..<target)
+            for (j in i..<target step i)
                 houses[j] += i
         houses.indexOfFirst { it >= target }
     }
@@ -16,8 +16,8 @@ class Day20(context: Context) : Day by context {
     fun part2() = run {
         val target = input.toInt() / 11
         val houses = IntArray(target) { 1 }
-        for (i in 2 until target)
-            for (j in i until minOf(50 * i, target) step i)
+        for (i in 2..<target)
+            for (j in i..<minOf(50 * i, target) step i)
                 houses[j] += i
         houses.indexOfFirst { it >= target }
     }

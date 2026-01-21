@@ -39,13 +39,14 @@ class Day13(context: Context) : Day by context {
             carts.forEachIndexed { i, cart ->
                 if (cart.active) {
                     val next = cart.step()
-                    carts.withIndex().find { (_, other) -> other.active && other.position == next.position }?.let { (j, other) ->
-                        yield(next.position)
-                        carts[j] = other.copy(active = false)
-                        carts[i] = next.copy(active = false)
-                    } ?: let {
-                        carts[i] = next
-                    }
+                    carts.withIndex()
+                        .find { (_, other) -> other.active && other.position == next.position }
+                        ?.let { (j, other) ->
+                            yield(next.position)
+                            carts[i] = next.copy(active = false)
+                            carts[j] = other.copy(active = false)
+                        }
+                        ?: run { carts[i] = next }
                 }
             }
             carts.retainAll { it.active }

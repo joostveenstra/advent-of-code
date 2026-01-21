@@ -84,7 +84,7 @@ class Day22(context: Context) : Day by context {
         val points = mutableMapOf<Vector, Info>()
 
         blocks.drain { (offset, i, j, k) ->
-            for (x in 0 until blockSize) for (y in 0 until blockSize) {
+            for (x in 0..<blockSize) for (y in 0..<blockSize) {
                 val key = (i * (2 * x - scaleIJ)) + (j * (2 * y - scaleIJ)) + (k * -scaleK)
                 points[key] = Info(offset + Point(x, y), i, j, k)
             }

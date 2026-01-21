@@ -48,7 +48,7 @@ class Day17(context: Context) : Day by context {
         val height = simulate(input).drop(1).take(5 * guess).toList()
         val delta = height.zipWithNext { a, b -> b - a }
         val end = delta.size - guess
-        val start = delta.slice(0 until end).windowed(guess).indexOfLast { it == delta.takeLast(guess) }
+        val start = delta.slice(0..<end).windowed(guess).indexOfLast { it == delta.takeLast(guess) }
         val cycleHeight = height[end] - height[start]
         val cycleWidth = end - start
         val offset = 1_000_000_000_000L - 1 - start

@@ -8,7 +8,7 @@ class Day10(context: Context) : Day by context {
     val size = if (isExample) 5 else 256
 
     fun List<Int>.knotHash(size: Int): List<Int> {
-        val initial = (0 until size).toList() to 0
+        val initial = (0..<size).toList() to 0
         val (numbers, position) = withIndex().fold(initial) { (numbers, position), (skip, length) ->
             val next = numbers.take(length).reversed() + numbers.drop(length)
             val offset = (length + skip) % size

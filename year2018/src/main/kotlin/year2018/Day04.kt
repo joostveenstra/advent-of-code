@@ -13,7 +13,7 @@ class Day04(context: Context) : Day by context {
             when {
                 next.endsWith("begins shift") -> Triple(guards, data[5], start)
                 next.endsWith("falls asleep") -> Triple(guards, id, minute)
-                else -> Triple(guards + (id to guards.getOrDefault(id, listOf()) + (start until minute)), id, start)
+                else -> Triple(guards + (id to guards.getOrDefault(id, listOf()) + (start..<minute)), id, start)
             }
         }
         guards.mapValues { (_, v) -> v.frequencies() }

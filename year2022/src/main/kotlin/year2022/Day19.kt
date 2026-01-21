@@ -50,7 +50,7 @@ class Day19(context: Context) : Day by context {
             }
 
             fun State.isEnd() = time == 0
-            fun State.canBeatBest() = resources.geode + (0 until time).sumOf { bots.geode + it } > best
+            fun State.canBeatBest() = resources.geode + (0..<time).sumOf { bots.geode + it } > best
 
             fun State.nextStates() = sequence {
                 if (bots.obsidian > 0) yield(buildBot(geodeBot, geodeCost))

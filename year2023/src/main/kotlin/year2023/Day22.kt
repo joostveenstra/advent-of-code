@@ -13,7 +13,7 @@ class Day22(context: Context) : Day by context {
         val heights = Array(10) { IntArray(10) }
         val indices = Array(10) { IntArray(10) { Int.MAX_VALUE } }
 
-        val safe = MutableList(size) { true }
+        val safe = BooleanArray(size) { true }
         val dominator = mutableListOf<Node>()
 
         sortedBy { it.zs.first }.forEachIndexed { i, (xs, ys, zs) ->
