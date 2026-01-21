@@ -8,7 +8,7 @@ import util.pow
 class Day02(context: Context) : Day by context {
     val first = listOf(2 to 1, 4 to 2, 6 to 3, 8 to 4, 10 to 5)
     val second = listOf(3 to 1, 5 to 1, 6 to 2, 7 to 1, 9 to 3, 10 to 2)
-    val third = listOf(6 to 1, 10 to 1)
+    val overlap = listOf(6 to 1, 10 to 1)
     val ranges = input.allLongs().chunked(2).toList()
 
     fun List<Pair<Int, Int>>.sumInvalid() = sumOf { (digits, size) ->
@@ -32,5 +32,5 @@ class Day02(context: Context) : Day by context {
     }
 
     fun part1() = first.sumInvalid()
-    fun part2() = first.sumInvalid() + second.sumInvalid() - third.sumInvalid()
+    fun part2() = first.sumInvalid() + second.sumInvalid() - overlap.sumInvalid()
 }
