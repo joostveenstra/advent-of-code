@@ -7,7 +7,7 @@ import util.size
 
 class Day05(context: Context) : Day by context {
     val ranges = lines.takeWhile { it.isNotEmpty() }.map {
-        it.split('-').map(String::toLong).let { (a, b) -> a..b }
+        it.split('-').let { (a, b) -> a.toLong()..b.toLong() }
     }.merge()
     val ids = lines.dropWhile { it.isNotEmpty() }.drop(1).map { it.toLong() }.sorted()
 
