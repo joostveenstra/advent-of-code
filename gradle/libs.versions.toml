@@ -1,7 +1,7 @@
 [versions]
 cliKt = "5.0.3"
 junit = "6.0.1"
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 kotlinx-collections-immutable = "0.4.0"
 
 [libraries]
