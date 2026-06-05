@@ -9,16 +9,13 @@ class Day01(context: Context) : Day by context {
     fun part1() = changes.sum()
     fun part2(): Int {
         val seen = mutableSetOf(0)
-        
-        tailrec fun find(index: Int, frequency: Int): Int =
-            when (val nextFrequency = frequency + changes[index % changes.size]) {
-                in seen -> nextFrequency
-                else -> {
-                    seen.add(nextFrequency)
-                    find(index + 1, nextFrequency)
-                }
-            }
-        
+
+        tailrec fun find(index: Int, frequency: Int): Int {
+            val next = frequency + changes[index % changes.size]
+            return if (!seen.add(next)) next
+            else find(index + 1, next)
+        }
+
         return find(0, 0)
     }
 }

@@ -8,7 +8,7 @@ import util.permPairs
 class Day02(context: Context) : Day by context {
     val program = input.allInts().toList()
 
-    fun run(verb: Int, noun: Int) = with(program.toMutableList()) {
+    fun run(verb: Int, noun: Int) = with(program.toIntArray()) {
         this[1] = verb
         this[2] = noun
 

@@ -4,41 +4,37 @@ import framework.Context
 import framework.Day
 
 class Day11(context: Context) : Day by context {
-    data class Square(val x: Int, val y: Int, val size: Int, val sum: Int)
+    data class Square(val x: Int, val y: Int, val size: Int, val power: Int)
 
-    fun Int.toFuelCells() = Array(301) { x ->
-        IntArray(301) { y ->
-            ((x + 10) * y + this) * (x + 10) / 100 % 10 - 5
-        }
-    }
-
-    fun Array<IntArray>.toSummedAreaTable() = apply {
+    fun String.toSummedAreaTable(): Array<IntArray> {
+        val gridSerialNumber = toInt()
+        val sat = Array(301) { IntArray(301) }
         for (x in 1..300) for (y in 1..300) {
-            this[x][y] = this[x][y] + this[x - 1][y] + this[x][y - 1] - this[x - 1][y - 1]
+            val rackId = x + 10
+            val power = (rackId * y + gridSerialNumber) * rackId / 100 % 10 - 5
+            sat[x][y] = power + sat[x - 1][y] + sat[x][y - 1] - sat[x - 1][y - 1]
         }
+        return sat
     }
 
-    fun Array<IntArray>.toSquares(size: Int) = run {
-        val sat = this
-        sequence {
-            for (x in size..300) for (y in size..300) {
-                val sum = sat[x][y] - sat[x - size][y] - sat[x][y - size] + sat[x - size][y - size]
-                yield(Square(x, y, size, sum))
+    fun Array<IntArray>.square(size: Int) = let { sat ->
+        var maxPower = 0
+        var maxX = 0
+        var maxY = 0
+        for (x in size..300) for (y in size..300) {
+            val power = sat[x][y] - sat[x - size][y] - sat[x][y - size] + sat[x - size][y - size]
+            if (power > maxPower) {
+                maxPower = power
+                maxX = x - size + 1
+                maxY = y - size + 1
             }
         }
+        Square(maxX, maxY, size, maxPower)
     }
 
-    fun part1(): String {
-        val sat = input.toInt().toFuelCells().toSummedAreaTable()
-        val squares = sat.toSquares(3)
-        val (x, y, size) = squares.maxBy { it.sum }
-        return listOf(x - size + 1, y - size + 1).joinToString(",")
-    }
+    val sat = input.toSummedAreaTable()
+    val squares = (1..300).map { size -> sat.square(size) }
 
-    fun part2(): String {
-        val sat = input.toInt().toFuelCells().toSummedAreaTable()
-        val squares = (1..300).asSequence().flatMap { size -> sat.toSquares(size) }
-        val (x, y, size) = squares.maxBy { it.sum }
-        return listOf(x - size + 1, y - size + 1, size).joinToString(",")
-    }
+    fun part1() = squares.first { it.size == 3 }.let { (x, y) -> "$x,$y" }
+    fun part2() = squares.maxBy { it.power }.let { (x, y, size) -> "$x,$y,$size" }
 }
