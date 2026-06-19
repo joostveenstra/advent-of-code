@@ -22,7 +22,7 @@ class Day11(context: Context) : Day by context {
         Resources(chips, generators)
     }
     val initial = State(0, floors.toPersistentList())
-    val expanded = initial.copy(floors = initial.floors.set(0, initial.floors[0] + Resources(2, 2)))
+    val expanded = initial.copy(floors = initial.floors.replacingAt(0, initial.floors[0] + Resources(2, 2)))
 
     val moves = listOf(
         Resources(2, 0),
@@ -43,7 +43,7 @@ class Day11(context: Context) : Day by context {
     fun State.isEnd(total: Int) = floor == 3 && floors[3].let { it.chips + it.generators } == total
     fun State.next() = buildList {
         for (next in adjacent.getValue(floor)) for (move in moves)
-            State(next, floors.set(floor, floors[floor] - move).set(next, floors[next] + move))
+            State(next, floors.replacingAt(floor, floors[floor] - move).replacingAt(next, floors[next] + move))
                 .takeIf { it.isValid() }
                 ?.let { add(it) }
     }

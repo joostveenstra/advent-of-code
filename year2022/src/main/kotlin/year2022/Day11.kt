@@ -20,7 +20,7 @@ class Day11(context: Context) : Day by context {
         val inspections: Long = 0L
     ) {
         fun accept(extra: List<Long>) = copy(items = items + extra)
-        fun endRound() = copy(items = items.clear(), inspections = inspections + items.size)
+        fun endRound() = copy(items = items.cleared(), inspections = inspections + items.size)
     }
 
     val monkeys = lines.chunked(7).map { chunk ->
@@ -48,9 +48,9 @@ class Day11(context: Context) : Day by context {
         val (items, operation, test, ifTrue, ifFalse) = monkeys[current]
         val (pass, fail) = items.map(operation).map(reduceItem).partition { it % test == 0L }
         monkeys
-            .set(current, monkeys[current].endRound())
-            .set(ifTrue, monkeys[ifTrue].accept(pass))
-            .set(ifFalse, monkeys[ifFalse].accept(fail))
+            .replacingAt(current, monkeys[current].endRound())
+            .replacingAt(ifTrue, monkeys[ifTrue].accept(pass))
+            .replacingAt(ifFalse, monkeys[ifFalse].accept(fail))
     }
 
     fun PersistentList<Monkey>.play(rounds: Int, reduceItem: (Long) -> Long): Long =
