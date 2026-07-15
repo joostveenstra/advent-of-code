@@ -2,7 +2,7 @@
 cliKt = "5.0.3"
 junit = "6.1.2"
 kotlin = "2.4.10"
-kotlinx-collections-immutable = "0.5.0"
+kotlinx-collections-immutable = "0.5.1"
 
 [libraries]
 cliKt = { module = "com.github.ajalt.clikt:clikt", version.ref = "cliKt" }
