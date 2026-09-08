@@ -1,8 +1,8 @@
 [versions]
-cliKt = "5.0.3"
-junit = "6.1.2"
-kotlin = "2.4.10"
-kotlinx-collections-immutable = "0.5.1"
+cliKt = "5.1.0"
+junit = "6.1.3"
+kotlin = "2.4.20"
+kotlinx-collections-immutable = "0.5.2"
 
 [libraries]
 cliKt = { module = "com.github.ajalt.clikt:clikt", version.ref = "cliKt" }
