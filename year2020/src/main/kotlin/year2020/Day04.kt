@@ -5,6 +5,7 @@ import framework.Day
 import util.EMPTY_LINE
 
 class Day04(context: Context) : Day by context {
+    val hclRegex = "#[0-9a-f]{6}".toRegex()
     val passports = input.split(EMPTY_LINE).map { p ->
         p.split(":|\\s+".toRegex()).chunked(2).filter { (key) -> key != "cid" }
     }
@@ -16,7 +17,7 @@ class Day04(context: Context) : Day by context {
         "iyr" -> value.inRange(2010..2020)
         "eyr" -> value.inRange(2020..2030)
         "hgt" -> value.isValidHeight()
-        "hcl" -> value.matches("#[0-9a-f]{6}".toRegex())
+        "hcl" -> value.matches(hclRegex)
         "ecl" -> value in setOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
         "pid" -> value.length == 9 && value.all { it.isDigit() }
         else -> false
