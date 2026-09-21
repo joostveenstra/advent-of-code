@@ -42,3 +42,5 @@ private inline fun <T, V : Comparable<V>> Iterable<T>.mergeRanges(
 
     return merged
 }
+
+fun rangeDirection(a: Int, b: Int) = if (b < a) a downTo b else a..b

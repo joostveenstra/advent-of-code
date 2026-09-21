@@ -55,6 +55,7 @@ operator fun Point.times(other: Point) = Point(x * other.x, y * other.y)
 operator fun Point.times(n: Int): Point = Point(x * n, y * n)
 operator fun Point.div(n: Int): Point = Point(x / n, y / n)
 operator fun Point.unaryMinus() = Point(-x, -y)
+operator fun Point.rangeTo(other: Point) = Line(this, other)
 
 val Point.cardinal: List<Point> get() = dCardinal.map { this + it }
 val Point.diagonal: List<Point> get() = dDiagonal.map { this + it }
@@ -64,6 +65,41 @@ val Point.manhattan get(): Int = x.absoluteValue + y.absoluteValue
 infix fun Point.manhattan(other: Point): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
 infix fun Point.euclidean(other: Point) = sqrt(euclideanSquared(other).toDouble())
 infix fun Point.euclideanSquared(other: Point) = (x - other.x).toLong().let { it * it } + (y - other.y).toLong().let { it * it }
+
+data class Line(val a: Point, val b: Point) {
+    val minX get() = minOf(a.x, b.x)
+    val minY get() = minOf(a.y, b.y)
+    val maxX get() = maxOf(a.x, b.x)
+    val maxY get() = maxOf(a.y, b.y)
+    val xRange get() = rangeDirection(a.x, b.x)
+    val yRange get() = rangeDirection(a.y, b.y)
+}
+
+val Line.isHorizontal get() = a.y == b.y
+val Line.isVertical get() = a.x == b.x
+val Line.isDiagonal get() = (a.x - b.x).absoluteValue == (a.y - b.y).absoluteValue
+val Line.isStraight get() = isHorizontal || isVertical
+fun Line.allPoints() = when {
+    isHorizontal -> xRange.map { Point(it, a.y) }
+    isVertical -> yRange.map { Point(a.x, it) }
+    isDiagonal -> xRange.zip(yRange) { a, b -> Point(a, b) }
+    else -> error("Line must be horizontal, vertical or diagonal (from $a to $b)")
+}
+
+fun Line.allPointsSequence() = when {
+    isHorizontal -> xRange.asSequence().map { Point(it, a.y) }
+    isVertical -> yRange.asSequence().map { Point(a.x, it) }
+    isDiagonal -> xRange.asSequence().zip(yRange.asSequence()) { a, b -> Point(a, b) }
+    else -> error("Line must be horizontal, vertical or diagonal (from $a to $b)")
+}
+
+fun Pair<Point, Point>.toLine() = Line(first, second)
+
+operator fun Line.contains(some: Point) = some.x in minX..maxX && some.y in minY..maxY
+fun Line.intersects(other: Line) = intersections(other).isNotEmpty()
+fun Line.intersections(other: Line) = allPoints().intersect(other.allPoints().toSet())
+
+fun List<Line>.connect() = flatMap { it.allPoints().dropLast(1) } + last().b
 
 data class Point3D(val x: Int, val y: Int, val z: Int)
 
