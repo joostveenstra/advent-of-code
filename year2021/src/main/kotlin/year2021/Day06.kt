@@ -5,7 +5,7 @@ import framework.Day
 import util.allInts
 
 class Day06(context: Context) : Day by context {
-    val fish = input.allInts()
+    val fish = input.allInts().toList()
 
     fun simulate(days: Int) = LongArray(9).apply {
         fish.forEach { i -> this[i] += 1 }
