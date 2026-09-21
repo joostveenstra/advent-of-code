@@ -8,9 +8,9 @@ class Day04(context: Context) : Day by context {
     data class Board(val turn: Int, val score: Int)
 
     val chunks = input.split(EMPTY_LINE).map { it.allInts().toList() }
-    val numbers = chunks.first()
-    val numberToTurn = numbers.withIndex().associate { (i, n) -> n to i }
-    val turnToNumber = numbers.withIndex().associate { (i, n) -> i to n }
+    val numbers = chunks.first().withIndex()
+    val numberToTurn = numbers.associate { (i, n) -> n to i }
+    val turnToNumber = numbers.associate { (i, n) -> i to n }
     val boards = chunks.drop(1).map { b ->
         with(Grid(5, 5, b)) {
             val turn = (rowsValues + columnsValues).minOf { it.maxOf(numberToTurn::getValue) }
