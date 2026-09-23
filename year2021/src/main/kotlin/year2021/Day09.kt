@@ -18,7 +18,7 @@ class Day09(context: Context) : Day by context {
         val visited = mutableSetOf(position)
 
         queue.drain { p ->
-            p.cardinal().filter { it !in visited }.filter { get(it) < 9 }.forEach { next ->
+            p.cardinal().filter { it !in visited && get(it) < 9 }.forEach { next ->
                 visited.add(next)
                 queue.add(next)
             }
