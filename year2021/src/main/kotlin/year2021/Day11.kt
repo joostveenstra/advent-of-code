@@ -8,7 +8,7 @@ class Day11(context: Context) : Day by context {
     val initial = input.toDigitGrid()
 
     fun IntGrid.simulate() = sequence {
-        val cave = initial.toMutableGrid()
+        val cave = toMutableGrid()
         val queue = dequeOf<Point>()
         
         fun increaseEnergy(position: Point) {
