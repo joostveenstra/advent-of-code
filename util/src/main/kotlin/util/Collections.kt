@@ -194,6 +194,8 @@ inline fun <F, T> Pair<F, F>.mapBoth(block: (F) -> T) = block(first) to block(se
 inline fun <F, S, T> Pair<F, S>.mapFirst(block: (F) -> T) = block(first) to second
 inline fun <F, S, T> Pair<F, S>.mapSecond(block: (S) -> T) = first to block(second)
 
+fun <A, B> Pair<A, B>.swap() = second to first
+
 fun <T> List<T>.midpoint() = this[size / 2]
 
 operator fun <T> List<T>.component6(): T = get(5)
