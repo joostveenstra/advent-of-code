@@ -17,17 +17,17 @@ class Day14(context: Context) : Day by context {
 
     fun steps(steps: Int): Long {
         val elements = elements.toMutableMap()
-        (0..<steps).fold(pairs) { acc, _ -> step(elements, acc) }
-        return elements.values.let { it.max() - it.min() }
-    }
-
-    fun step(elements: MutableMap<Char, Long>, pairs: Map<Pair<Char, Char>, Long>) = buildMap {
-        rules.forEach { (from, left, right, to) ->
-            val n = pairs.getOrDefault(from, 0)
-            merge(left, n, Long::plus)
-            merge(right, n, Long::plus)
-            elements.merge(to, n, Long::plus)
+        (0..<steps).fold(pairs) { pairs, _ ->
+            buildMap {
+                rules.forEach { (from, left, right, to) ->
+                    val n = pairs.getOrDefault(from, 0)
+                    merge(left, n, Long::plus)
+                    merge(right, n, Long::plus)
+                    elements.merge(to, n, Long::plus)
+                }
+            }
         }
+        return elements.values.let { it.max() - it.min() }
     }
 
     fun part1() = steps(10)
