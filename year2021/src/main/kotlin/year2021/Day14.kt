@@ -9,10 +9,10 @@ class Day14(context: Context) : Day by context {
 
     val template = lines.first()
     val elements = template.frequencies().mapValues { it.value.toLong() }
-    val pairs = template.zipWithNext { a, b -> a to b }.frequencies().mapValues { it.value.toLong() }
+    val pairs = template.zipWithNext(::Pair).frequencies().mapValues { it.value.toLong() }
     val rules = lines.drop(2).map { l ->
         val (a, b, c) = l.filter { it.isUpperCase() }.toList()
-        Rule(Pair(a, b), Pair(a, c), Pair(c, b), c)
+        Rule(a to b, a to c, c to b, c)
     }
 
     fun steps(steps: Int): Long {
