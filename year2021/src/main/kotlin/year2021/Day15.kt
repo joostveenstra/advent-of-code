@@ -27,7 +27,7 @@ class Day15(context: Context) : Day by context {
         error("This should never happen")
     }
 
-    fun IntGrid.expanded() = grid(5 * width, 5 * height) { (x, y) ->
+    fun IntGrid.expand() = grid(5 * width, 5 * height) { (x, y) ->
         val base = this[Point(x % width, y % height)]
         val dx = x / width
         val dy = y / height
@@ -36,5 +36,5 @@ class Day15(context: Context) : Day by context {
     }
 
     fun part1() = grid.shortestPath()
-    fun part2() = grid.expanded().shortestPath()
+    fun part2() = grid.expand().shortestPath()
 }
