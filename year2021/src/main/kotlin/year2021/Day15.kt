@@ -11,13 +11,14 @@ class Day15(context: Context) : Day by context {
     fun IntGrid.shortestPath(): Int {
         val end = Point(maxX, maxY)
         val queue = priorityQueueOf(start to 0) { it.second }
-        val seen = mutableSetOf<Point>()
+        val seen = asMutableBooleanGrid()
 
         queue.drain { (position, risk) ->
             if (position == end) return risk
             position.cardinal().forEach { next ->
-                if (seen.add(next)) {
+                if (!seen[next]) {
                     val nextRisk = risk + get(next)
+                    seen[next] = true
                     queue.add(next to nextRisk)
                 }
             }
