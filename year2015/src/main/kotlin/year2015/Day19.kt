@@ -6,6 +6,8 @@ import util.drain
 import util.priorityQueueOf
 
 class Day19(context: Context) : Day by context {
+    typealias Rules = List<Pair<String, List<String>>>
+    
     val first = lines.takeWhile { it.isNotEmpty() }
     val rules = first.toRules(false)
     val reversed = first.toRules(true)

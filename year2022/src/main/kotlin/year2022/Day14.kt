@@ -2,11 +2,14 @@ package year2022
 
 import framework.Context
 import framework.Day
+import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toPersistentHashSet
 import util.*
 
 class Day14(context: Context) : Day by context {
+    typealias Cave = PersistentSet<Point>
+
     val source = Point(500, 0)
     val directions = listOf(
         Point(0, 1),

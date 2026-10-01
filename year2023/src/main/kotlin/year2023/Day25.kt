@@ -6,7 +6,9 @@ import util.dequeOf
 import util.drain
 
 class Day25(context: Context) : Day by context {
-    val edges = buildMap {
+    typealias Graph = Map<String, Set<String>>
+    
+    val graph = buildMap {
         lines.forEach { line ->
             val (key, remaining) = line.split(": ")
             val neighbours = remaining.split(' ')
@@ -18,7 +20,7 @@ class Day25(context: Context) : Day by context {
         }
     }
 
-    fun Map<String, Set<String>>.furthest(start: String): String {
+    fun Graph.furthest(start: String): String {
         val queue = dequeOf(start)
         val seen = mutableSetOf(start)
 
@@ -34,7 +36,7 @@ class Day25(context: Context) : Day by context {
         error("This should not happen")
     }
 
-    fun Map<String, Set<String>>.flow(start: String, end: String): Int {
+    fun Graph.flow(start: String, end: String): Int {
         val used = mutableSetOf<Pair<String, String>>()
 
         fun traverse(): Int {
@@ -72,7 +74,7 @@ class Day25(context: Context) : Day by context {
         return traverse()
     }
 
-    fun part1() = with(edges) {
+    fun part1() = with(graph) {
         val start = furthest(keys.first())
         val end = furthest(start)
         val cut = flow(start, end)

@@ -6,6 +6,8 @@ import util.nth
 import util.transpose
 
 class Day21(context: Context) : Day by context {
+    typealias Pattern = List<List<Char>>
+    
     val start = """
         .#.
         ..#

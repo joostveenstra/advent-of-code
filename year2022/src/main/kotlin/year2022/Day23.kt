@@ -5,6 +5,8 @@ import framework.Day
 import util.*
 
 class Day23(context: Context) : Day by context {
+    typealias Elf = Point
+    
     val order = listOf(NORTH, SOUTH, WEST, EAST)
 
     data class State(val elves: Set<Elf>, val directions: List<Direction>, val stuck: Boolean = false)
