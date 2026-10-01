@@ -32,7 +32,7 @@ class Day15(context: Context) : Day by context {
         val dx = x / width
         val dy = y / height
         val risk = base + dx + dy
-        risk.takeIf { it < 10 } ?: (risk - 9)
+        if (risk < 10) risk else (risk - 9)
     }
 
     fun part1() = grid.shortestPath()
