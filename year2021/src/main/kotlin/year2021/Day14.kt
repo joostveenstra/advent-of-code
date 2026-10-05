@@ -17,7 +17,7 @@ class Day14(context: Context) : Day by context {
 
     fun steps(steps: Int): Long {
         val elements = elements.toMutableMap()
-        (0..<steps).fold(pairs) { pairs, _ ->
+        (1..steps).fold(pairs) { pairs, _ ->
             buildMap {
                 rules.forEach { (from, left, right, to) ->
                     val n = pairs.getOrDefault(from, 0)
